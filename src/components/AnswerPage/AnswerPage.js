@@ -172,8 +172,8 @@ class AnswerPage extends Component {
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
-          <div onClick={this.handleClick}>
-            Click
+          <div onClick={this.handleClick} className={s.sparql}>
+            Q
           </div>
           {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
