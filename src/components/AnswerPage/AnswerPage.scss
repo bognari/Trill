@@ -35,6 +35,7 @@
   height: 25px;
   text-align: center;
   font-weight: 400;
+  float: right;
 }
 
 .sparql:hover{
@@ -45,7 +46,9 @@
 @media screen and (min-width: $screen-sm-min){
   .textboxes {
     display: inline-block;
-    width: 68%;
-    margin: 0 20px 0 0;
+    width: 60%;
+    margin: 0 10px 10px 0;
+    vertical-align: top;
   }
 }
+

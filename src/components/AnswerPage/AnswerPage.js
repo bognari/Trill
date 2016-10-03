@@ -175,6 +175,8 @@ class AnswerPage extends Component {
           <div onClick={this.handleClick} className={s.sparql}>
             Q
           </div>
+          <br/>
+          <br/>
           {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
             console.log("k"+index);
@@ -182,11 +184,11 @@ class AnswerPage extends Component {
             return (
               <div key={index} >
                  {(info.answertype == "simple") ? <Label css={s.answer}>{info.label}</Label> : null}
-                 {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
                  {(info.answertype == "detail") ? <div className={s.textboxes}>
                  <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
                  <Label>{info.abstract}</Label>
                  </div> : null}
+                {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
               </div>)
           }.bind(this), "json")}
         </Loader>
