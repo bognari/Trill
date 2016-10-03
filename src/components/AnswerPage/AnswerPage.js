@@ -101,7 +101,8 @@ class AnswerPage extends Component {
                       abstract: result.results.bindings[0].abstract.value,
                       image: image,
                       loaded: true,
-                      answertype: "detail"
+                      answertype: "detail",
+                      link: value
                     })
                     this.setState({
                       SPARQLquery: query,
@@ -171,8 +172,8 @@ class AnswerPage extends Component {
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
-          <div onClick={this.handleClick}>
-            Click
+          <div onClick={this.handleClick} className={s.sparql}>
+            Q
           </div>
           {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
@@ -183,7 +184,7 @@ class AnswerPage extends Component {
                  {(info.answertype == "simple") ? <Label css={s.answer}>{info.label}</Label> : null}
                  {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
                  {(info.answertype == "detail") ? <div className={s.textboxes}>
-                 <Label css={s.answer}>{info.label}</Label>
+                 <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
                  <Label>{info.abstract}</Label>
                  </div> : null}
               </div>)
