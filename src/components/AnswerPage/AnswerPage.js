@@ -95,7 +95,8 @@ class AnswerPage extends Component {
                       abstract: result.results.bindings[0].abstract.value,
                       image: image,
                       loaded: true,
-                      answertype: "detail"
+                      answertype: "detail",
+                      link: value
                     })
                     this.setState({
                       information: information,
@@ -171,7 +172,7 @@ class AnswerPage extends Component {
                  {(info.answertype == "simple") ? <Label css={s.answer}>{info.label}</Label> : null}
                  {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
                  {(info.answertype == "detail") ? <div className={s.textboxes}>
-                 <Label css={s.answer}>{info.label}</Label>
+                 <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
                  <Label>{info.abstract}</Label>
                  </div> : null}
               </div>)

@@ -15,6 +15,15 @@
   font-weight: bold;
 }
 
+.link,
+.link:active{
+  color: #0083b6;
+}
+
+.link:visited {
+  color: #0083b6;
+}
+
 @media screen and (min-width: $screen-sm-min){
   .textboxes {
     display: inline-block;
