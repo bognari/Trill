@@ -129,7 +129,7 @@ class AnswerPage extends Component {
               else if (type == "typed-literal" || type == "literal") {
                 var information = this.state.information;
                 information.push({
-                  label: jresult.results.bindings[0][variable].value,
+                  label: binding[variable].value,
                   loaded: true,
                   answertype: "simple"
                 })
