@@ -95,9 +95,10 @@ class AnswerPage extends Component {
                     if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
                       var information = this.state.information;
                       information.push({
-                        label: binding[variable].value,
+                        label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                         loaded: true,
-                        answertype: "simple",
+                        answertype: "nolabel",
+                        link: value,
                       })
 
                       this.setState({
@@ -199,6 +200,7 @@ class AnswerPage extends Component {
             return (
               <div key={index} >
                  {(info.answertype == "simple") ? <Label css={s.answer}>{info.label}</Label> : null}
+                {(info.answertype == "nolabel") ? <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a> : null}
                  {(info.answertype == "detail") ? <div className={s.textboxes}>
                  <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
                  <Label>{info.abstract}</Label>
