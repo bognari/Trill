@@ -82,7 +82,18 @@ server.get('*', async (req, res, next) => {
   try {
     let statusCode = 200;
     const template = require('./views/index.jade');
-    const data = { title: '', description: '', css: '', body: '', entry: assets.main.js };
+
+    // set webpage title depending on the user's question
+    let myQuestion = "";
+    if( req.query.hasOwnProperty("query") ){
+      console.log("query available: "+req.query.query)
+      myQuestion = "question: "+req.query.query+", WDAqua";
+    } else {
+      myQuestion = "WDAqua";
+    }
+    console.log("define title of webpage as: "+myQuestion)
+
+    const data = { title: myQuestion, description: '', css: '', body: '', entry: assets.main.js };
 
     if (process.env.NODE_ENV === 'production') {
       data.trackingId = analytics.google.trackingId;
