@@ -92,23 +92,38 @@ class AnswerPage extends Component {
                   "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                   function (result) {
                     console.log(result);
-                    console.log("Label" + result.results.bindings[0].label.value);
-                    console.log("Abstract" + result.results.bindings[0].abstract.value);
-                    var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
-                    var information = this.state.information;
-                    information.push({
-                      label: result.results.bindings[0].label.value,
-                      abstract: result.results.bindings[0].abstract.value,
-                      image: image,
-                      loaded: true,
-                      answertype: "detail",
-                      link: value
-                    })
-                    this.setState({
-                      SPARQLquery: query,
-                      information: information,
-                      loaded: true,
-                    })
+                    if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
+                      var information = this.state.information;
+                      information.push({
+                        label: "No results",
+                        loaded: true,
+                        answertype: "simple",
+                      })
+
+                      this.setState({
+                        SPARQLquery: query,
+                        information: information,
+                        loaded: true,
+                      });
+                    } else {
+                      console.log("Label" + result.results.bindings[0].label.value);
+                      console.log("Abstract" + result.results.bindings[0].abstract.value);
+                      var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
+                      var information = this.state.information;
+                      information.push({
+                        label: result.results.bindings[0].label.value,
+                        abstract: result.results.bindings[0].abstract.value,
+                        image: image,
+                        loaded: true,
+                        answertype: "detail",
+                        link: value
+                      })
+                      this.setState({
+                        SPARQLquery: query,
+                        information: information,
+                        loaded: true,
+                      })
+                    }
                   }.bind(this), "json")
               }
               else if (type == "typed-literal" || type == "literal") {
