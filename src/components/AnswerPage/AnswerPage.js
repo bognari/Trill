@@ -95,7 +95,7 @@ class AnswerPage extends Component {
                     if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
                       var information = this.state.information;
                       information.push({
-                        label: "No results",
+                        label: binding[variable].value,
                         loaded: true,
                         answertype: "simple",
                       })
