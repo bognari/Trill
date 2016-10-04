@@ -25,8 +25,11 @@ class AnswerPage extends Component {
     super(props);
     this.state = {
       information: [],
-      loaded: false,
+      SPARQLquery: "", //containes the generated sparql query
+      query: false, //indicates if the answer or the query is displayed
+      loaded: false, //indicates if the backend already gave back the answer
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
 
@@ -38,6 +41,8 @@ class AnswerPage extends Component {
       //would like to refactor the following to separate functions. this.setState() is not recognized in
       //nested functions
 
+      var query = data.questions[0].question.language[0].SPARQL;
+      console.log("Query"+query);
       var jresult = JSON.parse(data.questions[0].question.answers);
 
       console.log("json");
@@ -51,15 +56,16 @@ class AnswerPage extends Component {
           answerType: "simple",
         })
         this.setState({
+          SPARQLquery: query,
           information: information,
           loaded: true,
         })
       } else {
         var variable=jresult.head.vars[0];
         //depending on the number of results, handle accordingly:
-        if(jresult.results.bindings.length < 200) {
+        if(jresult.results.bindings.length < 1000) {
           jresult.results.bindings.map(function(binding,k) {
-            if (k<10) {
+            if (k<20) {
               console.log("k:" + k);
               console.log(variable);
               //console.log("Variable" + jresult.head.vars[0]);
@@ -95,9 +101,11 @@ class AnswerPage extends Component {
                       abstract: result.results.bindings[0].abstract.value,
                       image: image,
                       loaded: true,
-                      answertype: "detail"
+                      answertype: "detail",
+                      link: value
                     })
                     this.setState({
+                      SPARQLquery: query,
                       information: information,
                       loaded: true,
                     })
@@ -111,6 +119,7 @@ class AnswerPage extends Component {
                   answertype: "simple"
                 })
                 this.setState({
+                  SPARQLquery: query,
                   information: information,
                   loaded: true,
                 });
@@ -123,6 +132,7 @@ class AnswerPage extends Component {
         }
         else {
           this.setState({
+            SPARQLquery: query,
             label: "No results",
             loaded: true,
             answertype: "simple"
@@ -136,6 +146,10 @@ class AnswerPage extends Component {
     //   console.log(" ");
     // });
 
+  }
+
+  handleClick() {
+    this.setState({query: !this.state.query}); //on click switch from query to answer
   }
 
   render() {
@@ -152,28 +166,29 @@ class AnswerPage extends Component {
     // }
     // else {}
 
-
-
-
-    //
-
 //to refactor so don't have to check the same answer type multiple times
     console.log("Loaded "+this.state.loaded);
     console.log("Information "+this.state.information.length);
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
+          <div onClick={this.handleClick} className={s.sparql}>
+            Q
+          </div>
+          <br/>
+          <br/>
+          {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
             console.log("k"+index);
             console.log(info);
             return (
               <div key={index} >
                  {(info.answertype == "simple") ? <Label css={s.answer}>{info.label}</Label> : null}
-                 {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
                  {(info.answertype == "detail") ? <div className={s.textboxes}>
-                 <Label css={s.answer}>{info.label}</Label>
+                 <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
                  <Label>{info.abstract}</Label>
                  </div> : null}
+                {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
               </div>)
           }.bind(this), "json")}
         </Loader>
