@@ -63,7 +63,7 @@ class AnswerPage extends Component {
       } else {
         var variable=jresult.head.vars[0];
         //depending on the number of results, handle accordingly:
-        if(jresult.results.bindings.length < 1000) {
+        if(jresult.results.bindings.length <= 1000) {
           jresult.results.bindings.map(function(binding,k) {
             if (k<20) {
               console.log("k:" + k);
