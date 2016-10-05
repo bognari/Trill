@@ -11,9 +11,12 @@ import React, { Component, PropTypes } from 'react';
 import ImageComponent from '../ImageComponent'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AnswerPage.scss';
+//import L from 'leaflet';
+import ls from '../../../node_modules/leaflet/dist/leaflet.scss';
 import $ from 'jquery';
 import Label from '../Label';
 import Loader from 'react-loader';
+import Map from '../Map';
 
 
 class AnswerPage extends Component {
@@ -63,7 +66,7 @@ class AnswerPage extends Component {
       } else {
         var variable=jresult.head.vars[0];
         //depending on the number of results, handle accordingly:
-        if(jresult.results.bindings.length <= 1000) {
+        if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
           jresult.results.bindings.map(function(binding,k) {
             if (k<20) {
               console.log("k:" + k);
@@ -77,13 +80,19 @@ class AnswerPage extends Component {
 
               if (type == "uri") {
                 //There is only one uri
-                var sparqlQuery = "select ?label ?abstract ?image where { "
+                var sparqlQuery = "select ?label ?abstract ?image ?lat ?long where { "
                   + "<" + value + "> rdfs:label ?label . "
                   + " OPTIONAL{ "
                   + "<" + value + "> dbo:thumbnail ?image . "
                   + "} "
                   + " OPTIONAL{ "
                   + "<" + value + "> dbo:abstract ?abstract . "
+                  + "} "
+                  + " OPTIONAL{ "
+                  + "<" + value + "> geo:lat ?lat . "
+                  + "} "
+                  + " OPTIONAL{ "
+                  + "<" + value + "> geo:long ?long . "
                   + "} "
                   + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
                   + " } ";
@@ -92,6 +101,8 @@ class AnswerPage extends Component {
                   "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                   function (result) {
                     console.log(result);
+
+                    //to refactor the following if statements to one switch statement?
                     if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
                       var information = this.state.information;
                       information.push({
@@ -109,6 +120,7 @@ class AnswerPage extends Component {
                     } else {
                       console.log("Label" + result.results.bindings[0].label.value);
                       console.log("Abstract" + result.results.bindings[0].abstract.value);
+
                       var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
                       var information = this.state.information;
                       information.push({
@@ -119,11 +131,68 @@ class AnswerPage extends Component {
                         answertype: "detail",
                         link: value
                       })
+
+                      if (result.results.bindings[0].lat.value != undefined){ //if there are geo coordinates
+                        information.push({
+                          answertype: "map",
+                          lat: result.results.bindings[0].lat.value,
+                          long: result.results.bindings[0].long.value
+                        })
+                      }
+
                       this.setState({
                         SPARQLquery: query,
                         information: information,
                         loaded: true,
                       })
+
+
+                      //----- from here is just a test to display map -------
+                      // this if statement will instead have to be a switch statement to check for the answer type to be a map.
+                      // Perhaps these kind of displays should only be used when there is one result, not more. Lists would have
+                      // their own separate display type (answertype: list, for example)
+                      if(result.results.bindings[0].lat.value != undefined){
+
+                       // L.scss("../../../node_modules/leaflet/dist/leaflet.scss");
+
+                      //   L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/';
+                      //   var map = L.map('map');
+                      //   map.setView([47.63, -122.32], 11);
+                      //
+                      //   var attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
+                      //
+                      //   var tiles = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
+                      //
+                      //   var layer = L.tileLayer(tiles, {
+                      //     maxZoom: 18,
+                      //     attribution: attribution
+                      //   });
+                      //
+                      //   layer.addTo(map);
+                      //
+
+                        // setTimeout(function() {
+                        //   var L = require('leaflet');
+                        //
+                        //   var map = L.map('map').setView([result.results.bindings[0].lat.value, result.results.bindings[0].long.value], 13);
+                        //
+                        //   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                        //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        //   }).addTo(map);
+                        //
+                        //   L.marker([result.results.bindings[0].lat.value, result.results.bindings[0].long.value]).addTo(map)
+                        //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+                        //     .openPopup();
+                        //
+                        //   map.css(ls);
+                        //
+                        // }.bind(this), 1000);
+
+                       }
+
+                      //------ test code ends here --------------------------
+
+
                     }
                   }.bind(this), "json")
               }
@@ -143,10 +212,7 @@ class AnswerPage extends Component {
             }
           }.bind(this), "json")
         }
-        else if (jresult.results.bindings.length > 5) {
-          //do something
-        }
-        else {
+        else { //if there are no results
           this.setState({
             SPARQLquery: query,
             label: "No results",
@@ -171,8 +237,6 @@ class AnswerPage extends Component {
   render() {
     console.log("query paramsss...............:");
     console.log(this.props.query);
-    console.log("the label has become....:");
-    console.log(this.state.label);
 
     // var answerformat;
     // if (this.state.answertype == "simple") {
@@ -185,6 +249,8 @@ class AnswerPage extends Component {
 //to refactor so don't have to check the same answer type multiple times
     console.log("Loaded "+this.state.loaded);
     console.log("Information "+this.state.information.length);
+
+
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
@@ -206,13 +272,15 @@ class AnswerPage extends Component {
                  <Label>{info.abstract}</Label>
                  </div> : null}
                 {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
+                {(info.answertype == "map") ? <Map></Map> : null}
               </div>)
           }.bind(this), "json")}
         </Loader>
+
       </div>
     );
   }
 
 
 }
-export default withStyles(AnswerPage, s);
+export default withStyles(AnswerPage, s, ls);
