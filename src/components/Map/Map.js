@@ -10,12 +10,13 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Map.scss';
+import l from '../../../node_modules/leaflet/dist/leaflet.scss';
 
 class Map extends Component {
 
   static propTypes = {
-    // lat: PropTypes.float.isRequired,
-    // long: PropTypes.float.isRequired,
+    lat: PropTypes.float,
+    long: PropTypes.float,
   };
 
   constructor(props) {
@@ -31,17 +32,17 @@ class Map extends Component {
     setTimeout(function() {
       var L = require('leaflet');
 
-      var map = L.map('map').setView([51.505, -0.09], 13);
+      var map = L.map('map').setView([this.props.lat, this.props.long], 13);
 
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
 
-      L.marker([51.505, -0.09]).addTo(map)
+      L.marker([this.props.lat, this.props.long]).addTo(map)
         .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
         .openPopup();
 
-      map.css('../../../node_modules/leaflet/dist/leaflet.scss');
+      //map.css('../../../node_modules/leaflet/dist/leaflet.scss');
     }.bind(this), 1000);
 
     return (
@@ -52,4 +53,4 @@ class Map extends Component {
   }
 
 }
-export default withStyles(Map, s);
+export default withStyles(Map, s, l);

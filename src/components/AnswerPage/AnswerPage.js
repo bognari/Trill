@@ -11,8 +11,6 @@ import React, { Component, PropTypes } from 'react';
 import ImageComponent from '../ImageComponent'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AnswerPage.scss';
-//import L from 'leaflet';
-import ls from '../../../node_modules/leaflet/dist/leaflet.scss';
 import $ from 'jquery';
 import Label from '../Label';
 import Loader from 'react-loader';
@@ -132,7 +130,7 @@ class AnswerPage extends Component {
                         link: value
                       })
 
-                      if (result.results.bindings[0].lat.value != undefined){ //if there are geo coordinates
+                      if (result.results.bindings[0].lat != undefined){ //if there are geo coordinates
                         information.push({
                           answertype: "map",
                           lat: result.results.bindings[0].lat.value,
@@ -151,7 +149,7 @@ class AnswerPage extends Component {
                       // this if statement will instead have to be a switch statement to check for the answer type to be a map.
                       // Perhaps these kind of displays should only be used when there is one result, not more. Lists would have
                       // their own separate display type (answertype: list, for example)
-                      if(result.results.bindings[0].lat.value != undefined){
+                      //if(result.results.bindings[0].lat != undefined){
 
                        // L.scss("../../../node_modules/leaflet/dist/leaflet.scss");
 
@@ -188,7 +186,7 @@ class AnswerPage extends Component {
                         //
                         // }.bind(this), 1000);
 
-                       }
+                       //}
 
                       //------ test code ends here --------------------------
 
@@ -250,7 +248,6 @@ class AnswerPage extends Component {
     console.log("Loaded "+this.state.loaded);
     console.log("Information "+this.state.information.length);
 
-
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
@@ -272,7 +269,7 @@ class AnswerPage extends Component {
                  <Label>{info.abstract}</Label>
                  </div> : null}
                 {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
-                {(info.answertype == "map") ? <Map></Map> : null}
+                {(info.answertype == "map") ? <Map lat={info.lat} long={info.long}></Map> : null}
               </div>)
           }.bind(this), "json")}
         </Loader>
@@ -283,4 +280,4 @@ class AnswerPage extends Component {
 
 
 }
-export default withStyles(AnswerPage, s, ls);
+export default withStyles(AnswerPage, s);
