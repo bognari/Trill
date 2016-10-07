@@ -14,6 +14,7 @@ import s from './AnswerPage.scss';
 import $ from 'jquery';
 import Label from '../Label';
 import Loader from 'react-loader';
+import MapBox from '../MapBox';
 
 
 class AnswerPage extends Component {
@@ -63,7 +64,7 @@ class AnswerPage extends Component {
       } else {
         var variable=jresult.head.vars[0];
         //depending on the number of results, handle accordingly:
-        if(jresult.results.bindings.length <= 1000) {
+        if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
           jresult.results.bindings.map(function(binding,k) {
             if (k<20) {
               console.log("k:" + k);
@@ -77,13 +78,19 @@ class AnswerPage extends Component {
 
               if (type == "uri") {
                 //There is only one uri
-                var sparqlQuery = "select ?label ?abstract ?image where { "
+                var sparqlQuery = "select ?label ?abstract ?image ?lat ?long where { "
                   + "<" + value + "> rdfs:label ?label . "
                   + " OPTIONAL{ "
                   + "<" + value + "> dbo:thumbnail ?image . "
                   + "} "
                   + " OPTIONAL{ "
                   + "<" + value + "> dbo:abstract ?abstract . "
+                  + "} "
+                  + " OPTIONAL{ "
+                  + "<" + value + "> geo:lat ?lat . "
+                  + "} "
+                  + " OPTIONAL{ "
+                  + "<" + value + "> geo:long ?long . "
                   + "} "
                   + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
                   + " } ";
@@ -92,6 +99,9 @@ class AnswerPage extends Component {
                   "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                   function (result) {
                     console.log(result);
+
+                    //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
+                    //determine and set answertype
                     if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
                       var information = this.state.information;
                       information.push({
@@ -109,6 +119,7 @@ class AnswerPage extends Component {
                     } else {
                       console.log("Label" + result.results.bindings[0].label.value);
                       console.log("Abstract" + result.results.bindings[0].abstract.value);
+
                       var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
                       var information = this.state.information;
                       information.push({
@@ -119,11 +130,22 @@ class AnswerPage extends Component {
                         answertype: "detail",
                         link: value
                       })
+
+                      if (result.results.bindings[0].lat != undefined){ //if there are geo coordinates
+                        information.push({
+                          answertype: "map",
+                          lat: result.results.bindings[0].lat.value,
+                          long: result.results.bindings[0].long.value
+                        })
+                      }
+
                       this.setState({
                         SPARQLquery: query,
                         information: information,
                         loaded: true,
                       })
+
+
                     }
                   }.bind(this), "json")
               }
@@ -143,10 +165,7 @@ class AnswerPage extends Component {
             }
           }.bind(this), "json")
         }
-        else if (jresult.results.bindings.length > 5) {
-          //do something
-        }
-        else {
+        else { //if there are no results
           this.setState({
             SPARQLquery: query,
             label: "No results",
@@ -171,8 +190,6 @@ class AnswerPage extends Component {
   render() {
     console.log("query paramsss...............:");
     console.log(this.props.query);
-    console.log("the label has become....:");
-    console.log(this.state.label);
 
     // var answerformat;
     // if (this.state.answertype == "simple") {
@@ -185,6 +202,7 @@ class AnswerPage extends Component {
 //to refactor so don't have to check the same answer type multiple times
     console.log("Loaded "+this.state.loaded);
     console.log("Information "+this.state.information.length);
+
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
@@ -206,9 +224,11 @@ class AnswerPage extends Component {
                  <Label>{info.abstract}</Label>
                  </div> : null}
                 {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
+                {(info.answertype == "map") ? <MapBox lat={info.lat} long={info.long}></MapBox> : null}
               </div>)
           }.bind(this), "json")}
         </Loader>
+
       </div>
     );
   }

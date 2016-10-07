@@ -73,6 +73,11 @@ const config = {
         ],
         loader: 'babel-loader',
       }, {
+        test: /\.css$/,
+        loaders: [
+          'css-loader',
+        ],
+      }, {
         test: /\.scss$/,
         loaders: [
           'isomorphic-style-loader',
