@@ -1,0 +1,15 @@
+@import '../variables.scss';
+
+.root {
+}
+
+.container {
+  margin: 0;
+  padding: 0 0 10px;
+  max-width: $max-content-width;
+  height:300px;
+}
+
+.map {
+  height: 300px;
+}

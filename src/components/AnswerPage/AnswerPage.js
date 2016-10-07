@@ -14,7 +14,7 @@ import s from './AnswerPage.scss';
 import $ from 'jquery';
 import Label from '../Label';
 import Loader from 'react-loader';
-import Map from '../Map';
+import MapBox from '../MapBox';
 
 
 class AnswerPage extends Component {
@@ -100,7 +100,8 @@ class AnswerPage extends Component {
                   function (result) {
                     console.log(result);
 
-                    //to refactor the following if statements to one switch statement?
+                    //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
+                    //determine and set answertype
                     if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
                       var information = this.state.information;
                       information.push({
@@ -143,52 +144,6 @@ class AnswerPage extends Component {
                         information: information,
                         loaded: true,
                       })
-
-
-                      //----- from here is just a test to display map -------
-                      // this if statement will instead have to be a switch statement to check for the answer type to be a map.
-                      // Perhaps these kind of displays should only be used when there is one result, not more. Lists would have
-                      // their own separate display type (answertype: list, for example)
-                      //if(result.results.bindings[0].lat != undefined){
-
-                       // L.scss("../../../node_modules/leaflet/dist/leaflet.scss");
-
-                      //   L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images/';
-                      //   var map = L.map('map');
-                      //   map.setView([47.63, -122.32], 11);
-                      //
-                      //   var attribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>';
-                      //
-                      //   var tiles = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
-                      //
-                      //   var layer = L.tileLayer(tiles, {
-                      //     maxZoom: 18,
-                      //     attribution: attribution
-                      //   });
-                      //
-                      //   layer.addTo(map);
-                      //
-
-                        // setTimeout(function() {
-                        //   var L = require('leaflet');
-                        //
-                        //   var map = L.map('map').setView([result.results.bindings[0].lat.value, result.results.bindings[0].long.value], 13);
-                        //
-                        //   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        //   }).addTo(map);
-                        //
-                        //   L.marker([result.results.bindings[0].lat.value, result.results.bindings[0].long.value]).addTo(map)
-                        //     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-                        //     .openPopup();
-                        //
-                        //   map.css(ls);
-                        //
-                        // }.bind(this), 1000);
-
-                       //}
-
-                      //------ test code ends here --------------------------
 
 
                     }
@@ -269,7 +224,7 @@ class AnswerPage extends Component {
                  <Label>{info.abstract}</Label>
                  </div> : null}
                 {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
-                {(info.answertype == "map") ? <Map lat={info.lat} long={info.long}></Map> : null}
+                {(info.answertype == "map") ? <MapBox lat={info.lat} long={info.long}></MapBox> : null}
               </div>)
           }.bind(this), "json")}
         </Loader>

@@ -9,13 +9,11 @@
 
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Map.scss'
-import L, {Map, TileLayer, Marker, Popup} from 'react-leaflet'
-//import L from 'react-leaflet'
-//import l from './Leaflet.scss';
-//import l from '../../../node_modules/leaflet/dist/leaflet.scss';
+import s from './MapBox.scss'
+// import { render } from 'react-dom';
+// import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 
-class Map extends Component {
+class MapBox extends Component {
 
   static propTypes = {
     lat: PropTypes.float,
@@ -24,13 +22,7 @@ class Map extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      lat: 51.505,
-      lng: -0.09,
-      zoom: 13,
-    }
   }
-
 
   componentDidMount() {
 
@@ -49,15 +41,42 @@ class Map extends Component {
 
       //map.css('../../../node_modules/leaflet/dist/leaflet.scss');
 
+
+    //===========
+
+    // var {Map, TileLayer, Marker, Popup} = require('react-leaflet');
+    //
+    // var position = [this.props.lat, this.props.long];
+    //
+    // const map = (
+    //   <Map center={position} zoom="13">
+    //     <TileLayer
+    //       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    //       url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+    //     />
+    //     <Marker position={position}>
+    //       <Popup>
+    //         <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
+    //       </Popup>
+    //     </Marker>
+    //   </Map>
+    // );
+    //
+    // render(map, document.getElementById('map'));
+
   }
+
 
   render() {
 
-      var position = [this.state.lat, this.state.lng];
+    var {Map, TileLayer, Marker, Popup} = require('react-leaflet');
+    require('leaflet/dist/leaflet.css');
+
+    var position = [this.props.lat, this.props.long];
 
     return (
-      <div>
-        <Map center={position} zoom={this.state.zoom}>
+      <div className={s.container}>
+        <Map center={position} zoom="13">
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -67,10 +86,10 @@ class Map extends Component {
               <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
             </Popup>
           </Marker>
-          </Map>
+        </Map>
       </div>
     );
   }
 
 }
-export default withStyles(Map, s);
+export default withStyles(MapBox, s);
