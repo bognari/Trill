@@ -25,45 +25,41 @@ class MapBox extends Component {
 
   componentDidMount() {
 
-     //  var L = require('react-leaflet');
-     // // require('leaflet/dist/leaflet.css');
-     //
-     //  var map = L.map('map').setView([this.props.lat, this.props.long], 13);
-     //
-     //  L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-     //    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-     //  }).addTo(map);
-     //
-     //  L.marker([this.props.lat, this.props.long]).addTo(map)
-     //    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-     //    .openPopup();
+      var L = require('leaflet');
 
-      //map.css('../../../node_modules/leaflet/dist/leaflet.scss');
+      var map = L.map('map').setView([this.props.lat, this.props.long], 13);
+
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      L.marker([this.props.lat, this.props.long]).addTo(map)
+        //.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        .openPopup();
+
 
 
     //===========
 
-    var {Map, TileLayer, Marker, Popup} = require('react-leaflet');
-    //require('leaflet/dist/leaflet.css');
+    // var L, {Map, TileLayer, Marker, Popup} = require('react-leaflet');
 
-    var position = [this.props.lat, this.props.long];
-
-    const map = (
-      <Map center={position} zoom="13">
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-        />
-        <Marker position={position}>
-          <Popup>
-            <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
-          </Popup>
-        </Marker>
-      </Map>
-    );
-
-    //map.css('./leaflet.css');
-    render(map, document.getElementById('map'));
+    // var position = [this.props.lat, this.props.long];
+    //
+    // const map = (
+    //   <Map center={position} zoom="13">
+    //     <TileLayer
+    //       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    //       url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+    //     />
+    //     <Marker position={position}>
+    //       <Popup>
+    //         <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
+    //       </Popup>
+    //     </Marker>
+    //   </Map>
+    // );
+    //
+    // render(map, document.getElementById('map'));
 
   }
 
@@ -71,7 +67,9 @@ class MapBox extends Component {
   render() {
 
     return (
-      <div id="map" className={s.container}>
+      <div className={s.container}>
+        <div id="map" className={s.map}>
+        </div>
       </div>
     );
   }
