@@ -44,10 +44,17 @@
 }
 
 @media screen and (min-width: $screen-sm-min){
-  .textboxes {
+  .leftColumn {
     display: inline-block;
     width: 60%;
-    margin: 0 10px 10px 0;
+    margin: 10px 10px 10px 0;
+    vertical-align: top;
+  }
+
+  .rightColumn {
+    display: inline-block;
+    width: 39%;
+    margin: 10px 0 10px 0;
     vertical-align: top;
   }
 }

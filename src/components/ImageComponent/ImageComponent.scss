@@ -3,34 +3,32 @@
 .root {
 }
 
-.container {
-  margin: 0;
-  padding: 0 0 10px;
-  max-width: $max-content-width;
-  display: inline-block;
-  vertical-align: top;
-}
-
 .img {
-  margin: 10px 0 10px 0;
+  margin: 0;
   padding: 20px;
   border: 2px solid #f5f5f5;
   width: 89%;
 }
 
+.container {
+  margin: 0 0 10px 0;
+  max-width: $max-content-width;
+  width: 100%;
+  display: inline-block;
+}
+
 @media screen and (min-width: $screen-sm-min){
   .img {
-    margin: 10px 0 10px 0;
+    margin: 0;
     padding: 20px;
     border: 2px solid #f5f5f5;
     width: 89%;
   }
 
   .container {
-    margin: 0;
-    padding: 0 0 10px;
+    margin: 0 0 10px 0;
     max-width: $max-content-width;
-    width: 39%;
+    width: 100%;
     display: inline-block;
   }
 }

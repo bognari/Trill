@@ -15,6 +15,7 @@ import $ from 'jquery';
 import Label from '../Label';
 import Loader from 'react-loader';
 import MapBox from '../MapBox';
+import TopK from '../TopK';
 
 
 class AnswerPage extends Component {
@@ -99,11 +100,11 @@ class AnswerPage extends Component {
                   "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                   function (result) {
                     console.log(result);
+                    var information = this.state.information;
 
                     //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
                     //determine and set answertype
                     if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
-                      var information = this.state.information;
                       information.push({
                         label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                         loaded: true,
@@ -121,21 +122,27 @@ class AnswerPage extends Component {
                       console.log("Abstract" + result.results.bindings[0].abstract.value);
 
                       var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
-                      var information = this.state.information;
-                      information.push({
-                        label: result.results.bindings[0].label.value,
-                        abstract: result.results.bindings[0].abstract.value,
-                        image: image,
-                        loaded: true,
-                        answertype: "detail",
-                        link: value
-                      })
 
                       if (result.results.bindings[0].lat != undefined){ //if there are geo coordinates
                         information.push({
+                          label: result.results.bindings[0].label.value,
+                          abstract: result.results.bindings[0].abstract.value,
+                          image: image,
+                          loaded: true,
                           answertype: "map",
+                          link: value,
                           lat: result.results.bindings[0].lat.value,
                           long: result.results.bindings[0].long.value
+                        })
+                      }
+                      else {
+                        information.push({
+                          label: result.results.bindings[0].label.value,
+                          abstract: result.results.bindings[0].abstract.value,
+                          image: image,
+                          loaded: true,
+                          answertype: "detail",
+                          link: value
                         })
                       }
 
@@ -218,13 +225,27 @@ class AnswerPage extends Component {
             return (
               <div key={index} >
                  {(info.answertype == "simple") ? <Label css={s.answer}>{info.label}</Label> : null}
-                {(info.answertype == "nolabel") ? <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a> : null}
-                 {(info.answertype == "detail") ? <div className={s.textboxes}>
-                 <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
-                 <Label>{info.abstract}</Label>
+
+                 {(info.answertype == "nolabel") ? <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a> : null}
+
+                {(info.answertype == "detail") ?
+                   <div className={s.leftColumn}>
+                   <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
+                   <Label>{info.abstract}</Label>
                  </div> : null}
-                {(info.answertype == "detail") ? <ImageComponent image={info.image}></ImageComponent> : null}
-                {(info.answertype == "map") ? <MapBox lat={info.lat} long={info.long}></MapBox> : null}
+                {(info.answertype == "map") ?
+                  <div className={s.leftColumn}>
+                    <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
+                    <Label>{info.abstract}</Label>
+                    <MapBox lat={info.lat} long={info.long}></MapBox>
+                  </div> : null}
+
+                {(info.answertype == "detail" || "map") ?
+                  <div className={s.rightColumn}>
+                  <ImageComponent image={info.image}></ImageComponent>
+                  <TopK uri={info.link} topK={5}/>
+                </div> : null}
+
               </div>)
           }.bind(this), "json")}
         </Loader>
