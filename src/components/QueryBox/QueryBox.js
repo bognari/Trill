@@ -10,6 +10,7 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
+import Location from '../../core/Location';
 
 class QueryBox extends Component {
 
@@ -20,7 +21,9 @@ class QueryBox extends Component {
 
   constructor(props) {
     super(props);
-    // this.state = {  querytext : "" };
+    this.state = {
+      voicequery: "", //indicates the query given by voice recording if any
+    };
   }
 
   componentDidMount() {
@@ -33,6 +36,12 @@ class QueryBox extends Component {
       navigator.mediaDevices.getUserMedia({ audio: true })
         .then(function(stream) {
           console.log('Permission granted');
+          document.querySelector('#record').style = "display: none";
+          document.querySelector('#querytext').style = "display: none";
+          document.querySelector('#go').style = "display: none";
+          document.querySelector('#listening').style = "display: inline-block";
+          document.querySelector('#stop').style = "display: inline-block";
+          document.querySelector('#cancel').style = "display: inline-block";
 
           mediaRecorder = new MediaStreamRecorder(stream);
           mediaRecorder.mimeType = 'audio/wav'; // check this line for audio/wav
@@ -53,6 +62,9 @@ class QueryBox extends Component {
 
     document.querySelector('#stop').onclick = function(){
       console.log('now Stop clicked');
+      // this.setState({
+      //   voicequery: "Capital+of+Canada",
+      // });
       mediaRecorder.stop();
     }
   }
@@ -62,10 +74,12 @@ class QueryBox extends Component {
     return (
         <form action="/question" method="GET" autoComplete="on" className={s.querybox}>
           <div>
-            <input type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.query}/>
-            <button id="record" type="button" className={s.space}>Test</button>
-            <button id="stop" type="button" className={s.space}>Stop</button>
-            <input type="submit" value="Go" className={s.space}/>
+            <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.query}/>
+            <div id="listening" className={s.listening}><p>Listening... </p></div>
+            <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
+            <a href={Location.createHref("/question?query=" + "Capital+of+Canada")}><button id="stop" type="button" className={s.stop}>Done</button></a>
+            <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
+            <input id="go" type="submit" value="Go" className={s.space}/>
           </div>
         </form>
     );
