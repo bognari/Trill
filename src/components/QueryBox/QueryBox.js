@@ -66,6 +66,7 @@ class QueryBox extends Component {
       //   voicequery: "Capital+of+Canada",
       // });
       mediaRecorder.stop();
+
     }
   }
 
