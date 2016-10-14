@@ -22,16 +22,18 @@ class Label extends Component {
   }
 
   componentDidMount() {
-    document.querySelector('#seemore').onclick = function(){
-      document.querySelector('#seeblock').style = "display: none";
-      document.querySelector('#secondhalf').style = "display: inline";
-      document.querySelector('#seeless').style = "display: inline";
-    }
+    if(document.querySelector('#seemore') != null) {
+      document.querySelector('#seemore').onclick = function(){
+        document.querySelector('#seeblock').style = "display: none";
+        document.querySelector('#secondhalf').style = "display: inline";
+        document.querySelector('#seeless').style = "display: inline";
+      }
 
-    document.querySelector('#seeless').onclick = function(){
-      document.querySelector('#seeblock').style = "display: inline";
-      document.querySelector('#secondhalf').style = "display: none";
-      document.querySelector('#seeless').style = "display: none";
+      document.querySelector('#seeless').onclick = function(){
+        document.querySelector('#seeblock').style = "display: inline";
+        document.querySelector('#secondhalf').style = "display: none";
+        document.querySelector('#seeless').style = "display: none";
+      }
     }
   }
 
