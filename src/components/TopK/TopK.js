@@ -15,6 +15,7 @@ import s from './TopK.scss';
 class TopK extends Component {
 
   static propTypes = {
+    sumid: PropTypes.string.isRequired,
     uri: PropTypes.string.isRequired,
     topK: PropTypes.number.isRequired,
   };
@@ -29,7 +30,7 @@ class TopK extends Component {
 
     //==============================
 
-    var id = "sumbox";
+    var id = this.props.sumid;
     var uri = this.props.uri;
     var topK = this.props.topK;
 
@@ -140,7 +141,7 @@ class TopK extends Component {
   render() {
     return (
       <div className={s.container}>
-        <div className={s.sum} id="sumbox"></div>
+        <div className={s.sum} id={this.props.sumid}></div>
         <p className={s.caption}>Summary by <a href="http://km.aifb.kit.edu/services/link">http://km.aifb.kit.edu/services/link</a></p>
       </div>
     );
