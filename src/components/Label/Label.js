@@ -21,11 +21,31 @@ class Label extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    document.querySelector('#seemore').onclick = function(){
+      document.querySelector('#seeblock').style = "display: none";
+      document.querySelector('#secondhalf').style = "display: inline";
+      document.querySelector('#seeless').style = "display: inline";
+    }
+
+    document.querySelector('#seeless').onclick = function(){
+      document.querySelector('#seeblock').style = "display: inline";
+      document.querySelector('#secondhalf').style = "display: none";
+      document.querySelector('#seeless').style = "display: none";
+    }
+  }
 
   render() {
+    var largetext = false;
+    if (this.props.children.length >= 1500){
+      largetext = true;
+      var firsthalf = this.props.children.slice(0, 1500);
+      var secondhalf = this.props.children.slice(1500);
+    }
+
     return (
       <div className={this.props.type == 'title'? s.title : s.normal}>
-        <p>{this.props.children}</p>
+        {largetext ? <p><span>{firsthalf}</span><span id="seeblock">... <span id="seemore" className={s.seemore}>see more</span></span><span id="secondhalf" className={s.secondhalf}>{secondhalf}</span> <span id="seeless" className={s.seeless}>see less</span></p> : <p>{this.props.children}</p>}
       </div>
     );
   }
