@@ -1,9 +1,28 @@
+@import '../variables.scss';
+
 .root {
 }
 
-.container {
-  border: 2px solid #f5f5f5;
+.normal {
+  border: 2px solid $background-gray;
   padding: 10px 20px 10px 20px;
   max-width: $max-content-width;
   margin: 0 0px 10px 0;
+}
+
+.normal p {
+
+}
+
+.title {
+  border: 2px solid $accent;
+  padding: 10px 20px 10px 20px;
+  max-width: $max-content-width;
+  margin: 0 0px 10px 0;
+}
+
+.title p {
+  color: $accent;
+  font-size: xx-large;
+  font-weight: bold;
 }

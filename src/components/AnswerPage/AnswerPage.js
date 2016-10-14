@@ -78,8 +78,6 @@ class AnswerPage extends Component {
           var query = result.results.bindings[0].sparql.value;
           var jresult = JSON.parse(result.results.bindings[0].json.value);
 
-          //===
-
           //would like to refactor the following to separate functions. this.setState() is not recognized in
           //nested functions
 
@@ -261,18 +259,18 @@ class AnswerPage extends Component {
             console.log(info);
             return (
               <div key={index} >
-                 {(info.answertype == "simple") ? <Label css={s.answer}>{info.label}</Label> : null}
+                 {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
-                 {(info.answertype == "nolabel") ? <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a> : null}
+                 {(info.answertype == "nolabel") ? <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
 
                 {(info.answertype == "detail") ?
                    <div className={s.leftColumn}>
-                   <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
+                   <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
                    <Label>{info.abstract}</Label>
                  </div> : null}
                 {(info.answertype == "map") ?
                   <div className={s.leftColumn}>
-                    <a href={info.link} className={s.link}><Label css={s.answer}>{info.label}</Label></a>
+                    <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
                     <Label>{info.abstract}</Label>
                     <MapBox lat={info.lat} long={info.long}></MapBox>
                   </div> : null}

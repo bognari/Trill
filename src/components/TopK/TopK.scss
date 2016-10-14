@@ -1,8 +1,10 @@
+@import '../variables.scss';
+
 .root {
 }
 
 .container {
-  border: 2px solid #f5f5f5;
+  border: 2px solid $background-gray;
   padding: 20px;
   max-width: $max-content-width;
   margin: 0 0px 10px 0;
@@ -18,21 +20,21 @@
 .caption a,
 .caption a:active,
 .caption a:visited {
-  color: #0083b6;
+  color: $accent;
 }
 
 .sum {
 }
 
 .sum h2 {
-  color: #9b9c9c;
+  color: $foreground-gray;
   font-size: large;
   font-weight: bold;
   margin-top: 0;
 }
 
 .sum table tr {
-  border-top: 2px solid #f5f5f5;
+  border-top: 2px solid $background-gray;
 }
 
 .sum table tr:first-child {
