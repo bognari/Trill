@@ -72,11 +72,11 @@ class AnswerPage extends Component {
           xhr.setRequestHeader('Accept', 'application/sparql-results+json');
         },
         success: function(result) {
-          console.log('request to endpoint workss.............................');
-          console.log(result);
 
           var query = result.results.bindings[0].sparql.value;
           var jresult = JSON.parse(result.results.bindings[0].json.value);
+
+          var count = 0;
 
           //would like to refactor the following to separate functions. this.setState() is not recognized in
           //nested functions
@@ -110,7 +110,7 @@ class AnswerPage extends Component {
 
                   if (type == "uri") {
                     //There is only one uri
-                    var sparqlQuery = "select ?label ?abstract ?image ?lat ?long where { "
+                    var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
                       + "<" + value + "> rdfs:label ?label . "
                       + " OPTIONAL{ "
                       + "<" + value + "> dbo:thumbnail ?image . "
@@ -123,6 +123,9 @@ class AnswerPage extends Component {
                       + "} "
                       + " OPTIONAL{ "
                       + "<" + value + "> geo:long ?long . "
+                      + "} "
+                      + " OPTIONAL{ "
+                      + "?wikilink foaf:primaryTopic <" + value + "> . "
                       + "} "
                       + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
                       + " } ";
@@ -140,7 +143,8 @@ class AnswerPage extends Component {
                             label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                             loaded: true,
                             answertype: "nolabel",
-                            link: value,
+                            link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                            count: count++,
                           })
 
                           this.setState({
@@ -161,9 +165,11 @@ class AnswerPage extends Component {
                               image: image,
                               loaded: true,
                               answertype: "map",
-                              link: value,
+                              uri: value,
+                              link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
                               lat: result.results.bindings[0].lat.value,
-                              long: result.results.bindings[0].long.value
+                              long: result.results.bindings[0].long.value,
+                              count: count++,
                             })
                           }
                           else {
@@ -173,7 +179,9 @@ class AnswerPage extends Component {
                               image: image,
                               loaded: true,
                               answertype: "detail",
-                              link: value
+                              uri: value,
+                              link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                              count: count++,
                             })
                           }
 
@@ -192,7 +200,8 @@ class AnswerPage extends Component {
                     information.push({
                       label: binding[variable].value,
                       loaded: true,
-                      answertype: "simple"
+                      answertype: "simple",
+                      count: count++,
                     })
                     this.setState({
                       SPARQLquery: query,
@@ -278,7 +287,7 @@ class AnswerPage extends Component {
                 {(info.answertype == "detail" || "map") ?
                   <div className={s.rightColumn}>
                   <ImageComponent image={info.image}></ImageComponent>
-                  <TopK uri={info.link} topK={5}/>
+                  <TopK sumid={"sumbox" + info.count} uri={info.uri} topK={5}/>
                 </div> : null}
 
               </div>)
