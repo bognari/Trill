@@ -111,7 +111,9 @@ class AnswerPage extends Component {
                   if (type == "uri") {
                     //There is only one uri
                     var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
+                      + " OPTIONAL{ "
                       + "<" + value + "> rdfs:label ?label . "
+                      + "} "
                       + " OPTIONAL{ "
                       + "<" + value + "> dbo:thumbnail ?image . "
                       + "} "
@@ -133,66 +135,118 @@ class AnswerPage extends Component {
                     this.serverRequest = $.get(
                       "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                       function (result) {
+                        console.log("The properties query result is: .............................");
                         console.log(result);
+
                         var information = this.state.information;
 
                         //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
                         //determine and set answertype
-                        if (typeof result.results.bindings[0]=="undefined"){ //Case when there is no label
+                        if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
                           information.push({
                             label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                             loaded: true,
-                            answertype: "nolabel",
+                            answertype: "noinfo",
                             link: value,
                             count: count++,
                           })
-
-                          this.setState({
-                            SPARQLquery: query,
-                            information: information,
-                            loaded: true,
-                          });
-                        } else {
-                          console.log("Label" + result.results.bindings[0].label.value);
-                          console.log("Abstract" + result.results.bindings[0].abstract.value);
-
-                          var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
-
-                          if (result.results.bindings[0].lat != undefined){ //if there are geo coordinates
-                            information.push({
-                              label: result.results.bindings[0].label.value,
-                              abstract: result.results.bindings[0].abstract.value,
-                              image: image,
-                              loaded: true,
-                              answertype: "map",
-                              uri: value,
-                              link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                              lat: result.results.bindings[0].lat.value,
-                              long: result.results.bindings[0].long.value,
-                              count: count++,
-                            })
-                          }
-                          else {
-                            information.push({
-                              label: result.results.bindings[0].label.value,
-                              abstract: result.results.bindings[0].abstract.value,
-                              image: image,
-                              loaded: true,
-                              answertype: "detail",
-                              uri: value,
-                              link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                              count: count++,
-                            })
-                          }
-
-                          this.setState({
-                            SPARQLquery: query,
-                            information: information,
-                            loaded: true,
-                          })
-
-
                         }
+
+                        else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
+
+                          console.log("Label: " + result.results.bindings[0].label.value);
+                          console.log("Abstract: " + result.results.bindings[0].abstract.value);
+
+                          information.push({
+                            label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                            abstract: result.results.bindings[0].abstract.value,
+                            image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
+                            loaded: true,
+                            answertype: "map",
+                            uri: value,
+                            link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                            count: count++,
+                            lat: result.results.bindings[0].lat.value,
+                            long: result.results.bindings[0].long.value,
+                          })
+                        }
+
+                        else {//case of regular detailed answer
+
+                          console.log("Label: " + result.results.bindings[0].label.value);
+                          console.log("Abstract: " + result.results.bindings[0].abstract.value);
+
+                          information.push({
+                            label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                            abstract: result.results.bindings[0].abstract.value,
+                            image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
+                            loaded: true,
+                            answertype: "detail",
+                            uri: value,
+                            link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                            count: count++,
+                          })
+                        }
+
+                        this.setState({
+                          SPARQLquery: query,
+                          information: information,
+                          loaded: true,
+                        });
+
+                        // else {
+                        //   console.log("Label" + result.results.bindings[0].label.value);
+                        //   console.log("Abstract" + result.results.bindings[0].abstract.value);
+                        //
+                        //   //var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
+                        //
+                        //   if (result.results.bindings[0].lat != undefined){ //if there are geo coordinates
+                        //     information.push({
+                        //       label: result.results.bindings[0].label.value,
+                        //       abstract: result.results.bindings[0].abstract.value,
+                        //       image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
+                        //       loaded: true,
+                        //       answertype: "map",
+                        //       uri: value,
+                        //       link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                        //       lat: result.results.bindings[0].lat.value,
+                        //       long: result.results.bindings[0].long.value,
+                        //       count: count++,
+                        //     })
+                        //   }
+                        //   else if(result.results.bindings[0].label == undefined) {//case there is no label
+                        //     information.push({
+                        //       label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                        //       abstract: result.results.bindings[0].abstract.value,
+                        //       image: image,
+                        //       loaded: true,
+                        //       answertype: "detail",
+                        //       uri: value,
+                        //       link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                        //       count: count++,
+                        //     })
+                        //   }
+                        //   else {
+                        //     information.push({
+                        //       label: result.results.bindings[0].label.value,
+                        //       abstract: result.results.bindings[0].abstract.value,
+                        //       image: image,
+                        //       loaded: true,
+                        //       answertype: "detail",
+                        //       uri: value,
+                        //       link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                        //       count: count++,
+                        //     })
+                        //   }
+                        //
+                        //   this.setState({
+                        //     SPARQLquery: query,
+                        //     information: information,
+                        //     loaded: true,
+                        //   })
+                        //
+                        //
+                        // }
                       }.bind(this), "json")
                   }
                   else if (type == "typed-literal" || type == "literal") {
@@ -270,7 +324,7 @@ class AnswerPage extends Component {
               <div key={index} >
                  {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
-                 {(info.answertype == "nolabel") ? <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
+                 {(info.answertype == "noinfo") ? <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
 
                 {(info.answertype == "detail") ?
                    <div className={s.leftColumn}>
