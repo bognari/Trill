@@ -143,7 +143,7 @@ class AnswerPage extends Component {
                             label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                             loaded: true,
                             answertype: "nolabel",
-                            link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                            link: value,
                             count: count++,
                           })
 
