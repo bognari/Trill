@@ -17,6 +17,193 @@ import Loader from 'react-loader';
 import MapBox from '../MapBox';
 import TopK from '../TopK';
 
+function sendQueryToEndpoint(data, comp){
+  var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
+    + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
+    + "SELECT ?sparql ?json "
+    + "FROM <"+  data.graph.toString() + "> "
+    + "WHERE { "
+    + "  ?a a qa:AnnotationOfAnswerSPARQL . "
+    + "  ?a oa:hasBody ?sparql . "
+    + "  ?b a qa:AnnotationOfAnswerJSON . "
+    + "  ?b oa:hasBody ?json "
+    + "}";
+
+  // + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
+  // + "SELECT ?sparql ?json "
+  // + "FROM <"+  data.graph.toString() + "> "
+  // + "WHERE { "
+  // + "  ?a a qa:AnnotationOfAnswerSPARQL . "
+  // + "  ?a oa:hasBody ?sparql . "
+  // + "  ?b a qa:AnnotationOfAnswerJSON . "
+  // + "  ?b oa:hasBody ?json "
+  // + "  ?c a qa:AnnotationOfTextRepresentation . "
+  // + " ?c oa:hasBody ?uriText ."
+  // + "}";
+
+  comp.serverRequest = $.ajax({
+    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
+    type: "GET",
+    beforeSend: function(xhr){
+      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+    },
+    success: function(result) {
+      var query = result.results.bindings[0].sparql.value;
+      var jresult = JSON.parse(result.results.bindings[0].json.value);
+
+      configureResult(query, jresult, comp);
+
+    }.bind(comp)
+  });
+}
+
+function configureResult(query, jresult, comp){
+
+  var count = 0;
+
+  //check if it is an ask query
+  if (jresult.hasOwnProperty("boolean")){
+    var information = comp.state.information;
+    information.push({
+      label: (jresult.boolean==true) ? "True" : "False",
+      answerType: "simple",
+    })
+    comp.setState({
+      SPARQLquery: query,
+      information: information,
+      loaded: true,
+    })
+  } else {
+    var variable=jresult.head.vars[0];
+    //depending on the number of results, handle accordingly:
+    if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
+      jresult.results.bindings.map(function(binding,k) {
+        if (k<20) {
+          console.log("k:" + k);
+          console.log(variable);
+          //console.log("Variable" + jresult.head.vars[0]);
+          //var variable = jresult.head.vars[0];
+
+          var type = binding[variable].type;
+          var value = binding[variable].value;
+          console.log("Result " + type + " " + value);
+
+          if (type == "uri") {
+            //There is only one uri
+            var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
+              + " OPTIONAL{ "
+              + "<" + value + "> rdfs:label ?label . "
+              + "} "
+              + " OPTIONAL{ "
+              + "<" + value + "> dbo:thumbnail ?image . "
+              + "} "
+              + " OPTIONAL{ "
+              + "<" + value + "> dbo:abstract ?abstract . "
+              + "} "
+              + " OPTIONAL{ "
+              + "<" + value + "> geo:lat ?lat . "
+              + "} "
+              + " OPTIONAL{ "
+              + "<" + value + "> geo:long ?long . "
+              + "} "
+              + " OPTIONAL{ "
+              + "?wikilink foaf:primaryTopic <" + value + "> . "
+              + "} "
+              + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
+              + " } ";
+
+            comp.serverRequest = $.get(
+              "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+              function (result) {
+                console.log("The properties query result is: .............................");
+                console.log(result);
+
+                var information = comp.state.information;
+
+                //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
+                //determine and set answertype
+                if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
+                  information.push({
+                    label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                    loaded: true,
+                    answertype: "noinfo",
+                    link: value,
+                    count: count++,
+                  })
+                }
+
+                else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
+
+                  console.log("Label: " + result.results.bindings[0].label.value);
+                  console.log("Abstract: " + result.results.bindings[0].abstract.value);
+
+                  information.push({
+                    label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                    abstract: result.results.bindings[0].abstract.value,
+                    image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
+                    loaded: true,
+                    answertype: "map",
+                    uri: value,
+                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                    count: count++,
+                    lat: result.results.bindings[0].lat.value,
+                    long: result.results.bindings[0].long.value,
+                  })
+                }
+
+                else {//case of regular detailed answer
+
+                  console.log("Label: " + result.results.bindings[0].label.value);
+                  console.log("Abstract: " + result.results.bindings[0].abstract.value);
+
+                  information.push({
+                    label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                    abstract: result.results.bindings[0].abstract.value,
+                    image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
+                    loaded: true,
+                    answertype: "detail",
+                    uri: value,
+                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                    count: count++,
+                  })
+                }
+
+                comp.setState({
+                  SPARQLquery: query,
+                  information: information,
+                  loaded: true,
+                });
+
+              }.bind(comp), "json")
+          }
+          else if (type == "typed-literal" || type == "literal") {
+            var information = comp.state.information;
+            information.push({
+              label: binding[variable].value,
+              loaded: true,
+              answertype: "simple",
+              count: count++,
+            })
+            comp.setState({
+              SPARQLquery: query,
+              information: information,
+              loaded: true,
+            });
+          }
+        }
+      }.bind(comp), "json")
+    }
+    else { //if there are no results
+      comp.setState({
+        SPARQLquery: query,
+        label: "No results",
+        loaded: true,
+        answertype: "simple"
+      });
+    }
+  }
+}
 
 class AnswerPage extends Component {
 
@@ -37,249 +224,16 @@ class AnswerPage extends Component {
 
   componentDidMount() {
 
-    //========old post request==========================
+    if(false){//to check for blob
 
-    //retrives the answer from the gerbil interface
-    // var qresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/gerbil", this.props.query, function (data){
-    //   console.log(data);
-    //
-    //   var query = data.questions[0].question.language[0].SPARQL;
-    //   console.log("Query"+query);
-    //   var jresult = JSON.parse(data.questions[0].question.answers);
-    //
-    // }.bind(this), "json");
+    }
+    else{
+      var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + this.props.query.query + "&componentlist[]=wdaqua-core0", function (data) {
 
-    //==================================================
+        sendQueryToEndpoint(data, this);
 
-    var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + this.props.query.query + "&componentlist[]=wdaqua-core0", function (data) {
-
-      var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
-        + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-        + "SELECT ?sparql ?json "
-        + "FROM <"+  data.graph.toString() + "> "
-        + "WHERE { "
-        + "  ?a a qa:AnnotationOfAnswerSPARQL . "
-        + "  ?a oa:hasBody ?sparql . "
-        + "  ?b a qa:AnnotationOfAnswerJSON . "
-        + "  ?b oa:hasBody ?json "
-        + "}";
-
-      this.serverRequest = $.ajax({
-        url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
-        type: "GET",
-        beforeSend: function(xhr){
-          xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
-          xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-        },
-        success: function(result) {
-
-          var query = result.results.bindings[0].sparql.value;
-          var jresult = JSON.parse(result.results.bindings[0].json.value);
-
-          var count = 0;
-
-          //would like to refactor the following to separate functions. this.setState() is not recognized in
-          //nested functions
-
-          //check if it is an ask query
-          if (jresult.hasOwnProperty("boolean")){
-            var information = this.state.information;
-            information.push({
-              label: (jresult.boolean==true) ? "True" : "False",
-              answerType: "simple",
-            })
-            this.setState({
-              SPARQLquery: query,
-              information: information,
-              loaded: true,
-            })
-          } else {
-            var variable=jresult.head.vars[0];
-            //depending on the number of results, handle accordingly:
-            if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
-              jresult.results.bindings.map(function(binding,k) {
-                if (k<20) {
-                  console.log("k:" + k);
-                  console.log(variable);
-                  //console.log("Variable" + jresult.head.vars[0]);
-                  //var variable = jresult.head.vars[0];
-
-                  var type = binding[variable].type;
-                  var value = binding[variable].value;
-                  console.log("Result " + type + " " + value);
-
-                  if (type == "uri") {
-                    //There is only one uri
-                    var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
-                      + " OPTIONAL{ "
-                      + "<" + value + "> rdfs:label ?label . "
-                      + "} "
-                      + " OPTIONAL{ "
-                      + "<" + value + "> dbo:thumbnail ?image . "
-                      + "} "
-                      + " OPTIONAL{ "
-                      + "<" + value + "> dbo:abstract ?abstract . "
-                      + "} "
-                      + " OPTIONAL{ "
-                      + "<" + value + "> geo:lat ?lat . "
-                      + "} "
-                      + " OPTIONAL{ "
-                      + "<" + value + "> geo:long ?long . "
-                      + "} "
-                      + " OPTIONAL{ "
-                      + "?wikilink foaf:primaryTopic <" + value + "> . "
-                      + "} "
-                      + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
-                      + " } ";
-
-                    this.serverRequest = $.get(
-                      "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-                      function (result) {
-                        console.log("The properties query result is: .............................");
-                        console.log(result);
-
-                        var information = this.state.information;
-
-                        //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
-                        //determine and set answertype
-                        if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
-                          information.push({
-                            label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                            loaded: true,
-                            answertype: "noinfo",
-                            link: value,
-                            count: count++,
-                          })
-                        }
-
-                        else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
-
-                          console.log("Label: " + result.results.bindings[0].label.value);
-                          console.log("Abstract: " + result.results.bindings[0].abstract.value);
-
-                          information.push({
-                            label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                            abstract: result.results.bindings[0].abstract.value,
-                            image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                            loaded: true,
-                            answertype: "map",
-                            uri: value,
-                            link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                            count: count++,
-                            lat: result.results.bindings[0].lat.value,
-                            long: result.results.bindings[0].long.value,
-                          })
-                        }
-
-                        else {//case of regular detailed answer
-
-                          console.log("Label: " + result.results.bindings[0].label.value);
-                          console.log("Abstract: " + result.results.bindings[0].abstract.value);
-
-                          information.push({
-                            label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                            abstract: result.results.bindings[0].abstract.value,
-                            image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                            loaded: true,
-                            answertype: "detail",
-                            uri: value,
-                            link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                            count: count++,
-                          })
-                        }
-
-                        this.setState({
-                          SPARQLquery: query,
-                          information: information,
-                          loaded: true,
-                        });
-
-                        // else {
-                        //   console.log("Label" + result.results.bindings[0].label.value);
-                        //   console.log("Abstract" + result.results.bindings[0].abstract.value);
-                        //
-                        //   //var image = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
-                        //
-                        //   if (result.results.bindings[0].lat != undefined){ //if there are geo coordinates
-                        //     information.push({
-                        //       label: result.results.bindings[0].label.value,
-                        //       abstract: result.results.bindings[0].abstract.value,
-                        //       image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                        //       loaded: true,
-                        //       answertype: "map",
-                        //       uri: value,
-                        //       link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                        //       lat: result.results.bindings[0].lat.value,
-                        //       long: result.results.bindings[0].long.value,
-                        //       count: count++,
-                        //     })
-                        //   }
-                        //   else if(result.results.bindings[0].label == undefined) {//case there is no label
-                        //     information.push({
-                        //       label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                        //       abstract: result.results.bindings[0].abstract.value,
-                        //       image: image,
-                        //       loaded: true,
-                        //       answertype: "detail",
-                        //       uri: value,
-                        //       link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                        //       count: count++,
-                        //     })
-                        //   }
-                        //   else {
-                        //     information.push({
-                        //       label: result.results.bindings[0].label.value,
-                        //       abstract: result.results.bindings[0].abstract.value,
-                        //       image: image,
-                        //       loaded: true,
-                        //       answertype: "detail",
-                        //       uri: value,
-                        //       link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                        //       count: count++,
-                        //     })
-                        //   }
-                        //
-                        //   this.setState({
-                        //     SPARQLquery: query,
-                        //     information: information,
-                        //     loaded: true,
-                        //   })
-                        //
-                        //
-                        // }
-                      }.bind(this), "json")
-                  }
-                  else if (type == "typed-literal" || type == "literal") {
-                    var information = this.state.information;
-                    information.push({
-                      label: binding[variable].value,
-                      loaded: true,
-                      answertype: "simple",
-                      count: count++,
-                    })
-                    this.setState({
-                      SPARQLquery: query,
-                      information: information,
-                      loaded: true,
-                    });
-                  }
-                }
-              }.bind(this), "json")
-            }
-            else { //if there are no results
-              this.setState({
-                SPARQLquery: query,
-                label: "No results",
-                loaded: true,
-                answertype: "simple"
-              });
-            }
-          }
-
-        }.bind(this)
-      });
-
-    }.bind(this));
+      }.bind(this));
+    }
 
     // qresult.done(function (data){
     //   console.log("This is when the get finishes............:");
