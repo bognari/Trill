@@ -16,6 +16,7 @@ import Label from '../Label';
 import Loader from 'react-loader';
 import MapBox from '../MapBox';
 import TopK from '../TopK';
+import Error from '../Error';
 
 function sendQueryToEndpoint(data, comp){
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
@@ -205,6 +206,7 @@ class AnswerPage extends Component {
       SPARQLquery: "", //containes the generated sparql query
       query: false, //indicates if the answer or the query is displayed
       loaded: false, //indicates if the backend already gave back the answer
+      error: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -221,6 +223,23 @@ class AnswerPage extends Component {
         sendQueryToEndpoint(data, this);
 
       }.bind(this));
+
+      questionresult.fail(function(e) {
+        console.log(e.statusCode + " " + e.statusText);
+
+        var information = this.state.information;
+        information.push({
+          message: e.statusCode + " " + e.statusText,
+        });
+
+        this.setState({
+          information: information,
+          loaded: true,
+          error: true,
+        });
+
+      }.bind(this));
+
     }
 
     // qresult.done(function (data){
@@ -252,11 +271,14 @@ class AnswerPage extends Component {
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
-          <div onClick={this.handleClick} className={s.sparql}>
+
+          {(this.state.error) ? <Error>Error</Error> : <div onClick={this.handleClick} className={s.sparql}>
             Q
-          </div>
+          </div>}
+
           <br/>
           <br/>
+
           {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
             console.log(info);
@@ -280,7 +302,7 @@ class AnswerPage extends Component {
 
                 {(info.answertype == "detail" || info.answertype == "map") ?
                   <div className={s.rightColumn}>
-                  <ImageComponent image={info.image}></ImageComponent>
+                    {(info.image != "") ? <ImageComponent image={info.image}></ImageComponent>   : null}
                   <TopK sumid={"sumbox" + info.count} uri={info.uri} topK={5}/>
                 </div> : null}
 

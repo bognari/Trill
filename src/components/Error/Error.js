@@ -9,30 +9,29 @@
 
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './ErrorPage.scss';
+import s from './Error.scss';
 
-const title = 'Error';
+class Error extends Component {
 
-class ErrorPage extends Component {
-
-  static contextTypes = {
-    onSetTitle: PropTypes.func.isRequired,
-    onPageNotFound: PropTypes.func.isRequired,
+  static propTypes = {
   };
 
-  componentWillMount() {
-    this.context.onSetTitle(title);
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
   }
 
   render() {
+
     return (
-      <div>
-        <h1>{title}</h1>
-        <p>Sorry, a critical error occurred on this page.</p>
+      <div className={s.center}>
+        <h1>{this.props.children}</h1>
+        <p>Sorry, a critical error occurred.</p>
       </div>
     );
   }
 
 }
-
-export default withStyles(ErrorPage, s);
+export default withStyles(Error, s);
