@@ -17,6 +17,7 @@ import Loader from 'react-loader';
 import MapBox from '../MapBox';
 import TopK from '../TopK';
 import Error from '../Error';
+import Feedback from '../Feedback';
 
 function sendQueryToEndpoint(data, comp){
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
@@ -275,6 +276,8 @@ class AnswerPage extends Component {
           {(this.state.error) ? <Error>Error</Error> : <div onClick={this.handleClick} className={s.sparql}>
             Q
           </div>}
+
+          <Feedback question={this.props.query} sparql="Test"/>
 
           <br/>
           <br/>
