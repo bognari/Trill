@@ -49,6 +49,7 @@ function sendQueryToEndpoint(data, comp){
 function configureResult(query, jresult, comp){
 
   var count = 0;
+  console.log('This is the json result: ', jresult);
 
   //check if it is an ask query
   if (jresult.hasOwnProperty("boolean")){
@@ -70,14 +71,12 @@ function configureResult(query, jresult, comp){
     if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
       jresult.results.bindings.map(function(binding,k) {
         if (k<20) {
-          console.log("k:" + k);
-          console.log(variable);
-          //console.log("Variable" + jresult.head.vars[0]);
-          //var variable = jresult.head.vars[0];
+          console.log('In each iteration: ');
+          console.log("k: " + k);
 
           var type = binding[variable].type;
           var value = binding[variable].value;
-          console.log("Result " + type + " " + value);
+          console.log("Result type and value: " + type + "; " + value);
 
           if (type == "uri") {
             //There is only one uri
@@ -106,8 +105,7 @@ function configureResult(query, jresult, comp){
             comp.serverRequest = $.get(
               "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
               function (result) {
-                console.log("The properties query result is: .............................");
-                console.log(result);
+                console.log("The properties of the results are this: ", result);
 
                 var information = comp.state.information;
 
@@ -237,8 +235,7 @@ class AnswerPage extends Component {
   }
 
   render() {
-    console.log("query paramsss...............:");
-    console.log(this.props.query);
+    console.log("query parameters: ", this.props.query);
 
     // var answerformat;
     // if (this.state.answertype == "simple") {
@@ -250,7 +247,7 @@ class AnswerPage extends Component {
 
 //to refactor so don't have to check the same answer type multiple times
     console.log("Loaded "+this.state.loaded);
-    console.log("Information "+this.state.information.length);
+    console.log("Information length: "+this.state.information.length);
 
     return (
       <div className={s.container}>
@@ -262,10 +259,9 @@ class AnswerPage extends Component {
           <br/>
           {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
-            console.log("k"+index);
             console.log(info);
             return (
-              <div key={index} >
+              <div className={s.contentholder} key={index} >
                  {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
                  {(info.answertype == "noinfo") ? <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
@@ -282,7 +278,7 @@ class AnswerPage extends Component {
                     <MapBox mapid={"map" + info.count} lat={info.lat} long={info.long}></MapBox>
                   </div> : null}
 
-                {(info.answertype == "detail" || "map") ?
+                {(info.answertype == "detail" || info.answertype == "map") ?
                   <div className={s.rightColumn}>
                   <ImageComponent image={info.image}></ImageComponent>
                   <TopK sumid={"sumbox" + info.count} uri={info.uri} topK={5}/>
