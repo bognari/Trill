@@ -26,3 +26,22 @@
   font-size: xx-large;
   font-weight: bold;
 }
+
+.seemore,
+.seeless{
+  color: $accent;
+}
+
+.seemore:hover,
+.seeless:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.seeless {
+  display: none;
+}
+
+.secondhalf {
+  display: none;
+}
