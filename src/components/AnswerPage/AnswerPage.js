@@ -57,7 +57,7 @@ function configureResult(query, jresult, comp){
     var information = comp.state.information;
     information.push({
       label: (jresult.boolean==true) ? "True" : "False",
-      answerType: "simple",
+      answertype: "simple",
     })
     comp.setState({
       SPARQLquery: query,
