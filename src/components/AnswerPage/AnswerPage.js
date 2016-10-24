@@ -29,18 +29,6 @@ function sendQueryToEndpoint(data, comp){
     + "  ?b oa:hasBody ?json "
     + "}";
 
-  // + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-  // + "SELECT ?sparql ?json "
-  // + "FROM <"+  data.graph.toString() + "> "
-  // + "WHERE { "
-  // + "  ?a a qa:AnnotationOfAnswerSPARQL . "
-  // + "  ?a oa:hasBody ?sparql . "
-  // + "  ?b a qa:AnnotationOfAnswerJSON . "
-  // + "  ?b oa:hasBody ?json "
-  // + "  ?c a qa:AnnotationOfTextRepresentation . "
-  // + " ?c oa:hasBody ?uriText ."
-  // + "}";
-
   comp.serverRequest = $.ajax({
     url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
     type: "GET",
@@ -74,8 +62,10 @@ function configureResult(query, jresult, comp){
       information: information,
       loaded: true,
     })
-  } else {
+  }
+  else {
     var variable=jresult.head.vars[0];
+
     //depending on the number of results, handle accordingly:
     if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
       jresult.results.bindings.map(function(binding,k) {

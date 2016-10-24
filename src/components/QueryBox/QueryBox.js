@@ -105,10 +105,10 @@ class QueryBox extends Component {
               form.append("question", mpfile, "recording.mp3");
               form.append("componentlist[]", ["SpeechRecognitionKaldi"]);
 
+              //maybe should check if mpfile is proper
+
               console.log("mp3 file :", mpfile);
               console.log("Contents of form: ", form);
-
-                //var req = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithaudioquestion", {question: "tst", "componentlist[]": ["SpeechRecognitionKaldi"]}, function (data) {
 
               var req = $.ajax({
                 url: "http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithaudioquestion",
@@ -121,17 +121,19 @@ class QueryBox extends Component {
                   var sparqlQuery = "PREFIX qa: <http://www.wdaqua.eu/qa#> "
                     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
                     + "SELECT ?sparql ?json "
-                    + "FROM <" + data.graph.toString() + "> "
+                    + "FROM <"+  data.graph.toString() + "> "
                     + "WHERE { "
                     + "  ?a a qa:AnnotationOfAnswerSPARQL . "
                     + "  ?a oa:hasBody ?sparql . "
                     + "  ?b a qa:AnnotationOfAnswerJSON . "
                     + "  ?b oa:hasBody ?json ."
                     + "  ?c a qa:AnnotationOfTextRepresentation . "
-                    + " ?c oa:hasBody ?uriText ."
+                    + "  ?c oa:hasBody ?uriText "
                     + "}";
 
                   console.log('successful send to audio service');
+                  console.log('This is the recieved data: ', data);
+                  console.log('data graph: ', data.graph.toString());
 
                   this.serverRequest = $.ajax({
                     url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
@@ -146,7 +148,7 @@ class QueryBox extends Component {
                       var query = result.results.bindings[0].sparql.value;
                       var jresult = JSON.parse(result.results.bindings[0].json.value);
 
-                      console.log('The audio result is this: ', jresult);
+                      console.log('The audio json result is this: ', jresult);
                     }.bind(this)
                   });
 
@@ -188,7 +190,7 @@ class QueryBox extends Component {
           <div>
             <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.query}/>
             <div id="listening" className={s.listening}><p>Listening... </p></div>
-            <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
+            <button id="record" type="button" style={{display: "none"}} className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
             {/*<a href={Location.createHref("/question?query=" + "Capital+of+Canada")}><button id="stop" type="button" className={s.stop}>Done</button></a>*/}
             <button id="stop" type="button" className={s.stop}>Done</button>
             <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
