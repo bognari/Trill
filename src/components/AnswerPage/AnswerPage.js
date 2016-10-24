@@ -16,6 +16,7 @@ import Label from '../Label';
 import Loader from 'react-loader';
 import MapBox from '../MapBox';
 import TopK from '../TopK';
+import Error from '../Error';
 
 function sendQueryToEndpoint(data, comp){
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
@@ -49,13 +50,14 @@ function sendQueryToEndpoint(data, comp){
 function configureResult(query, jresult, comp){
 
   var count = 0;
+  console.log('This is the json result: ', jresult);
 
   //check if it is an ask query
   if (jresult.hasOwnProperty("boolean")){
     var information = comp.state.information;
     information.push({
       label: (jresult.boolean==true) ? "True" : "False",
-      answerType: "simple",
+      answertype: "simple",
     })
     comp.setState({
       SPARQLquery: query,
@@ -70,14 +72,12 @@ function configureResult(query, jresult, comp){
     if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
       jresult.results.bindings.map(function(binding,k) {
         if (k<20) {
-          console.log("k:" + k);
-          console.log(variable);
-          //console.log("Variable" + jresult.head.vars[0]);
-          //var variable = jresult.head.vars[0];
+          console.log('In each iteration: ');
+          console.log("k: " + k);
 
           var type = binding[variable].type;
           var value = binding[variable].value;
-          console.log("Result " + type + " " + value);
+          console.log("Result type and value: " + type + "; " + value);
 
           if (type == "uri") {
             //There is only one uri
@@ -106,8 +106,7 @@ function configureResult(query, jresult, comp){
             comp.serverRequest = $.get(
               "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
               function (result) {
-                console.log("The properties query result is: .............................");
-                console.log(result);
+                console.log("The properties of the results are this: ", result);
 
                 var information = comp.state.information;
 
@@ -207,6 +206,7 @@ class AnswerPage extends Component {
       SPARQLquery: "", //containes the generated sparql query
       query: false, //indicates if the answer or the query is displayed
       loaded: false, //indicates if the backend already gave back the answer
+      error: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -223,6 +223,23 @@ class AnswerPage extends Component {
         sendQueryToEndpoint(data, this);
 
       }.bind(this));
+
+      questionresult.fail(function(e) {
+        console.log(e.statusCode + " " + e.statusText);
+
+        var information = this.state.information;
+        information.push({
+          message: e.statusCode + " " + e.statusText,
+        });
+
+        this.setState({
+          information: information,
+          loaded: true,
+          error: true,
+        });
+
+      }.bind(this));
+
     }
 
     // qresult.done(function (data){
@@ -237,8 +254,7 @@ class AnswerPage extends Component {
   }
 
   render() {
-    console.log("query paramsss...............:");
-    console.log(this.props.query);
+    console.log("query parameters: ", this.props.query);
 
     // var answerformat;
     // if (this.state.answertype == "simple") {
@@ -250,22 +266,24 @@ class AnswerPage extends Component {
 
 //to refactor so don't have to check the same answer type multiple times
     console.log("Loaded "+this.state.loaded);
-    console.log("Information "+this.state.information.length);
+    console.log("Information length: "+this.state.information.length);
 
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
-          <div onClick={this.handleClick} className={s.sparql}>
+
+          {(this.state.error) ? <Error>Error</Error> : <div onClick={this.handleClick} className={s.sparql}>
             Q
-          </div>
+          </div>}
+
           <br/>
           <br/>
+
           {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
-            console.log("k"+index);
             console.log(info);
             return (
-              <div key={index} >
+              <div className={s.contentholder} key={index} >
                  {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
                  {(info.answertype == "noinfo") ? <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
@@ -279,12 +297,12 @@ class AnswerPage extends Component {
                   <div className={s.leftColumn}>
                     <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
                     <Label>{info.abstract}</Label>
-                    <MapBox lat={info.lat} long={info.long}></MapBox>
+                    <MapBox mapid={"map" + info.count} lat={info.lat} long={info.long}></MapBox>
                   </div> : null}
 
-                {(info.answertype == "detail" || "map") ?
+                {(info.answertype == "detail" || info.answertype == "map") ?
                   <div className={s.rightColumn}>
-                  <ImageComponent image={info.image}></ImageComponent>
+                    {(info.image != "") ? <ImageComponent image={info.image}></ImageComponent>   : null}
                   <TopK sumid={"sumbox" + info.count} uri={info.uri} topK={5}/>
                 </div> : null}
 

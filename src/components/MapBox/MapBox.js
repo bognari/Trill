@@ -17,6 +17,7 @@ class MapBox extends Component {
   static propTypes = {
     lat: PropTypes.float,
     long: PropTypes.float,
+    mapid: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -27,7 +28,7 @@ class MapBox extends Component {
 
       var L = require('leaflet');
 
-      var map = L.map('map').setView([this.props.lat, this.props.long], 13);
+      var map = L.map(this.props.mapid).setView([this.props.lat, this.props.long], 13);
 
       L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -68,7 +69,7 @@ class MapBox extends Component {
 
     return (
       <div className={s.container}>
-        <div id="map" className={s.map}>
+        <div id={this.props.mapid} className={s.map}>
         </div>
       </div>
     );
