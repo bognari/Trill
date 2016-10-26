@@ -190,7 +190,7 @@ class QueryBox extends Component {
           <div>
             <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.query}/>
             <div id="listening" className={s.listening}><p>Listening... </p></div>
-            <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
+            <button id="record" type="button" style={{display: "none"}} className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
             {/*<a href={Location.createHref("/question?query=" + "Capital+of+Canada")}><button id="stop" type="button" className={s.stop}>Done</button></a>*/}
             <button id="stop" type="button" className={s.stop}>Done</button>
             <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
