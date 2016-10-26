@@ -3,37 +3,44 @@
 .root {
 }
 
-.button,
-.buttonpressed{
+.container {
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.qbox {
+  border-top-right-radius: 20px;
+  border: 2px solid #f5f5f5;
+  padding: 10px 20px 10px 20px;
+  max-width: 1000px;
+}
+
+.sparql,
+.sparqlpressed{
   color: $foreground-gray;
   font-size: large;
   padding: 7px;
   border: 2px solid $background-gray;
   display: block;
+  border-radius: 100%;
+  width: 25px;
   height: 25px;
   text-align: center;
   font-weight: 400;
   float: right;
   margin-left: 10px;
 }
-.button{
+
+.sparql{
   background-color: transparent;
 }
 
-.buttonpressed{
+.sparqlpressed{
   background-color: $background-gray;
 }
 
-.button:hover,
-.buttonpressed:hover{
+.sparql:hover,
+.sparqlpressed:hover{
   cursor: pointer;
   background-color: $background-gray;
-}
-
-.container {
-  padding: 0 20px 0 20px;
-  border: 2px solid $background-gray;
-  color: $foreground-gray;
-  font-size: large;
-  margin-bottom: 15px;
 }

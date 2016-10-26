@@ -1,0 +1,47 @@
+@import '../variables.scss';
+
+.root {
+}
+
+.normal {
+  border: 2px solid $background-gray;
+  padding: 10px 20px 10px 20px;
+  max-width: $max-content-width;
+  margin: 0 0px 10px 0;
+}
+
+.normal p {
+
+}
+
+.title {
+  border: 2px solid $accent;
+  padding: 10px 20px 10px 20px;
+  max-width: $max-content-width;
+  margin: 0 0px 10px 0;
+}
+
+.title p {
+  color: $accent;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.seemore,
+.seeless{
+  color: $accent;
+}
+
+.seemore:hover,
+.seeless:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.seeless {
+  display: none;
+}
+
+.secondhalf {
+  display: none;
+}

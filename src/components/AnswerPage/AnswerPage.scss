@@ -15,37 +15,18 @@
   color: $accent;
 }
 
-.sparql{
-  color: $foreground-gray;
-  font-size: large;
-  padding: 7px;
-  border: 2px solid $background-gray;
-  display: block;
-  border-radius: 100%;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  font-weight: 400;
-  float: right;
-}
-
-.sparql:hover{
-  cursor: pointer;
-  background-color: $background-gray;
-}
-
 @media screen and (min-width: $screen-sm-min){
   .leftColumn {
     display: inline-block;
     width: 60%;
-    margin: 10px 10px 10px 0;
+    margin: 0 10px 10px 0;
     vertical-align: top;
   }
 
   .rightColumn {
     display: inline-block;
     width: 39%;
-    margin: 10px 0 10px 0;
+    margin: 0 0 10px 0;
     vertical-align: top;
   }
 }
@@ -60,3 +41,8 @@
   margin-bottom: 30px;
 }
 
+.buttonmenu {
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 10px;
+}

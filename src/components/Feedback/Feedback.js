@@ -7,21 +7,77 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Feedback.scss';
+import $ from 'jquery';
+import Label from '../Label';
 
 class Feedback extends Component {
 
+  static propTypes = {
+    question: PropTypes.string.isRequired,
+    sparql: PropTypes.string.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      feedbackbox: false, //if the feedback button has been pressed
+      submitted: false,
+      error: false, //if there was an error sending feedback to server
+    };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleClick() {
+    this.setState({feedbackbox: !this.state.feedbackbox}); //on click switch feedbackbox displayed or not
+  }
+
+  handleChange() {
+    var feedbackreq = $.post('http://wdaqua-qanary.univ-st-etienne.fr/feedback', $('#form').serialize(), function(data) {
+
+          // document.querySelector('#form').style = "display: none";
+          // document.querySelector('#thanks').style = "display: block";
+
+      this.setState({submitted: !this.state.submitted}); //if feedback was submitted successfully
+
+    }.bind(this));
+
+    feedbackreq.fail(function(e) {
+      this.setState({error: !this.state.error});
+    }.bind(this));
+  }
+
+
+  componentDidMount() {
+
+  }
+
   render() {
+
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-        </div>
+      <div>
+        {/*<div id="button" onClick={this.handleClick} className={(this.state.feedbackbox) ? s.buttonpressed : s.button}>Feedback</div>*/}
+
+        <div id="container" className={s.container}>
+          {(this.state.submitted && !this.state.error) ? <p>Thanks for your feedback!</p> :
+            <form id="form" className={s.form} action="" method="POST">
+              <input type="hidden" id="question" name="question" value={this.props.question}/>
+              <input type="hidden" id="sparql" name="sparql" value={this.props.sparql}/>
+              <p>Is this the right answer? &nbsp;&nbsp;
+                <input type="radio" name="correct" value="true" onChange={this.handleChange}/> Yes &nbsp;&nbsp;
+                <input type="radio" name="correct" value="false" onChange={this.handleChange}/>  No
+              </p>
+            </form>
+          }
+          {(this.state.error) ? <p>Sorry, there was an error.</p> : null}
+
+          </div>
       </div>
     );
   }
 
 }
-
 export default withStyles(Feedback, s);
