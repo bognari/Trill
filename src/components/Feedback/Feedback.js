@@ -31,18 +31,13 @@ class Feedback extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleClick() {
+  handleClick() {//not used right now, wil be used once there is a need for collapsing the feedback box
     this.setState({feedbackbox: !this.state.feedbackbox}); //on click switch feedbackbox displayed or not
   }
 
   handleChange() {
     var feedbackreq = $.post('http://wdaqua-qanary.univ-st-etienne.fr/feedback', $('#form').serialize(), function(data) {
-
-          // document.querySelector('#form').style = "display: none";
-          // document.querySelector('#thanks').style = "display: block";
-
       this.setState({submitted: !this.state.submitted}); //if feedback was submitted successfully
-
     }.bind(this));
 
     feedbackreq.fail(function(e) {
