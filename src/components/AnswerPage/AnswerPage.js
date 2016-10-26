@@ -18,18 +18,19 @@ import MapBox from '../MapBox';
 import TopK from '../TopK';
 import Error from '../Error';
 import Feedback from '../Feedback';
+import Sparql from '../Sparql';
 
 function sendQueryToEndpoint(data, comp){
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-    + "SELECT ?sparql ?json "
-    + "FROM <"+  data.graph.toString() + "> "
-    + "WHERE { "
-    + "  ?a a qa:AnnotationOfAnswerSPARQL . "
-    + "  ?a oa:hasBody ?sparql . "
-    + "  ?b a qa:AnnotationOfAnswerJSON . "
-    + "  ?b oa:hasBody ?json "
-    + "}";
+  + "SELECT ?sparql ?json "
+  + "FROM <"+  data.graph.toString() + "> "
+  + "WHERE { "
+  + "  ?a a qa:AnnotationOfAnswerSPARQL . "
+  + "  ?a oa:hasBody ?sparql . "
+  + "  ?b a qa:AnnotationOfAnswerJSON . "
+  + "  ?b oa:hasBody ?json "
+  + "}";
 
   comp.serverRequest = $.ajax({
     url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
@@ -209,9 +210,7 @@ class AnswerPage extends Component {
       loaded: false, //indicates if the backend already gave back the answer
       error: false,
     };
-    this.handleClick = this.handleClick.bind(this);
   }
-
 
   componentDidMount() {
 
@@ -250,10 +249,6 @@ class AnswerPage extends Component {
 
   }
 
-  handleClick() {
-    this.setState({query: !this.state.query}); //on click switch from query to answer
-  }
-
   render() {
     console.log("query parameters: ", this.props.query);
 
@@ -267,22 +262,15 @@ class AnswerPage extends Component {
 
 //to refactor so don't have to check the same answer type multiple times
     console.log("Loaded "+this.state.loaded);
-    console.log("Information length: "+this.state.information.length);
 
     return (
       <div className={s.container}>
         <Loader loaded={this.state.loaded}>
 
-          {(this.state.error) ? <Error>Error</Error> : <div onClick={this.handleClick} className={s.sparql}>
-            Q
+          {(this.state.error) ? <Error>Error</Error> : <div className={s.buttonmenu}><Sparql sparqlquery={this.state.SPARQLquery}/>
+            <Feedback question={this.props.query.query} sparql={this.state.SPARQLquery}/>
           </div>}
 
-          <Feedback question={this.props.query} sparql="Test"/>
-
-          <br/>
-          <br/>
-
-          {(this.state.query) ? <Label>{this.state.SPARQLquery}</Label> : null}
           {this.state.information.map(function(info,index) {
             console.log(info);
             return (
