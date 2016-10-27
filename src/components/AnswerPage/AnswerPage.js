@@ -42,8 +42,44 @@ function sendQueryToEndpoint(data, comp){
     success: function(result) {
       var query = result.results.bindings[0].sparql.value;
       var jresult = JSON.parse(result.results.bindings[0].json.value);
+      //---ranking--- is 2 requests necessary?
 
-      configureResult(query, jresult, comp);
+      var variable=jresult.head.vars[0];
+
+      var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
+        "SELECT ?"+ variable + " " +
+        "FROM <http://dbpedia.org>" +
+        "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
+        "WHERE {" +
+          "{"+ query +"} " +
+          "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
+        "}" +
+        "ORDER BY DESC(?v) LIMIT 1000";
+
+      // var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
+      //   "SELECT ?s ?v" +
+      //   "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
+      //   "WHERE { " +
+      //   "?s vrank:hasRank/vrank:rankValue ?v." +
+      //   "VALUES ?s {<http://dbpedia.org/resource/Michelle_Obama> <http://dbpedia.org/resource/Barack_Obama>}" +
+      //   "}" +
+      //   "ORDER BY DESC(?v) LIMIT 50";
+
+      console.log("ranked sparql query: ", rankedSparql);
+
+      var rankedrequest = $.get(
+          "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+          function (rankedresult) {
+
+            console.log("This is the unranked result: ", result);
+            console.log("This is the ranked result: ", rankedresult);
+            //var jrankedresult = JSON.parse(rankedresult.results.bindings[0].json.value);
+
+            configureResult(query, rankedresult, comp);
+
+          }.bind(this));
+
+      //---------------------
 
     }.bind(comp)
   });

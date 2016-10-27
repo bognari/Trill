@@ -38,6 +38,9 @@ class Feedback extends Component {
   handleChange() {
     var feedbackreq = $.post('http://wdaqua-qanary.univ-st-etienne.fr/feedback', $('#form').serialize(), function(data) {
       this.setState({submitted: !this.state.submitted}); //if feedback was submitted successfully
+      setTimeout(function(){
+        document.querySelector('#container').style = "display: none";
+      }, 1500)
     }.bind(this));
 
     feedbackreq.fail(function(e) {

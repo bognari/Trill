@@ -24,6 +24,12 @@ class QueryBox extends Component {
     this.state = {
       voicequery: "", //indicates the query given by voice recording if any
     };
+    this.handleClose = this.handleClose.bind(this);
+  }
+
+  handleClose() {
+    this.forceUpdate();
+    document.getElementById('querybox').reset();
   }
 
   componentDidMount() {
@@ -186,14 +192,15 @@ class QueryBox extends Component {
   render() {
 
     return (
-        <form action="/question" method="GET" autoComplete="on" className={s.querybox}>
+        <form id="querybox" action="/question" method="GET" autoComplete="on" className={s.querybox}>
           <div>
             <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.query}/>
             <div id="listening" className={s.listening}><p>Listening... </p></div>
-            <button id="record" type="button" style={{display: "none"}} className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
+            <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
             {/*<a href={Location.createHref("/question?query=" + "Capital+of+Canada")}><button id="stop" type="button" className={s.stop}>Done</button></a>*/}
             <button id="stop" type="button" className={s.stop}>Done</button>
             <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
+            {/*<div onClick={this.handleClose} id="close">x</div>*/}
             <input id="go" type="submit" value="Go" className={s.space}/>
           </div>
         </form>
