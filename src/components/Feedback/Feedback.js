@@ -38,6 +38,10 @@ class Feedback extends Component {
   handleChange() {
     var feedbackreq = $.post('http://wdaqua-qanary.univ-st-etienne.fr/feedback', $('#form').serialize(), function(data) {
       this.setState({submitted: !this.state.submitted}); //if feedback was submitted successfully
+      document.querySelector('#holder').className = s.hide; //animate hiding
+      setTimeout(function(){
+        document.querySelector('#holder').style = "display: none"; //finally, hide
+      }, 1800)
     }.bind(this));
 
     feedbackreq.fail(function(e) {
@@ -53,7 +57,7 @@ class Feedback extends Component {
   render() {
 
     return (
-      <div>
+      <div id="holder">
         {/*<div id="button" onClick={this.handleClick} className={(this.state.feedbackbox) ? s.buttonpressed : s.button}>Feedback</div>*/}
 
         <div id="container" className={s.container}>
