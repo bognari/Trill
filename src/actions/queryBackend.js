@@ -6,7 +6,6 @@ export const QUESTION_ANSWERING_REQUEST = 'START_QUESTION_ANSWERING';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS'
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE'
 
-
 export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
@@ -28,19 +27,26 @@ export function startQuestionAnsweringWithTextQuestion(question){
   }
 }
 
-
-
 function sendQueryToEndpoint(data, dispatch, question){
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-    + "SELECT ?sparql ?json "
+    + "SELECT ?sparql ?json ?score "
     + "FROM <"+  data.graph.toString() + "> "
     + "WHERE { "
     + "  ?a a qa:AnnotationOfAnswerSPARQL . "
-    + "  ?a oa:hasBody ?sparql . "
+    + "  OPTIONAL {?a oa:hasBody ?sparql . } "
+    + "  ?a qa:hasScore ?score . "
+    + "?a oa:AnnotatedAt ?time "
+    + "{ "
+    + " select ?time { "
+    + " ?a a qa:AnnotationOfAnswerSPARQL . "
+    + " ?a oa:AnnotatedAt ?time "
+    + " } order by DESC(?time) limit 1 "
+    + " } "
     + "  ?b a qa:AnnotationOfAnswerJSON . "
-    + "  ?b oa:hasBody ?json "
-    + "}";
+    + "  ?b oa:hasBody ?json . "
+    + "} "
+    + "ORDER BY DESC(?score)";
 
   $.ajax({
     url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
@@ -65,15 +71,6 @@ function sendQueryToEndpoint(data, dispatch, question){
         "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
         "}" +
         "ORDER BY DESC(?v) LIMIT 1000";
-
-      // var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-      //   "SELECT ?s ?v" +
-      //   "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-      //   "WHERE { " +
-      //   "?s vrank:hasRank/vrank:rankValue ?v." +
-      //   "VALUES ?s {<http://dbpedia.org/resource/Michelle_Obama> <http://dbpedia.org/resource/Barack_Obama>}" +
-      //   "}" +
-      //   "ORDER BY DESC(?v) LIMIT 50";
 
       console.log("ranked sparql query: ", rankedSparql);
 
