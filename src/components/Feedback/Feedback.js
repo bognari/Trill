@@ -7,11 +7,14 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Feedback.scss';
 import $ from 'jquery';
 import Label from '../Label';
+
+
+
 
 class Feedback extends Component {
 
@@ -50,12 +53,15 @@ class Feedback extends Component {
   }
 
 
+  componentWillMount(){
+
+  }
+
   componentDidMount() {
 
   }
 
   render() {
-
     return (
       <div id="holder">
         {/*<div id="button" onClick={this.handleClick} className={(this.state.feedbackbox) ? s.buttonpressed : s.button}>Feedback</div>*/}

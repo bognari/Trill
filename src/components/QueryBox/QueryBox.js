@@ -8,23 +8,34 @@
  */
 
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { Field } from 'react-redux-form';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
 import Location from '../../core/Location';
+import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend';
 
+@connect((store) => {
+  return {
+    question: store.qa.question,
+  }
+})
 class QueryBox extends Component {
 
-  static propTypes = {
-    size: PropTypes.string.isRequired,
-    query: PropTypes.string,
-  };
+  //static propTypes = {
+  //  size: PropTypes.string.isRequired,
+  //  question: PropTypes.string,
+  //};
 
   constructor(props) {
     super(props);
     this.state = {
       voicequery: "", //indicates the query given by voice recording if any
+      text: ""
     };
     this.handleClose = this.handleClose.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleÍnput = this.handleÍnput.bind(this);
   }
 
   handleClose() {
@@ -160,15 +171,6 @@ class QueryBox extends Component {
 
                 }.bind(this)
               });
-              // var form = req.form();
-              // form.append('question', mpfile, {
-              //   filename: 'recording.mp3',
-              //   contentType: 'audio/mp3'
-              // });
-
-              // }
-              // mpfileReader.readAsArrayBuffer(mpblob);
-
              };
 
             fileReader.readAsArrayBuffer(blob);
@@ -181,31 +183,38 @@ class QueryBox extends Component {
 
     document.querySelector('#stop').onclick = function(){
       console.log('Stop clicked');
-      // this.setState({
-      //   voicequery: "Capital+of+Canada",
-      // });
       mediaRecorder.stop();
 
     }
   }
 
-  render() {
+  handleClick(){
+    console.log(this.props);
+    console.log(this.state.text);
+    this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.state.text));
+  }
 
+  handleÍnput(e){
+    this.setState({text: e.target.value});
+  }
+
+  render() {
+    console.log("QUERY BOX");
+    console.log(this.props.question);
+    console.log(this.props);
     return (
-        <form id="querybox" action="/question" method="GET" autoComplete="on" className={s.querybox}>
-          <div>
-            <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.query}/>
+          <div className={s.querybox}>
+            <input id="querytext" type="text" onChange={this.handleÍnput} placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.question}/>
             <div id="listening" className={s.listening}><p>Listening... </p></div>
             <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
             {/*<a href={Location.createHref("/question?query=" + "Capital+of+Canada")}><button id="stop" type="button" className={s.stop}>Done</button></a>*/}
             <button id="stop" type="button" className={s.stop}>Done</button>
             <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
             {/*<div onClick={this.handleClose} id="close">x</div>*/}
-            <input id="go" type="submit" value="Go" className={s.space}/>
+            <button id="go" onClick={this.handleClick} type="button" className={s.space}>Go</button>
           </div>
-        </form>
     );
   }
-
 }
+
 export default withStyles(QueryBox, s);

@@ -8,10 +8,11 @@
  */
 
 import React, { Component, PropTypes } from 'react';
+import {connect} from 'react-redux'
+
 import ImageComponent from '../ImageComponent'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AnswerPage.scss';
-import $ from 'jquery';
 import Label from '../Label';
 import Loader from 'react-loader';
 import MapBox from '../MapBox';
@@ -20,297 +21,36 @@ import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 
-function sendQueryToEndpoint(data, comp){
-  var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
-    + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-  + "SELECT ?sparql ?json "
-  + "FROM <"+  data.graph.toString() + "> "
-  + "WHERE { "
-  + "  ?a a qa:AnnotationOfAnswerSPARQL . "
-  + "  ?a oa:hasBody ?sparql . "
-  + "  ?b a qa:AnnotationOfAnswerJSON . "
-  + "  ?b oa:hasBody ?json "
-  + "}";
-
-  comp.serverRequest = $.ajax({
-    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
-    type: "GET",
-    beforeSend: function(xhr){
-      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
-      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-    },
-    success: function(result) {
-      var query = result.results.bindings[0].sparql.value;
-      var jresult = JSON.parse(result.results.bindings[0].json.value);
-      //---ranking--- is 2 requests necessary?
-
-      var variable=jresult.head.vars[0];
-
-      var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-        "SELECT ?"+ variable + " " +
-        "FROM <http://dbpedia.org>" +
-        "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-        "WHERE {" +
-          "{"+ query +"} " +
-          "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
-        "}" +
-        "ORDER BY DESC(?v) LIMIT 1000";
-
-      // var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-      //   "SELECT ?s ?v" +
-      //   "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-      //   "WHERE { " +
-      //   "?s vrank:hasRank/vrank:rankValue ?v." +
-      //   "VALUES ?s {<http://dbpedia.org/resource/Michelle_Obama> <http://dbpedia.org/resource/Barack_Obama>}" +
-      //   "}" +
-      //   "ORDER BY DESC(?v) LIMIT 50";
-
-      console.log("ranked sparql query: ", rankedSparql);
-
-      var rankedrequest = $.get(
-          "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-          function (rankedresult) {
-
-            console.log("This is the unranked result: ", result);
-            console.log("This is the ranked result: ", rankedresult);
-            //var jrankedresult = JSON.parse(rankedresult.results.bindings[0].json.value);
-
-            configureResult(query, rankedresult, comp);
-
-          }.bind(this));
-
-      //---------------------
-
-    }.bind(comp)
-  });
-}
-
-function configureResult(query, jresult, comp){
-
-  var count = 0;
-  console.log('This is the json result: ', jresult);
-
-  //check if it is an ask query
-  if (jresult.hasOwnProperty("boolean")){
-    var information = comp.state.information;
-    information.push({
-      label: (jresult.boolean==true) ? "True" : "False",
-      answertype: "simple",
-    })
-    comp.setState({
-      SPARQLquery: query,
-      information: information,
-      loaded: true,
-    })
+@connect((store) => {
+  return {
+    question: store.qa.question,
+    information: store.qa.information,
+    SPARQLquery: store.qa.SPARQLquery,    //containes the generated sparql query
+    query: store.qa.query,                //indicates if the answer or the query is displayed
+    loaded: store.qa.loaded,              //indicates if the backend already gave back the answer
+    error: store.qa.error,
   }
-  else {
-    var variable=jresult.head.vars[0];
-
-    //depending on the number of results, handle accordingly:
-    if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
-      jresult.results.bindings.map(function(binding,k) {
-        if (k<20) {
-          console.log('In each iteration: ');
-          console.log("k: " + k);
-
-          var type = binding[variable].type;
-          var value = binding[variable].value;
-          console.log("Result type and value: " + type + "; " + value);
-
-          if (type == "uri") {
-            //There is only one uri
-            var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
-              + " OPTIONAL{ "
-              + "<" + value + "> rdfs:label ?label . "
-              + "} "
-              + " OPTIONAL{ "
-              + "<" + value + "> dbo:thumbnail ?image . "
-              + "} "
-              + " OPTIONAL{ "
-              + "<" + value + "> dbo:abstract ?abstract . "
-              + "} "
-              + " OPTIONAL{ "
-              + "<" + value + "> geo:lat ?lat . "
-              + "} "
-              + " OPTIONAL{ "
-              + "<" + value + "> geo:long ?long . "
-              + "} "
-              + " OPTIONAL{ "
-              + "?wikilink foaf:primaryTopic <" + value + "> . "
-              + "} "
-              + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
-              + " } ";
-
-            comp.serverRequest = $.get(
-              "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-              function (result) {
-                console.log("The properties of the results are this: ", result);
-
-                var information = comp.state.information;
-
-                //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
-                //determine and set answertype
-                if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
-                  information.push({
-                    label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    loaded: true,
-                    answertype: "noinfo",
-                    link: value,
-                    count: count++,
-                  })
-                }
-
-                else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
-
-                  console.log("Label: " + result.results.bindings[0].label.value);
-                  console.log("Abstract: " + result.results.bindings[0].abstract.value);
-
-                  information.push({
-                    label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: result.results.bindings[0].abstract.value,
-                    image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                    loaded: true,
-                    answertype: "map",
-                    uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                    count: count++,
-                    lat: result.results.bindings[0].lat.value,
-                    long: result.results.bindings[0].long.value,
-                  })
-                }
-
-                else {//case of regular detailed answer
-
-                  console.log("Label: " + result.results.bindings[0].label.value);
-                  console.log("Abstract: " + result.results.bindings[0].abstract.value);
-
-                  information.push({
-                    label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: result.results.bindings[0].abstract.value,
-                    image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                    loaded: true,
-                    answertype: "detail",
-                    uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
-                    count: count++,
-                  })
-                }
-
-                comp.setState({
-                  SPARQLquery: query,
-                  information: information,
-                  loaded: true,
-                });
-
-              }.bind(comp), "json")
-          }
-          else if (type == "typed-literal" || type == "literal") {
-            var information = comp.state.information;
-            information.push({
-              label: binding[variable].value,
-              loaded: true,
-              answertype: "simple",
-              count: count++,
-            })
-            comp.setState({
-              SPARQLquery: query,
-              information: information,
-              loaded: true,
-            });
-          }
-        }
-      }.bind(comp), "json")
-    }
-    else { //if there are no results
-      comp.setState({
-        SPARQLquery: query,
-        label: "No results",
-        loaded: true,
-        answertype: "simple"
-      });
-    }
-  }
-}
-
+})
 class AnswerPage extends Component {
-
-  static propTypes = {
-  };
 
   constructor(props) {
     super(props);
-    this.state = {
-      information: [],
-      SPARQLquery: "", //containes the generated sparql query
-      query: false, //indicates if the answer or the query is displayed
-      loaded: false, //indicates if the backend already gave back the answer
-      error: false,
-    };
-  }
-
-  componentDidMount() {
-
-    if(false){//to check for blob
-
-    }
-    else{
-      var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + this.props.query.query + "&componentlist[]=wdaqua-core0", function (data) {
-
-        sendQueryToEndpoint(data, this);
-
-      }.bind(this));
-
-      questionresult.fail(function(e) {
-        console.log(e.statusCode + " " + e.statusText);
-
-        var information = this.state.information;
-        information.push({
-          message: e.statusCode + " " + e.statusText,
-        });
-
-        this.setState({
-          information: information,
-          loaded: true,
-          error: true,
-        });
-
-      }.bind(this));
-
-    }
-
-    // qresult.done(function (data){
-    //   console.log("This is when the get finishes............:");
-    //   console.log(" ");
-    // });
-
   }
 
   render() {
-    console.log("query parameters: ", this.props.query);
-
-    // var answerformat;
-    // if (this.state.answertype == "simple") {
-    //   answerformat = <Label>{this.state.abstract}</Label>;
-    // } else if (this.state.answertype == "detail") {
-    //   answerformat = ();
-    // }
-    // else {}
-
-//to refactor so don't have to check the same answer type multiple times
-    console.log("Loaded "+this.state.loaded);
-
+    //to refactor so don't have to check the same answer type multiple times
     return (
       <div className={s.container}>
-        <Loader loaded={this.state.loaded}>
+        <Loader loaded={this.props.loaded}>
 
-          {(this.state.error) ? <Error>Error</Error> : <div className={s.buttonmenu}><Sparql sparqlquery={this.state.SPARQLquery}/>
-            <Feedback question={this.props.query.query} sparql={this.state.SPARQLquery}/>
+          {(this.props.error) ? <Error>Error</Error> : <div className={s.buttonmenu}><Sparql sparqlquery={this.props.SPARQLquery}/>
+            <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
           </div>}
 
-          {this.state.information.map(function(info,index) {
-            console.log(info);
+          {this.props.information.map(function(info,index) {
             return (
-              <div className={s.contentholder} key={index} >
+              <div className={s.contentholder} >
+                {console.log("render")}
                  {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
                  {(info.answertype == "noinfo") ? <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
@@ -329,12 +69,13 @@ class AnswerPage extends Component {
 
                 {(info.answertype == "detail" || info.answertype == "map") ?
                   <div className={s.rightColumn}>
-                    {(info.image != "") ? <ImageComponent image={info.image}></ImageComponent>   : null}
-                  <TopK sumid={"sumbox" + info.count} uri={info.uri} topK={5}/>
+                    {(info.image != "") ? <ImageComponent key={"image"+info.key}image={info.image}></ImageComponent>   : null}
+                  <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
                 </div> : null}
 
-              </div>)
-          }.bind(this), "json")}
+              </div>
+              )
+          })}
         </Loader>
 
       </div>

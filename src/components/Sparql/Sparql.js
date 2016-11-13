@@ -8,9 +8,9 @@
  */
 
 import React, { Component, PropTypes } from 'react';
+import {connect} from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Sparql.scss';
-import Label from '../Label';
 
 class Sparql extends Component {
 
@@ -30,12 +30,7 @@ class Sparql extends Component {
     this.setState({query: !this.state.query}); //on click switch from query to answer
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
-
     return (
       <div className={s.container}>
         <div id="q" onClick={this.handleClick} className={(this.state.query) ? s.sparqlpressed : s.sparql}>

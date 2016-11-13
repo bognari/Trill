@@ -63,7 +63,7 @@ class App extends Component {
 
     return !this.props.error ? (
       <div>
-        <HeaderSearch path={path} query={this.props.query.query}/>
+        <HeaderSearch/>
         {this.props.children}
         <Footer />
       </div>

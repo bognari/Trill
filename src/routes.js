@@ -20,10 +20,15 @@ import ErrorPage from './components/ErrorPage';
 import AnswerPage from './components/AnswerPage';
 import HomePage from './components/HomePage';
 
+import { Provider } from 'react-redux'
+import store from './stores'
+
+
+
 const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
-    return component && <App path={state.path} query={state.query} context={state.context}>{component}</App>;
+    return component && <Provider store={store}><App path={state.path} query={state.query} context={state.context}>{component}</App></Provider>;
   });
 
   on('', async () => <HomePage/>);
