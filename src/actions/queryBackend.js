@@ -28,10 +28,11 @@ export function startQuestionAnsweringWithTextQuestion(question){
 }
 
 function sendQueryToEndpoint(data, dispatch, question){
+  var namedGraph = data.graph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
     + "SELECT ?sparql ?json ?score "
-    + "FROM <"+  data.graph.toString() + "> "
+    + "FROM <"+  namedGraph + "> "
     + "WHERE { "
     + "  ?a a qa:AnnotationOfAnswerSPARQL . "
     + "  OPTIONAL {?a oa:hasBody ?sparql . } "
@@ -82,7 +83,7 @@ function sendQueryToEndpoint(data, dispatch, question){
           console.log("This is the ranked result: ", rankedresult);
           //var jrankedresult = JSON.parse(rankedresult.results.bindings[0].json.value);
 
-          configureResult(query, rankedresult, dispatch, question);
+          configureResult(query, rankedresult, dispatch, question, namedGraph);
 
         }.bind(this));
 
@@ -92,7 +93,7 @@ function sendQueryToEndpoint(data, dispatch, question){
   });
 }
 
-function configureResult(query, jresult, dispatch, question){
+function configureResult(query, jresult, dispatch, question, namedGraph){
 
   var count = 0;
   console.log('This is the json result: ', jresult);
@@ -106,6 +107,7 @@ function configureResult(query, jresult, dispatch, question){
     })
     dispatch({
       type: QUESTION_ANSWERING_SUCCESS,
+      namedGraph: namedGraph,
       question: question,
       SPARQLquery: query,
       information: information,
@@ -167,6 +169,7 @@ function configureResult(query, jresult, dispatch, question){
                   })
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
+                    namedGraph: namedGraph,
                     question: question,
                     SPARQLquery: query,
                     information: information,
@@ -193,6 +196,7 @@ function configureResult(query, jresult, dispatch, question){
                   })
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
+                    namedGraph: namedGraph,
                     question: question,
                     SPARQLquery: query,
                     information: information,
@@ -217,6 +221,7 @@ function configureResult(query, jresult, dispatch, question){
                   })
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
+                    namedGraph: namedGraph,
                     question: question,
                     SPARQLquery: query,
                     information: information,
@@ -234,6 +239,7 @@ function configureResult(query, jresult, dispatch, question){
             })
             dispatch({
               type: QUESTION_ANSWERING_SUCCESS,
+              namedGraph: namedGraph,
               question: question,
               SPARQLquery: query,
               information: information,
@@ -246,6 +252,7 @@ function configureResult(query, jresult, dispatch, question){
     else { //if there are no results
       dispatch({
         type: QUESTION_ANSWERING_SUCCESS,
+        namedGraph: namedGraph,
         question: question,
         SPARQLquery: query,
         label: "No results",
