@@ -14,16 +14,78 @@ export function startQuestionAnsweringWithTextQuestion(question){
     });
 
     questionresult.fail(function (e) {
-      console.log(e.statusCode + " " + e.statusText);
-
       var information = this.state.information;
       information.push({
         message: e.statusCode + " " + e.statusText,
       });
-
       dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
 
     })
+  }
+}
+
+export function startQuestionAnsweringWithAudioQuestion(mp3file){
+  return function (dispatch) {
+    dispatch({type: QUESTION_ANSWERING_REQUEST});
+    var form  = new FormData();
+    //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
+    form.append("question", mp3file, "recording.mp3");
+    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0, QueryExecuter"]);
+
+    //maybe should check if mpfile is proper
+
+    console.log("mp3 file :", mpfile);
+    console.log("Contents of form: ", form);
+
+    var questionresult = $.ajax({
+      url: "http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithaudioquestion",
+      data: form,
+      processData: false,
+      type: "POST",
+      contentType: false,
+      success: function (data) {
+        sendQueryToEndpoint(data, dispatch, '');
+      }
+    });
+
+    questionresult.fail(function (e) {
+      var information = this.state.information;
+      information.push({
+        message: e.statusCode + " " + e.statusText,
+      });
+      dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
+    })
+  }
+}
+
+export function questionanswering(namedGraph, components){
+  return function (dispatch) {
+    console.log("HERE");
+    var form = new FormData();
+    form.append("componentlist[]", components);
+    form.append("qanaryMessage", JSON.stringify({
+      "values": {
+        "http://qanary/#endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+        "http://qanary/#inGraph": namedGraph,
+        "http://qanary/#outGraph": namedGraph
+      },
+      "endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+      "outGraph": namedGraph,
+      "inGraph": namedGraph
+    }));
+
+    dispatch({type: QUESTION_ANSWERING_REQUEST});
+    var executeQuery = $.ajax({
+      url: "http://wdaqua-qanary.univ-st-etienne.fr/questionanswering",
+      type: "POST",
+      data: form,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+        console.log("HERE2");
+        sendQueryToEndpoint(data, dispatch, '');
+      }
+    });
   }
 }
 
@@ -37,15 +99,17 @@ function sendQueryToEndpoint(data, dispatch, question){
     + "  ?a a qa:AnnotationOfAnswerSPARQL . "
     + "  OPTIONAL {?a oa:hasBody ?sparql . } "
     + "  ?a qa:hasScore ?score . "
-    + "?a oa:AnnotatedAt ?time "
-    + "{ "
-    + " select ?time { "
-    + " ?a a qa:AnnotationOfAnswerSPARQL . "
-    + " ?a oa:AnnotatedAt ?time "
-    + " } order by DESC(?time) limit 1 "
-    + " } "
+    + "  ?a oa:AnnotatedAt ?time . "
     + "  ?b a qa:AnnotationOfAnswerJSON . "
     + "  ?b oa:hasBody ?json . "
+    + "  ?c a qa:AnnotationOfTextRepresentation . "
+    + "  ?c oa:hasBody ?uriText . "
+    + "  { "
+    + "   select ?time { "
+    + "    ?a a qa:AnnotationOfAnswerSPARQL . "
+    + "    ?a oa:AnnotatedAt ?time "
+    + "    } order by DESC(?time) limit 1 "
+    + "  } "
     + "} "
     + "ORDER BY DESC(?score)";
 
@@ -57,7 +121,10 @@ function sendQueryToEndpoint(data, dispatch, question){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
-      var query = result.results.bindings[0].sparql.value;
+      var query = [];
+      for(var i=0; i<result.results.bindings.length; i++) {
+        query[i] = {query:result.results.bindings[i].sparql.value , score:result.results.bindings[i].score.value};
+      }
       var jresult = JSON.parse(result.results.bindings[0].json.value);
       //---ranking--- is 2 requests necessary?
 
@@ -68,7 +135,7 @@ function sendQueryToEndpoint(data, dispatch, question){
         "FROM <http://dbpedia.org>" +
         "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
         "WHERE {" +
-        "{"+ query +"} " +
+        "{"+ query[0].query +"} " +
         "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
         "}" +
         "ORDER BY DESC(?v) LIMIT 1000";

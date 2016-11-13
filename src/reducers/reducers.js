@@ -14,6 +14,7 @@ import { actionTypes } from 'react-redux-form';
 
 const initialState = {
   firstPage: true,
+  namedGraph: "",
   question: "",
   information: [],
   SPARQLquery: "", //containes the generated sparql query
@@ -37,6 +38,7 @@ const qaReducer = (state = initialState, action) => {
       return {
         ...state,
         firstPage: false,
+        namedGraph: action.namedGraph,
         question: action.question,
         information: action.information.concat(),
         SPARQLquery: action.SPARQLquery,

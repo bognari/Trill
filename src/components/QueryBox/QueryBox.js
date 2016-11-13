@@ -117,60 +117,6 @@ class QueryBox extends Component {
 
               var mpfile = new File([mpblob], "recording.mp3");
 
-              var form  = new FormData();
-              //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
-              form.append("question", mpfile, "recording.mp3");
-              form.append("componentlist[]", ["SpeechRecognitionKaldi"]);
-
-              //maybe should check if mpfile is proper
-
-              console.log("mp3 file :", mpfile);
-              console.log("Contents of form: ", form);
-
-              var req = $.ajax({
-                url: "http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithaudioquestion",
-                data: form,
-                processData: false,
-                type: "POST",
-                contentType: false,
-                success: function (data) {
-
-                  var sparqlQuery = "PREFIX qa: <http://www.wdaqua.eu/qa#> "
-                    + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-                    + "SELECT ?sparql ?json "
-                    + "FROM <"+  data.graph.toString() + "> "
-                    + "WHERE { "
-                    + "  ?a a qa:AnnotationOfAnswerSPARQL . "
-                    + "  ?a oa:hasBody ?sparql . "
-                    + "  ?b a qa:AnnotationOfAnswerJSON . "
-                    + "  ?b oa:hasBody ?json ."
-                    + "  ?c a qa:AnnotationOfTextRepresentation . "
-                    + "  ?c oa:hasBody ?uriText "
-                    + "}";
-
-                  console.log('successful send to audio service');
-                  console.log('This is the recieved data: ', data);
-                  console.log('data graph: ', data.graph.toString());
-
-                  this.serverRequest = $.ajax({
-                    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
-                    type: "GET",
-                    beforeSend: function (xhr) {
-                      xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:admin"));
-                      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-                    },
-                    success: function (result) {
-
-                      console.log("result of second request: ", result);
-                      var query = result.results.bindings[0].sparql.value;
-                      var jresult = JSON.parse(result.results.bindings[0].json.value);
-
-                      console.log('The audio json result is this: ', jresult);
-                    }.bind(this)
-                  });
-
-                }.bind(this)
-              });
              };
 
             fileReader.readAsArrayBuffer(blob);
@@ -199,9 +145,6 @@ class QueryBox extends Component {
   }
 
   render() {
-    console.log("QUERY BOX");
-    console.log(this.props.question);
-    console.log(this.props);
     return (
           <div className={s.querybox}>
             <input id="querytext" type="text" onChange={this.handleÍnput} placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.question}/>

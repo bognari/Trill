@@ -24,6 +24,7 @@ import Sparql from '../Sparql';
 @connect((store) => {
   return {
     question: store.qa.question,
+    namedGraph: store.qa.namedGraph,
     information: store.qa.information,
     SPARQLquery: store.qa.SPARQLquery,    //containes the generated sparql query
     query: store.qa.query,                //indicates if the answer or the query is displayed
@@ -43,7 +44,7 @@ class AnswerPage extends Component {
       <div className={s.container}>
         <Loader loaded={this.props.loaded}>
 
-          {(this.props.error) ? <Error>Error</Error> : <div className={s.buttonmenu}><Sparql sparqlquery={this.props.SPARQLquery}/>
+          {(this.props.error) ? <Error>Error</Error> : <div className={s.buttonmenu}><Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
           </div>}
 
