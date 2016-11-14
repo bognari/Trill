@@ -13,9 +13,6 @@ import s from './Feedback.scss';
 import $ from 'jquery';
 import Label from '../Label';
 
-
-
-
 class Feedback extends Component {
 
   static propTypes = {
@@ -50,15 +47,6 @@ class Feedback extends Component {
     feedbackreq.fail(function(e) {
       this.setState({error: !this.state.error});
     }.bind(this));
-  }
-
-
-  componentWillMount(){
-
-  }
-
-  componentDidMount() {
-
   }
 
   render() {

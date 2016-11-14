@@ -59,7 +59,7 @@ class Sparql extends Component {
         + "  ?a"+i+" oa:hasTarget <URIAnswer> . "
         + "  ?a"+i+" oa:hasBody \"" +  replacedsparql[i].query.replace("\n", " ") + "\" ;"
         + "     oa:annotatedBy <www.wdaqua.eu> ; "
-        + "         oa:AnnotatedAt ?time ; "
+        + "         oa:annotatedAt ?time ; "
         + "         qa:hasScore "+ replacedsparql[i].score + " . \n";
       sparqlPart2+= " BIND (IRI(str(RAND())) AS ?a"+i+") . \n";
     }
@@ -86,17 +86,14 @@ class Sparql extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        console.log("FIRE");
         this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"]));
       }.bind(this)
     })
   }
 
   render() {
-    console.log("NAMED GRAPH");
-    console.log(this.props);
     return (
-            <div className={s.container}>
+      <div className={s.container}>
         <div id="q" onClick={this.handleClick} className={(this.state.query) ? s.sparqlpressed : s.sparql}>
           Q
         </div>
@@ -111,8 +108,7 @@ class Sparql extends Component {
                   }
                 </div>: null
               }
-
-    </div>
+      </div>
     );
   }
 

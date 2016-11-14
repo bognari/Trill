@@ -60,7 +60,6 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
 
 export function questionanswering(namedGraph, components){
   return function (dispatch) {
-    console.log("HERE");
     var form = new FormData();
     form.append("componentlist[]", components);
     form.append("qanaryMessage", JSON.stringify({
@@ -82,7 +81,6 @@ export function questionanswering(namedGraph, components){
       processData: false,
       contentType: false,
       success: function (data) {
-        console.log("HERE2");
         sendQueryToEndpoint(data, dispatch, '');
       }
     });
@@ -99,16 +97,23 @@ function sendQueryToEndpoint(data, dispatch, question){
     + "  ?a a qa:AnnotationOfAnswerSPARQL . "
     + "  OPTIONAL {?a oa:hasBody ?sparql . } "
     + "  ?a qa:hasScore ?score . "
-    + "  ?a oa:AnnotatedAt ?time . "
+    + "  ?a oa:annotatedAt ?time1 . "
     + "  ?b a qa:AnnotationOfAnswerJSON . "
-    + "  ?b oa:hasBody ?json . "
+    + "  OPTIONAL {?b oa:hasBody ?json . } "
+    + "  ?b oa:annotatedAt ?time2 . "
     + "  ?c a qa:AnnotationOfTextRepresentation . "
     + "  ?c oa:hasBody ?uriText . "
     + "  { "
-    + "   select ?time { "
+    + "   select ?time1 { "
     + "    ?a a qa:AnnotationOfAnswerSPARQL . "
-    + "    ?a oa:AnnotatedAt ?time "
-    + "    } order by DESC(?time) limit 1 "
+    + "    ?a oa:annotatedAt ?time1 "
+    + "    } order by DESC(?time1) limit 1 "
+    + "  } "
+    + "  { "
+    + "   select ?time2 { "
+    + "    ?a a qa:AnnotationOfAnswerJSON . "
+    + "    ?a oa:annotatedAt ?time2 "
+    + "    } order by DESC(?time2) limit 1 "
     + "  } "
     + "} "
     + "ORDER BY DESC(?score)";
@@ -125,6 +130,8 @@ function sendQueryToEndpoint(data, dispatch, question){
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score:result.results.bindings[i].score.value};
       }
+      console.log("QUERY");
+      console.log(query);
       var jresult = JSON.parse(result.results.bindings[0].json.value);
       //---ranking--- is 2 requests necessary?
 

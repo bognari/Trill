@@ -44,9 +44,11 @@ class AnswerPage extends Component {
       <div className={s.container}>
         <Loader loaded={this.props.loaded}>
 
-          {(this.props.error) ? <Error>Error</Error> : <div className={s.buttonmenu}><Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-            <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
-          </div>}
+          {(this.props.error) ? <Error>Error</Error> :
+            <div className={s.buttonmenu}>
+              <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+              <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
+            </div>}
 
           {this.props.information.map(function(info,index) {
             return (
@@ -78,7 +80,6 @@ class AnswerPage extends Component {
               )
           })}
         </Loader>
-
       </div>
     );
   }

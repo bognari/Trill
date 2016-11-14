@@ -24,11 +24,6 @@ import QueryBox from '../QueryBox';
 })
 class HeaderSearch extends Component {
 
-  //static propTypes = {
-  //  firstPage: PropTypes.string.isRequired,
-  //  question: PropTypes.string,
-  //};
-
   render() {
     return (
       <div className={s.root}>
