@@ -22,20 +22,18 @@ import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend
 })
 class QueryBox extends Component {
 
-  //static propTypes = {
-  //  size: PropTypes.string.isRequired,
+  static propTypes = {
+    size: PropTypes.string.isRequired,
   //  question: PropTypes.string,
-  //};
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       voicequery: "", //indicates the query given by voice recording if any
-      text: ""
     };
     this.handleClose = this.handleClose.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleÍnput = this.handleÍnput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleClose() {
@@ -134,28 +132,32 @@ class QueryBox extends Component {
     }
   }
 
-  handleClick(){
-    console.log(this.props);
-    console.log(this.state.text);
-    this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.state.text));
-  }
+  //handleClick(){
+    // console.log(this.props);
+    // console.log(this.state.text);
+    //this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.state.text));
+  //}
 
-  handleÍnput(e){
-    this.setState({text: e.target.value});
+  handleSubmit(e){
+    e.preventDefault();
+    this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
+    Location.push("/question");
   }
 
   render() {
     return (
-          <div className={s.querybox}>
-            <input id="querytext" type="text" onChange={this.handleÍnput} placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.question}/>
+      <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
+          <div>
+            <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.question}/>
             <div id="listening" className={s.listening}><p>Listening... </p></div>
             <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
             {/*<a href={Location.createHref("/question?query=" + "Capital+of+Canada")}><button id="stop" type="button" className={s.stop}>Done</button></a>*/}
             <button id="stop" type="button" className={s.stop}>Done</button>
             <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
             {/*<div onClick={this.handleClose} id="close">x</div>*/}
-            <button id="go" onClick={this.handleClick} type="button" className={s.space}>Go</button>
+            <input id="go" type="submit" className={s.space} value="Go"/>
           </div>
+        </form>
     );
   }
 }

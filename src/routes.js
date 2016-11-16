@@ -23,12 +23,13 @@ import HomePage from './components/HomePage';
 import { Provider } from 'react-redux'
 import store from './stores'
 
-
+export const ROUTE_CHANGE = 'ROUTE_CHANGE';
 
 const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
-    return component && <Provider store={store}><App path={state.path} query={state.query} context={state.context}>{component}</App></Provider>;
+    store.dispatch({type: ROUTE_CHANGE, location: state.path});
+    return component && <Provider store={store}><App query={state.query} context={state.context}>{component}</App></Provider>;
   });
 
   on('', async () => <HomePage/>);
