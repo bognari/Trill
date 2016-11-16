@@ -42,11 +42,13 @@ class AnswerPage extends Component {
   render() {
     //to refactor so don't have to check the same answer type multiple times
 
-    // if (this.props.question == "") {
-    //   Location.push("/");
-    //   return (<div className={s.container}></div>);
-    // }
-    // else {
+    //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
+    // be empty)
+    if (this.props.question == "") {
+      Location.push("/");
+      return (<div className={s.container}></div>);
+    }
+    else {
 
       return (
         <div className={s.container}>
@@ -93,7 +95,7 @@ class AnswerPage extends Component {
         </div>
       );
     }
-//  }
+  }
 
 
 }
