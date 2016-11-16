@@ -6,10 +6,7 @@
  * action types
  */
 
-export const ADD_QUESTION = 'ADD_QUESTION'
-export const FETCH_QUESTION_FULLFILLED = 'FETCH_QUESTION_FULLFILLED'
-export const FIRST_PAGE = 'FIRST_PAGE'
-
+export const SET_QUESTION = 'SET_QUESTION'
 /*
  * other constants
  */
@@ -22,19 +19,9 @@ export const FIRST_PAGE = 'FIRST_PAGE'
 //  return { type: ADD_QUESTION, text }
 //}
 
-export function fetchQuestion(){
-  console.log("FETCH QUESTION FUNCTION FIRED")
+export function setQuestion(question){
   return {
-    type: FETCH_QUESTION_FULLFILLED,
-    text: "What is the capital of Canada",
+    type: SET_QUESTION,
+    question: question,
   }
 }
-
-export function firstPage(){
-  console.log("action first page")
-  return {
-    type: FIRST_PAGE,
-    boolean: false,
-  }
-}
-

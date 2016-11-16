@@ -14,6 +14,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
 import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
+import {setQuestion} from '../../actions/setQuestion';
 
 @connect((store) => {
   return {
@@ -77,6 +78,7 @@ class QueryBox extends Component {
             console.log("Wav url: ", blobURL);
             //mediaRecorder.save();
 
+
             var arrayBuffer;
             var fileReader = new FileReader();
 
@@ -135,14 +137,15 @@ class QueryBox extends Component {
   }
 
   handleClick(){
-    this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.state.text));
+    this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
   }
 
   handleÍnput(e){
-    this.setState({text: e.target.value});
+    this.props.dispatch(setQuestion(e.target.value));
   }
 
   render() {
+    console.log(this.state.text);
     return (
           <div className={s.querybox}>
             <input id="querytext" type="text" onChange={this.handleÍnput} placeholder="Enter your question..." required autoFocus size={this.props.size} value={this.props.question}/>

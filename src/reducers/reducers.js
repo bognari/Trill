@@ -3,7 +3,7 @@
  */
 
 import { combineReducers } from 'redux'
-import { ADD_QUESTION, FETCH_QUESTION_FULLFILLED, FIRST_PAGE } from '../actions/setQuestion'
+import { SET_QUESTION} from '../actions/setQuestion'
 import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE } from '../actions/queryBackend'
 
 
@@ -52,6 +52,13 @@ const qaReducer = (state = initialState, action) => {
         error: action.error,
         loaded: true
       }
+      break;
+    }
+    case SET_QUESTION: {
+      return {
+        ...state,
+        question: action.question,
+    }
       break;
     }
   }
