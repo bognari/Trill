@@ -39,7 +39,6 @@ const qaReducer = (state = initialState, action) => {
         ...state,
         firstPage: false,
         namedGraph: action.namedGraph,
-        question: action.question,
         information: action.information.concat(),
         SPARQLquery: action.SPARQLquery,
         loaded: true

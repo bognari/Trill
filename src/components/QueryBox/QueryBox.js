@@ -13,7 +13,7 @@ import { Field } from 'react-redux-form';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
 import Location from '../../core/Location';
-import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend';
+import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
@@ -50,7 +50,6 @@ class QueryBox extends Component {
 
     document.querySelector('#record').onclick = function(){
       console.log('recording started');
-
       //navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
 
       //Get permission from browser to use microphone
@@ -75,12 +74,13 @@ class QueryBox extends Component {
             // POST/PUT "Blob" using FormData/XHR2
             var blobURL = URL.createObjectURL(blob);
             //document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
-            console.log("Wav url: ", blobURL)
+            console.log("Wav url: ", blobURL);
             //mediaRecorder.save();
 
             var arrayBuffer;
             var fileReader = new FileReader();
 
+            var that=this;
             fileReader.onload = function() {
               arrayBuffer = this.result;
               console.log('onload reached, arraybuf:', arrayBuffer);
@@ -116,16 +116,16 @@ class QueryBox extends Component {
                 //from here is a test to understand the audio service
 
               var mpfile = new File([mpblob], "recording.mp3");
+              that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
 
-             };
-
+             }
             fileReader.readAsArrayBuffer(blob);
-          };
-        })
+          }.bind(this);
+        }.bind(this))
         .catch(function(error) {
           console.log('Error: ' + error);
         })
-    }
+    }.bind(this)
 
     document.querySelector('#stop').onclick = function(){
       console.log('Stop clicked');
@@ -135,8 +135,6 @@ class QueryBox extends Component {
   }
 
   handleClick(){
-    console.log(this.props);
-    console.log(this.state.text);
     this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.state.text));
   }
 
@@ -147,13 +145,11 @@ class QueryBox extends Component {
   render() {
     return (
           <div className={s.querybox}>
-            <input id="querytext" type="text" onChange={this.handleÍnput} placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.question}/>
+            <input id="querytext" type="text" onChange={this.handleÍnput} placeholder="Enter your question..." required autoFocus size={this.props.size} value={this.props.question}/>
             <div id="listening" className={s.listening}><p>Listening... </p></div>
             <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
-            {/*<a href={Location.createHref("/question?query=" + "Capital+of+Canada")}><button id="stop" type="button" className={s.stop}>Done</button></a>*/}
             <button id="stop" type="button" className={s.stop}>Done</button>
             <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
-            {/*<div onClick={this.handleClose} id="close">x</div>*/}
             <button id="go" onClick={this.handleClick} type="button" className={s.space}>Go</button>
           </div>
     );
