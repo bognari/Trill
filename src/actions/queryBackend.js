@@ -185,7 +185,6 @@ function configureResult(query, jresult, dispatch, namedGraph){
     dispatch({
       type: QUESTION_ANSWERING_SUCCESS,
       namedGraph: namedGraph,
-      // question: question,
       SPARQLquery: query,
       information: information,
       loaded: true,
@@ -247,7 +246,6 @@ function configureResult(query, jresult, dispatch, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    // question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -274,7 +272,6 @@ function configureResult(query, jresult, dispatch, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    //question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -299,7 +296,6 @@ function configureResult(query, jresult, dispatch, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    //question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -317,7 +313,6 @@ function configureResult(query, jresult, dispatch, namedGraph){
             dispatch({
               type: QUESTION_ANSWERING_SUCCESS,
               namedGraph: namedGraph,
-              //question: question,
               SPARQLquery: query,
               information: information,
               loaded: true,
@@ -330,7 +325,6 @@ function configureResult(query, jresult, dispatch, namedGraph){
       dispatch({
         type: QUESTION_ANSWERING_SUCCESS,
         namedGraph: namedGraph,
-        //question: question,
         SPARQLquery: query,
         label: "No results",
         loaded: true,
