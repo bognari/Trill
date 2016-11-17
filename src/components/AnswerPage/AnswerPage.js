@@ -40,7 +40,6 @@ class AnswerPage extends Component {
   }
 
   render() {
-    //to refactor so don't have to check the same answer type multiple times
 
     //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
     // be empty)
@@ -49,7 +48,7 @@ class AnswerPage extends Component {
       return (<div className={s.container}></div>);
     }
     else {
-
+      //to refactor so don't have to check the same answer type multiple times
       return (
         <div className={s.container}>
           <Loader loaded={this.props.loaded}>

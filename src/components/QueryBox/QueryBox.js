@@ -15,6 +15,9 @@ import s from './QueryBox.scss';
 import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend';
 
+import store from '../../stores'
+import { QUESTION_ANSWERING_REQUEST } from '../../actions/queryBackend';
+
 @connect((store) => {
   return {
     question: store.qa.question,
@@ -141,6 +144,7 @@ class QueryBox extends Component {
   handleSubmit(e){
     e.preventDefault();
     this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
+    store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value});
     Location.push("/question");
   }
 

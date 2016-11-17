@@ -20,8 +20,8 @@ import ErrorPage from './components/ErrorPage';
 import AnswerPage from './components/AnswerPage';
 import HomePage from './components/HomePage';
 
-import { Provider } from 'react-redux'
-import store from './stores'
+import { Provider } from 'react-redux';
+import store from './stores';
 
 export const ROUTE_CHANGE = 'ROUTE_CHANGE';
 

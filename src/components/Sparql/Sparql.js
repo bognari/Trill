@@ -15,13 +15,14 @@ import {questionanswering} from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
+    SPARQLquery: store.qa.SPARQLquery,
+    namedGraph: store.qa.namedGraph,
   }
 })
 class Sparql extends Component {
 
   static propTypes = {
-    sparqlquery: PropTypes.array,
-    namedGraph: PropTypes.string,
+
   };
 
   constructor(props) {

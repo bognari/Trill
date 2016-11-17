@@ -8,9 +8,10 @@ export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE'
 
 export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
-    dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
+    // dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
-      sendQueryToEndpoint(data, dispatch, question);
+      sendQueryToEndpoint(data, dispatch);
+      //Here we receive the namedGraph (data.graph)
     });
 
     questionresult.fail(function (e) {
@@ -44,7 +45,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
       type: "POST",
       contentType: false,
       success: function (data) {
-        sendQueryToEndpoint(data, dispatch, '');
+        sendQueryToEndpoint(data, dispatch);
       }
     });
 
@@ -60,6 +61,8 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
 
 export function questionanswering(namedGraph, components){
   return function (dispatch) {
+    dispatch({type: QUESTION_ANSWERING_REQUEST});
+
     var form = new FormData();
     form.append("componentlist[]", components);
     form.append("qanaryMessage", JSON.stringify({
@@ -73,7 +76,6 @@ export function questionanswering(namedGraph, components){
       "inGraph": namedGraph
     }));
 
-    dispatch({type: QUESTION_ANSWERING_REQUEST});
     var executeQuery = $.ajax({
       url: "http://wdaqua-qanary.univ-st-etienne.fr/questionanswering",
       type: "POST",
@@ -81,13 +83,13 @@ export function questionanswering(namedGraph, components){
       processData: false,
       contentType: false,
       success: function (data) {
-        sendQueryToEndpoint(data, dispatch, '');
+        sendQueryToEndpoint(data, dispatch);
       }
     });
   }
 }
 
-function sendQueryToEndpoint(data, dispatch, question){
+function sendQueryToEndpoint(data, dispatch){
   var namedGraph = data.graph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
@@ -129,6 +131,7 @@ function sendQueryToEndpoint(data, dispatch, question){
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score:result.results.bindings[i].score.value};
+        //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
       console.log("QUERY");
       console.log(query);
@@ -157,7 +160,7 @@ function sendQueryToEndpoint(data, dispatch, question){
           console.log("This is the ranked result: ", rankedresult);
           //var jrankedresult = JSON.parse(rankedresult.results.bindings[0].json.value);
 
-          configureResult(query, rankedresult, dispatch, question, namedGraph);
+          configureResult(query, rankedresult, dispatch, namedGraph);
 
         }.bind(this));
 
@@ -167,7 +170,7 @@ function sendQueryToEndpoint(data, dispatch, question){
   });
 }
 
-function configureResult(query, jresult, dispatch, question, namedGraph){
+function configureResult(query, jresult, dispatch, namedGraph){
 
   var count = 0;
   console.log('This is the json result: ', jresult);
@@ -182,7 +185,7 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
     dispatch({
       type: QUESTION_ANSWERING_SUCCESS,
       namedGraph: namedGraph,
-      question: question,
+      // question: question,
       SPARQLquery: query,
       information: information,
       loaded: true,
@@ -244,7 +247,7 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    question: question,
+                    // question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -271,7 +274,7 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    question: question,
+                    //question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -296,7 +299,7 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    question: question,
+                    //question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -314,7 +317,7 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
             dispatch({
               type: QUESTION_ANSWERING_SUCCESS,
               namedGraph: namedGraph,
-              question: question,
+              //question: question,
               SPARQLquery: query,
               information: information,
               loaded: true,
@@ -327,7 +330,7 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
       dispatch({
         type: QUESTION_ANSWERING_SUCCESS,
         namedGraph: namedGraph,
-        question: question,
+        //question: question,
         SPARQLquery: query,
         label: "No results",
         loaded: true,

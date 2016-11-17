@@ -12,7 +12,7 @@ import { actionTypes } from 'react-redux-form';
 
 const initialState = {
   //firstPage: true,
-  location: "Home", //where the user is currently in the website
+  location: "", //where the user is currently in the website
   namedGraph: "",
   question: "", //text question
   information: [],
@@ -38,7 +38,7 @@ const qaReducer = (state = initialState, action) => {
         ...state,
         //firstPage: false,
         namedGraph: action.namedGraph,
-        question: action.question,
+        //question: action.question, //do we need to set this again? Because when there is a click in the sparql componenet, this sets to empty string
         information: action.information.concat(),
         SPARQLquery: action.SPARQLquery,
         loaded: true
