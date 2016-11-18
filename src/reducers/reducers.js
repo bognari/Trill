@@ -21,7 +21,8 @@ const initialState = {
   query: false, //indicates if the answer or the query is displayed
   loaded: false, //indicates if the backend already gave back the answer
   error: false,
-}
+  entities:[],
+  }
 
 const qaReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -42,7 +43,7 @@ const qaReducer = (state = initialState, action) => {
         question: action.question,
         information: action.information.concat(),
         SPARQLquery: action.SPARQLquery,
-        loaded: true
+        loaded: true,
       }
       break;
     }
