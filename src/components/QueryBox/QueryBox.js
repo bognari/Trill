@@ -144,7 +144,12 @@ class QueryBox extends Component {
   handleSubmit(e){
     e.preventDefault();
     this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
-    store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value});
+    console.log("This is the question before dispatch: ", this.props.question);
+    store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value})
+      //.done( function(){
+    //   console.log("This is the question when done dispatch: ", this.props.question);
+    // });
+    console.log("This is the question after dispatch: ", this.props.question);
     Location.push("/question");
   }
 
