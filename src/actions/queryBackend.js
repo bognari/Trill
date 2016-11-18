@@ -10,15 +10,16 @@ export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
-      sendQueryToEndpoint(data, dispatch, question);
+      sendQueryToEndpoint(data, dispatch);
+      //Here we receive the namedGraph (data.graph)
     });
 
     questionresult.fail(function (e) {
-      var information = this.state.information;
-      information.push({
-        message: e.statusCode + " " + e.statusText,
-      });
-      dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
+      // var information = this.state.information;
+      // information.push({
+      //   message: e.statusCode + " " + e.statusText,
+      // });
+      dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
 
     })
   }
@@ -44,7 +45,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
       type: "POST",
       contentType: false,
       success: function (data) {
-        sendQueryToEndpoint(data, dispatch, '');
+        sendQueryToEndpoint(data, dispatch);
       }
     });
 
@@ -60,6 +61,8 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
 
 export function questionanswering(namedGraph, components){
   return function (dispatch) {
+    dispatch({type: QUESTION_ANSWERING_REQUEST});
+
     var form = new FormData();
     form.append("componentlist[]", components);
     form.append("qanaryMessage", JSON.stringify({
@@ -73,7 +76,6 @@ export function questionanswering(namedGraph, components){
       "inGraph": namedGraph
     }));
 
-    dispatch({type: QUESTION_ANSWERING_REQUEST});
     var executeQuery = $.ajax({
       url: "http://wdaqua-qanary.univ-st-etienne.fr/questionanswering",
       type: "POST",
@@ -81,13 +83,13 @@ export function questionanswering(namedGraph, components){
       processData: false,
       contentType: false,
       success: function (data) {
-        sendQueryToEndpoint(data, dispatch, '');
+        sendQueryToEndpoint(data, dispatch);
       }
     });
   }
 }
 
-function sendQueryToEndpoint(data, dispatch, question){
+function sendQueryToEndpoint(data, dispatch){
   var namedGraph = data.graph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
@@ -129,6 +131,7 @@ function sendQueryToEndpoint(data, dispatch, question){
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score:result.results.bindings[i].score.value};
+        //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
       console.log("QUERY");
       console.log(query);
@@ -157,7 +160,7 @@ function sendQueryToEndpoint(data, dispatch, question){
           console.log("This is the ranked result: ", rankedresult);
           //var jrankedresult = JSON.parse(rankedresult.results.bindings[0].json.value);
 
-          configureResult(query, rankedresult, dispatch, question, namedGraph);
+          configureResult(query, rankedresult, dispatch, namedGraph);
 
         }.bind(this));
 
@@ -167,7 +170,7 @@ function sendQueryToEndpoint(data, dispatch, question){
   });
 }
 
-function configureResult(query, jresult, dispatch, question, namedGraph){
+function configureResult(query, jresult, dispatch, namedGraph){
 
   var count = 0;
   console.log('This is the json result: ', jresult);
@@ -182,7 +185,6 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
     dispatch({
       type: QUESTION_ANSWERING_SUCCESS,
       namedGraph: namedGraph,
-      question: question,
       SPARQLquery: query,
       information: information,
       loaded: true,
@@ -236,7 +238,6 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                 if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
                   information.push({
                     label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    loaded: true,
                     answertype: "noinfo",
                     link: value,
                     key: k,
@@ -244,7 +245,6 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -260,7 +260,6 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                     abstract: result.results.bindings[0].abstract.value,
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                    loaded: true,
                     answertype: "map",
                     uri: value,
                     link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
@@ -271,7 +270,6 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -287,7 +285,6 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                     abstract: result.results.bindings[0].abstract.value,
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                    loaded: true,
                     answertype: "detail",
                     uri: value,
                     link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
@@ -296,7 +293,6 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
                     namedGraph: namedGraph,
-                    question: question,
                     SPARQLquery: query,
                     information: information,
                     loaded: true,
@@ -307,14 +303,12 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
           else if (type == "typed-literal" || type == "literal") {
             information.push({
               label: binding[variable].value,
-              loaded: true,
               answertype: "simple",
               key: k,
             })
             dispatch({
               type: QUESTION_ANSWERING_SUCCESS,
               namedGraph: namedGraph,
-              question: question,
               SPARQLquery: query,
               information: information,
               loaded: true,
@@ -324,12 +318,16 @@ function configureResult(query, jresult, dispatch, question, namedGraph){
       })
     }
     else { //if there are no results
+      var information = [];
+      information.push({
+        label: "No results",
+        answertype: "simple",
+      });
       dispatch({
         type: QUESTION_ANSWERING_SUCCESS,
         namedGraph: namedGraph,
-        question: question,
         SPARQLquery: query,
-        label: "No results",
+        information: information,
         loaded: true,
         answertype: "simple"
       });

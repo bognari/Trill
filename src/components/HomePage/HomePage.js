@@ -16,12 +16,6 @@ import AnswerPage from '../AnswerPage';
 
 const title = 'WDAqua';
 
-
-@connect((store) => {
-  return {
-    firstPage: store.qa.firstPage
-  }
-})
 class HomePage extends Component {
 
   static contextTypes = {
@@ -37,14 +31,10 @@ class HomePage extends Component {
   render() {
     return (
       <div>
-        {(this.props.firstPage==true) ?
         <div className={s.container}>
           <img src={require('./../../public/WDAquaLogo.png')} height="96" alt="WDAqua" className={s.logo}/>
           <QueryBox size="70"/>
         </div>
-          :
-          <AnswerPage></AnswerPage>
-        }
       </div>
     );
   }

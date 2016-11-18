@@ -21,6 +21,7 @@ import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 import Entity from '../Entity';
+import Location from '../../core/Location';
 
 @connect((store) => {
   return {
@@ -40,50 +41,61 @@ class AnswerPage extends Component {
   }
 
   render() {
-    //to refactor so don't have to check the same answer type multiple times
-    return (
-      <div className={s.container}>
-        <Loader loaded={this.props.loaded}>
 
-          {(this.props.error) ? <Error>Error</Error> :
-            <div className={s.buttonmenu}>
-              <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-              <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
-              <Entity entity={this.props.entity} sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-            </div>}
+    //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
+    // be empty)
+    if (this.props.question == "") {
+      Location.push("/");
+      return (<div className={s.container}></div>);
+    }
+    else {
+      //to refactor so don't have to check the same answer type multiple times
+      return (
+        <div className={s.container}>
+          <Loader loaded={this.props.loaded}>
 
-          {this.props.information.map(function(info,index) {
-            return (
-              <div className={s.contentholder} >
-                {console.log("render")}
-                 {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
+        {(this.props.error) ? <Error>Error</Error> :
+          <div className={s.buttonmenu}>
+            <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+            <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
+            <Entity entity={this.props.entity} sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+          </div>}
 
-                 {(info.answertype == "noinfo") ? <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
+            {this.props.information.map(function (info, index) {
+              return (
+                <div className={s.contentholder}>
+                  {console.log("render")}
+                  {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
-                {(info.answertype == "detail") ?
-                   <div className={s.leftColumn}>
-                   <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
-                   <Label>{info.abstract}</Label>
-                 </div> : null}
-                {(info.answertype == "map") ?
-                  <div className={s.leftColumn}>
-                    <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
-                    <Label>{info.abstract}</Label>
-                    <MapBox mapid={"map" + info.count} lat={info.lat} long={info.long}></MapBox>
-                  </div> : null}
+                  {(info.answertype == "noinfo") ?
+                    <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
 
-                {(info.answertype == "detail" || info.answertype == "map") ?
-                  <div className={s.rightColumn}>
-                    {(info.image != "") ? <ImageComponent key={"image"+info.key}image={info.image}></ImageComponent>   : null}
-                  <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
-                </div> : null}
+                  {(info.answertype == "detail") ?
+                    <div className={s.leftColumn}>
+                      <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
+                      <Label>{info.abstract}</Label>
+                    </div> : null}
+                  {(info.answertype == "map") ?
+                    <div className={s.leftColumn}>
+                      <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
+                      <Label>{info.abstract}</Label>
+                      <MapBox mapid={"map" + info.key} lat={info.lat} long={info.long}></MapBox>
+                    </div> : null}
 
-              </div>
+                  {(info.answertype == "detail" || info.answertype == "map") ?
+                    <div className={s.rightColumn}>
+                      {(info.image != "") ?
+                        <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
+                      <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
+                    </div> : null}
+
+                </div>
               )
-          })}
-        </Loader>
-      </div>
-    );
+            })}
+          </Loader>
+        </div>
+      );
+    }
   }
 
 

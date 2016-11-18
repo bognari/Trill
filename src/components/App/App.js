@@ -13,7 +13,15 @@ import s from './App.scss';
 import HeaderSearch from '../HeaderSearch';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
+import { connect } from 'react-redux';
+import Location from '../../core/Location';
 
+@connect((store) => {
+  return {
+    // location: store.qa.location,
+    // question: store.qa.question,
+  }
+})
 class App extends Component {
 
   static propTypes = {
@@ -51,7 +59,6 @@ class App extends Component {
   }
 
   // componentDidMount() {
-  //   console.log(window.location.href);
   // }
 
   componentWillUnmount() {
@@ -59,7 +66,11 @@ class App extends Component {
   }
 
   render() {
-    var path = this.props.path;
+//    var path = this.props.path;
+//     if (this.props.location == "/question" && this.props.question == "" ) {
+//       console.log("There was no question, redirecting to home");
+//       Location.push("/");
+//     }
 
     return !this.props.error ? (
       <div>
