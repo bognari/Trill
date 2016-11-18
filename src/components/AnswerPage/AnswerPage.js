@@ -20,6 +20,7 @@ import TopK from '../TopK';
 import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
+import Entity from '../Entity';
 import Location from '../../core/Location';
 
 @connect((store) => {
@@ -53,11 +54,12 @@ class AnswerPage extends Component {
         <div className={s.container}>
           <Loader loaded={this.props.loaded}>
 
-            {(this.props.error) ? <Error>Error</Error> :
-              <div className={s.buttonmenu}>
-                <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-                <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
-              </div>}
+        {(this.props.error) ? <Error>Error</Error> :
+          <div className={s.buttonmenu}>
+            <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+            <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
+            <Entity entity={this.props.entity} sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+          </div>}
 
             {this.props.information.map(function (info, index) {
               return (
