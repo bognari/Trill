@@ -120,7 +120,7 @@ function retriveQuestion(data, dispatch){
           type: "GET",
         success: function(result) {
             console.log(result);
-            dispatch({type: QUESTION_ANSWERING_REQUEST, question: result});
+            dispatch({type: 'SET_QUESTION', question: result});
         },
         error: function (err){
             return err;
