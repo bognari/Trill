@@ -153,33 +153,41 @@ class Entity extends Component {
 
   render() {
     var entities = [];
-    entities[0] = {value:"" , sparqlno:[]};
     var desiredString="";
-    var sparqlnoArray=[];
-    {this.props.sparqlquery.map(function(sparqlquery, index) {
+
+    {this.props.sparqlquery.map(function(sparqlquery, qindex) {
       desiredString = (getFromBetween.get(sparqlquery.query,"<http://dbpedia.org/resource/",">"));
-      var indexofentity = -1;
+      console.log("This is the desired string: ", desiredString);
 
-      for(var i=0; i< entities.length; i++){
-        if(desiredString.toString()==entities[i].value.toString()){
-          indexofentity = i;
+      //Here we take the entities from the queries and construct the entities array to hold these entities
+      //alongside the index of the query from which it was retrieved
+      desiredString.map(function(singlestring){
+        singlestring = singlestring.replace(/_/g, " ");
+        var indexofentity = -1;
+
+        for(var i=0; i< entities.length; i++){
+          if(singlestring==entities[i].value){
+            indexofentity = i;
+            break;
+          }
         }
-      }
 
-      if(indexofentity > -1){
-        var spno = entities[indexofentity].sparqlno;
-        spno[spno.length] = index;
-        entities[indexofentity].sparqlno = spno;
-      }
-      else{
-        var spno = [];
-        spno[0] = index;
-        entities[entities.length] = {value: desiredString, sparqlno:spno};
-      }
+        if(indexofentity > -1){
+          var spno = entities[indexofentity].sparqlno;
+          spno[spno.length] = qindex;
+          entities[indexofentity].sparqlno = spno;
+        }
+        else{
+          var spno = [];
+          spno[0] = qindex;
+          entities[entities.length] = {value: singlestring, sparqlno:spno};
+        }
+      });
 
     })
   }
     console.log("this is the obj entities: ", entities);
+
     return (
       <div className={s.container}>
         <div id="q" onClick={this.handleClick} className={(this.state.query) ? s.sparqlpressed : s.sparql}>
@@ -188,7 +196,6 @@ class Entity extends Component {
         {(this.state.query) ?
           <div id="FiringEntity" className={s.qbox}>
             {entities.map(function (entityitem, index) {
-              if(index==0) return;
               return (
                 <p id={"entity"+index}>
                   <input type="radio" className={s.sparqlmenu} name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entities[index].sparqlno)}> &nbsp; {entityitem.value} </input>
