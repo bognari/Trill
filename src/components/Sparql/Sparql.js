@@ -49,11 +49,11 @@ class Sparql extends Component {
     replacedsparql[0].query = selectedquery;
     replacedsparql[0].score = replacedsparql[0].score+100;
     replacedsparql.splice(index, 1);
-    console.log(replacedsparql);
+    console.log("This is the updated sparql queries list: ",replacedsparql);
 
     var sparqlPart1 = "";
     var sparqlPart2 = "";
-    console.log("this is the index you selected: ", index);
+    //console.log("this is the index you selected: ", index);
 
     for (var i=0; i<Math.min(replacedsparql.length ,30); i++){
       sparqlPart1+=" ?a"+i+" a qa:AnnotationOfAnswerSPARQL . "

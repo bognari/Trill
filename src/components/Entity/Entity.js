@@ -48,7 +48,6 @@ var getFromBetween = {
 
 @connect((store) => {
   return {
-   // entities: store.qa.entities,
   }
 })
 
@@ -98,28 +97,44 @@ class Entity extends Component {
   }
 
   handleClick3(spqno, e){
-    var rplcSPARQL = this.props.sparqlquery ;
-    var selectedquery=[];
-    selectedquery[0] = {query:"" , score:0};
-    var no=0;
-    for(var i=0;i<spqno.length; i++){
-      no = spqno[i];
-      selectedquery=this.props.sparqlquery[no];
-      console.log("this is the sparql we want: ",selectedquery);
-      console.log("this is its number: ",no);
-      rplcSPARQL[i].query = selectedquery.query;
-      rplcSPARQL[i].score = selectedquery.score;
+    // var rplcSPARQL = this.props.sparqlquery ;
+    // var selectedquery=[];
+    // selectedquery[0] = {query:"" , score:0};
+    // var no=0;
+    // for(var i=0;i<spqno.length; i++){
+    //   no = spqno[i];
+    //   selectedquery=this.props.sparqlquery[no];
+    //   console.log("this is the sparql we want: ",selectedquery);
+    //   console.log("this is its number: ",no);
+    //   rplcSPARQL[i].query = selectedquery.query;
+    //   rplcSPARQL[i].score = selectedquery.score;
+    // }
+
+    var replacedsparql = this.props.sparqlquery;
+
+    var selectedq;
+    console.log("These are the indexes of the respective queries to arange: ", spqno);
+    console.log("This is the replacedsparql before any modification: ", replacedsparql);
+
+    for (var i=spqno.length-1; i>=0; i--){//need to go backwards so that when we are placing the queries at the front of the query list, we maintain their order
+      selectedq = {query: this.props.sparqlquery[spqno[i]+spqno.length-1-i].query, score: replacedsparql[0].score + 100};
+      console.log("THis is the selectedq index: ", spqno[i]);
+      console.log("This is the index we are retrieving: ", spqno[i]+spqno.length-1-i);
+      console.log("THis is the selectedq: ", this.props.sparqlquery[spqno[i]+spqno.length-1-i]);
+      replacedsparql.unshift(selectedq);
+      replacedsparql.splice(spqno[i]+spqno.length-i,1);
+      console.log("This is the replacedsparql at each loop: ", replacedsparql);
     }
 
     var sparqlPart1 = "";
     var sparqlPart2 = "";
-    for (var i=0; i<Math.min(rplcSPARQL.length ,30); i++){
+    for (var i=0; i<Math.min(replacedsparql.length ,30); i++){
       sparqlPart1+=" ?a"+i+" a qa:AnnotationOfAnswerSPARQL . "
         + "  ?a"+i+" oa:hasTarget <URIAnswer> . "
-        + "  ?a"+i+" oa:hasBody \"" +  rplcSPARQL[i].query.replace("\n", " ") + "\" ;"
+        + "  ?a"+i+" oa:hasBody \"" +  replacedsparql[i].query.replace("\n", " ") + "\" ;"
         + "     oa:annotatedBy <www.wdaqua.eu> ; "
         + "         oa:annotatedAt ?time ; "
-        + "         qa:hasScore "+ rplcSPARQL[i].score + " . \n";
+        + "         qa:hasScore "+ replacedsparql[i].score + " . \n";
       sparqlPart2+= " BIND (IRI(str(RAND())) AS ?a"+i+") . \n";
     }
 
@@ -157,7 +172,6 @@ class Entity extends Component {
 
     {this.props.sparqlquery.map(function(sparqlquery, qindex) {
       desiredString = (getFromBetween.get(sparqlquery.query,"<http://dbpedia.org/resource/",">"));
-      console.log("This is the desired string: ", desiredString);
 
       //Here we take the entities from the queries and construct the entities array to hold these entities
       //alongside the index of the query from which it was retrieved
@@ -174,8 +188,10 @@ class Entity extends Component {
 
         if(indexofentity > -1){
           var spno = entities[indexofentity].sparqlno;
-          spno[spno.length] = qindex;
-          entities[indexofentity].sparqlno = spno;
+          if(spno.indexOf(qindex) == -1){//if there isn't already a reference to this query
+            spno[spno.length] = qindex;
+            entities[indexofentity].sparqlno = spno;
+          }
         }
         else{
           var spno = [];
@@ -198,7 +214,7 @@ class Entity extends Component {
             {entities.map(function (entityitem, index) {
               return (
                 <p id={"entity"+index}>
-                  <input type="radio" className={s.sparqlmenu} name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entities[index].sparqlno)}> &nbsp; {entityitem.value} </input>
+                  <input type="radio" className={s.sparqlmenu} name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}> &nbsp; {entityitem.value} </input>
                 </p>)
             }.bind(this))
             }

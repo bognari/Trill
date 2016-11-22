@@ -130,7 +130,7 @@ function sendQueryToEndpoint(data, dispatch){
     success: function(result) {
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
-        query[i] = {query:result.results.bindings[i].sparql.value , score:result.results.bindings[i].score.value};
+        query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
         //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
       console.log("QUERY");
@@ -150,15 +150,9 @@ function sendQueryToEndpoint(data, dispatch){
         "}" +
         "ORDER BY DESC(?v) LIMIT 1000";
 
-      console.log("ranked sparql query: ", rankedSparql);
-
       var rankedrequest = $.get(
         "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
         function (rankedresult) {
-
-          console.log("This is the unranked result: ", result);
-          console.log("This is the ranked result: ", rankedresult);
-          //var jrankedresult = JSON.parse(rankedresult.results.bindings[0].json.value);
 
           configureResult(query, rankedresult, dispatch, namedGraph);
 
@@ -173,7 +167,7 @@ function sendQueryToEndpoint(data, dispatch){
 function configureResult(query, jresult, dispatch, namedGraph){
 
   var count = 0;
-  console.log('This is the json result: ', jresult);
+  console.log('This is the json result (ranked): ', jresult);
 
   //check if it is an ask query
   if (jresult.hasOwnProperty("boolean")) {
