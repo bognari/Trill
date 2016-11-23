@@ -32,6 +32,7 @@ import Location from '../../core/Location';
     query: store.qa.query,                //indicates if the answer or the query is displayed
     loaded: store.qa.loaded,              //indicates if the backend already gave back the answer
     error: store.qa.error,
+    qinitiated: store.qa.qinitiated,
   }
 })
 class AnswerPage extends Component {
@@ -44,7 +45,7 @@ class AnswerPage extends Component {
 
     //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
     // be empty)
-    if (this.props.question == "") {
+    if (this.props.qinitiated == false) {
       Location.push("/");
       return (<div className={s.container}></div>);
     }

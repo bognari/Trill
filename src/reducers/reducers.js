@@ -3,7 +3,7 @@
  */
 
 import { combineReducers } from 'redux'
-import { ADD_QUESTION, FETCH_QUESTION_FULLFILLED, FIRST_PAGE } from '../actions/setQuestion'
+import { SET_QUESTION} from '../actions/setQuestion'
 import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE } from '../actions/queryBackend'
 import { ROUTE_CHANGE } from '../routes';
 
@@ -19,6 +19,7 @@ const initialState = {
   query: false, //indicates if the answer or the query is displayed
   loaded: false, //indicates if the backend already gave back the answer
   error: false,
+  qinitiated: false,
   }
 
 const qaReducer = (state = initialState, action) => {
@@ -28,6 +29,7 @@ const qaReducer = (state = initialState, action) => {
         ...state,
         question: action.question,
         loaded: false,
+        qinitiated: true,
       }
       break;
     }
@@ -35,7 +37,6 @@ const qaReducer = (state = initialState, action) => {
       return {
         ...state,
         namedGraph: action.namedGraph,
-        //question: action.question, //do we need to set this again? Because when there is a click in the sparql componenet, this sets to empty string
         information: action.information.concat(),
         SPARQLquery: action.SPARQLquery,
         loaded: true,
@@ -57,6 +58,13 @@ const qaReducer = (state = initialState, action) => {
         ...state,
         location: action.location,
       }
+      break;
+    }
+    case SET_QUESTION: {
+      return {
+        ...state,
+        question: action.question,
+    }
       break;
     }
   }

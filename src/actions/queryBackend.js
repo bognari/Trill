@@ -2,7 +2,7 @@
  * Created by Dennis on 11/11/16.
  */
 
-export const QUESTION_ANSWERING_REQUEST = 'START_QUESTION_ANSWERING';
+export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS'
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE'
 
@@ -27,7 +27,7 @@ export function startQuestionAnsweringWithTextQuestion(question){
 
 export function startQuestionAnsweringWithAudioQuestion(mp3file){
   return function (dispatch) {
-    dispatch({type: QUESTION_ANSWERING_REQUEST});
+    dispatch({type: QUESTION_ANSWERING_REQUEST, question: ''});
     var form  = new FormData();
     //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
     form.append("question", mp3file, "recording.mp3");
@@ -35,7 +35,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
 
     //maybe should check if mpfile is proper
 
-    console.log("mp3 file :", mpfile);
+    console.log("mp3 file :", mp3file);
     console.log("Contents of form: ", form);
 
     var questionresult = $.ajax({
@@ -45,6 +45,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
       type: "POST",
       contentType: false,
       success: function (data) {
+        retriveQuestion(data, dispatch);
         sendQueryToEndpoint(data, dispatch);
       }
     });
@@ -83,10 +84,54 @@ export function questionanswering(namedGraph, components){
       processData: false,
       contentType: false,
       success: function (data) {
+        retriveQuestion(data);
+        //retriveQuestion(data, dispatch);
         sendQueryToEndpoint(data, dispatch);
       }
     });
   }
+}
+
+function retriveQuestion(data, dispatch){
+  console.log("Retrieve question text");
+  var namedGraph = data.graph.toString();
+  var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
+    + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
+    + "SELECT ?uriText "
+    + "FROM <"+  namedGraph + "> "
+    + "WHERE { "
+    + "  ?c a qa:AnnotationOfTextRepresentation . "
+    + "  ?c oa:hasBody ?uriText . "
+    + "}";
+  $.ajax({
+    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
+    type: "GET",
+    beforeSend: function(xhr){
+      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+    },
+    success: function(result) {
+      console.log("RESULT");
+      console.log(result);
+      var uriText = result.results.bindings[0].uriText.value;
+      console.log(uriText);
+      uriText=uriText.replace("http://qanaryhost:8080/question/","http://wdaqua-qanary.univ-st-etienne.fr/question/")+"/raw";
+      //Dereference the uri and retrieve the text
+      $.ajax({
+          url: uriText,
+          type: "GET",
+        success: function(result) {
+            console.log(result);
+            dispatch({type: 'SET_QUESTION', question: result});
+        },
+        error: function (err){
+            return err;
+          }})
+    },
+    error: function (err){
+      return err;
+    }
+  })
 }
 
 function sendQueryToEndpoint(data, dispatch){
@@ -103,8 +148,6 @@ function sendQueryToEndpoint(data, dispatch){
     + "  ?b a qa:AnnotationOfAnswerJSON . "
     + "  OPTIONAL {?b oa:hasBody ?json . } "
     + "  ?b oa:annotatedAt ?time2 . "
-    + "  ?c a qa:AnnotationOfTextRepresentation . "
-    + "  ?c oa:hasBody ?uriText . "
     + "  { "
     + "   select ?time1 { "
     + "    ?a a qa:AnnotationOfAnswerSPARQL . "
