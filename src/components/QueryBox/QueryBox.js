@@ -38,6 +38,7 @@ class QueryBox extends Component {
     };
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleÍnput = this.handleÍnput.bind(this);
   }
 
   handleClose() {
@@ -156,12 +157,16 @@ class QueryBox extends Component {
     Location.push("/question");
   }
 
+  handleÍnput(e){
+    this.props.dispatch(setQuestion(e.target.value));
+  }
+
   render() {
     console.log(this.state.text);
     return (
       <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
           <div>
-            <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} defaultValue={this.props.question}/>
+            <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
             <div id="listening" className={s.listening}><p>Listening... </p></div>
             <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
             <button id="stop" type="button" className={s.stop}>Done</button>
