@@ -4,22 +4,39 @@
 }
 
 .container {
-  overflow: hidden;
-  margin-bottom: 10px;
+  max-width: $max-content-width;
+  display: inline-block;
+  float: right;
 }
-
 
 .qbox {
-  border-top-right-radius: 20px;
   border: 2px solid #f5f5f5;
-  padding: 10px 20px 10px 20px;
-  max-width: 1000px;
-  height: 200px;
-  overflow-y: scroll;
+  padding: 10px;
+  height: 150px + 1em;
+  overflow-x: scroll;
+  margin-bottom: 10px;
+  background-color: $background-gray;
 }
 
-.sparqlmenu {
+.entitybox {
+  border: 2px solid #f5f5f5;
+  padding: 10px;
+  margin-right: 10px;
+  display: inline-block;
+  background-color: white;
+}
 
+.entitybox:hover {
+  cursor: pointer;
+  border-color: #e8e8e8;
+}
+
+.entitybox p {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: large;
+  font-weight: normal;
 }
 
 .sparql,
@@ -28,14 +45,13 @@
   font-size: large;
   padding: 7px;
   border: 2px solid $background-gray;
+  border-radius: 25px;
   display: block;
-  border-radius: 100%;
-  width: 25px;
   height: 25px;
   text-align: center;
   font-weight: 400;
   float: right;
-  margin-left: 10px;
+  margin: 0 0 10px 10px;
 }
 
 .sparql{
@@ -50,4 +66,8 @@
 .sparqlpressed:hover{
   cursor: pointer;
   background-color: $background-gray;
+}
+
+.wrapfloat{
+  overflow: hidden;
 }

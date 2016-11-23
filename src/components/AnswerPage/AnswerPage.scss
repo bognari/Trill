@@ -41,8 +41,12 @@
   margin-bottom: 30px;
 }
 
-.buttonmenu {
+.feedback {
   width: 100%;
   display: inline-block;
   margin-bottom: 10px;
+}
+
+.buttonmenu {
+  overflow: hidden;
 }

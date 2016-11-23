@@ -52,13 +52,16 @@ class AnswerPage extends Component {
       //to refactor so don't have to check the same answer type multiple times
       return (
         <div className={s.container}>
-          <Loader loaded={this.props.loaded}>
+
+          <Loader loaded={this.props.loaded} color="#333">
 
         {(this.props.error) ? <Error>Error</Error> :
-          <div className={s.buttonmenu}>
+          <div className={s.feedback}>
+            <div className={s.buttonmenu}>
             <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+            <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+            </div>
             <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
-            <Entity entity={this.props.entity} sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
           </div>}
 
             {this.props.information.map(function (info, index) {

@@ -64,6 +64,7 @@ class Entity extends Component {
     this.state = {
       query: false, //indicates if the answer or the query is displayed
       selectedQuery: false,
+      //entities: [],
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -71,25 +72,6 @@ class Entity extends Component {
   static contextTypes = {
     owner: PropTypes.element,
   }
-
-  /*groupingEntities(){
-    var entities = [];
-    entities.value = "";
-    entities.sparlqlno = [];
-    var desiredString="";
-    {this.props.sparqlquery.map(function(sparqlquery) {
-      desiredString = sparqlquery.query.substring(str.lastIndexOf("/") + 1, str.lastIndexOf(">"));
-      for(var i=0; i<entities.length; i++){
-        if(desiredString==entities[i].value){
-          entities[i].sparlqlno[sparlqlno.length]=index;
-        }else{
-          entities[entities.length].value=desiredString;
-          entities[entities.length].sparqlno[0]=index;
-        }
-      }
-    })
-  }
-  }*/
 
   handleClick() {
     this.setState({query: !this.state.query}); //on click switch from query to answer
@@ -110,7 +92,7 @@ class Entity extends Component {
     //   rplcSPARQL[i].score = selectedquery.score;
     // }
 
-    var replacedsparql = this.props.sparqlquery;
+    var replacedsparql = this.props.sparqlquery;//note: the changes made to replacedsparql, will also happen to sparqlquery
 
     var selectedq;
     console.log("These are the indexes of the respective queries to arange: ", spqno);
@@ -137,7 +119,6 @@ class Entity extends Component {
         + "         qa:hasScore "+ replacedsparql[i].score + " . \n";
       sparqlPart2+= " BIND (IRI(str(RAND())) AS ?a"+i+") . \n";
     }
-
 
     var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
       + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
@@ -166,9 +147,14 @@ class Entity extends Component {
     })
   }
 
+  componentDidMount() {
+    //get image for each entity
+  }
+
   render() {
     var entities = [];
     var desiredString="";
+    var entitylink="";
 
     {this.props.sparqlquery.map(function(sparqlquery, qindex) {
       desiredString = (getFromBetween.get(sparqlquery.query,"<http://dbpedia.org/resource/",">"));
@@ -176,6 +162,7 @@ class Entity extends Component {
       //Here we take the entities from the queries and construct the entities array to hold these entities
       //alongside the index of the query from which it was retrieved
       desiredString.map(function(singlestring){
+        entitylink = "<http://dbpedia.org/resource/"+singlestring+">";
         singlestring = singlestring.replace(/_/g, " ");
         var indexofentity = -1;
 
@@ -196,26 +183,41 @@ class Entity extends Component {
         else{
           var spno = [];
           spno[0] = qindex;
-          entities[entities.length] = {value: singlestring, sparqlno:spno};
+          entities[entities.length] = {value: singlestring, entity: entitylink, sparqlno:spno};
         }
-      });
+      }.bind(this));
 
-    })
+    }.bind(this));
   }
+
     console.log("this is the obj entities: ", entities);
 
     return (
       <div className={s.container}>
-        <div id="q" onClick={this.handleClick} className={(this.state.query) ? s.sparqlpressed : s.sparql}>
-          Q
+        <div className={s.wrapfloat}>
+          <div id="q" onClick={this.handleClick} className={(this.state.query) ? s.sparqlpressed : s.sparql}>
+            &nbsp;Did you mean...&nbsp;
+          </div>
         </div>
         {(this.state.query) ?
           <div id="FiringEntity" className={s.qbox}>
             {entities.map(function (entityitem, index) {
+              //get image for each entity
+              var sparqlQuery = "select ?image where { OPTIONAL{ " + entityitem.entity + " dbo:thumbnail ?image . } } ";
+              $.get(
+                "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+                function (result) {
+                  document.querySelector("#entityimage" + index).src = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
+                }.bind(this));
+
               return (
-                <p id={"entity"+index}>
-                  <input type="radio" className={s.sparqlmenu} name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}> &nbsp; {entityitem.value} </input>
-                </p>)
+                <div className={s.entitybox} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}>
+                  <image id={"entityimage"+index} src="" height="100" alt={entityitem.value}/>
+                  <p id={"entity"+index}>
+                    {/*<input type="radio" name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}/> &nbsp; */}
+                    {entityitem.value}
+                  </p>
+                </div>)
             }.bind(this))
             }
           </div>: null
