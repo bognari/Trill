@@ -35,15 +35,11 @@ class QueryBox extends Component {
     super(props);
     this.state = {
       voicequery: "", //indicates the query given by voice recording if any
+      audio: false, //if the user is using audio feature to give question
     };
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleÍnput = this.handleÍnput.bind(this);
-  }
-
-  handleClose() {
-    this.forceUpdate();
-    document.getElementById('querybox').reset();
   }
 
   componentDidMount() {
@@ -55,10 +51,16 @@ class QueryBox extends Component {
       console.log('recording started');
       //navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
 
+      var getUserMedia = navigator.mediaDevices.getUserMedia;
+
       //Get permission from browser to use microphone
       navigator.mediaDevices.getUserMedia({ audio: true })
         .then(function(stream) {
           console.log('Permission granted');
+
+          // this.setState({audio: true});
+          // console.log("This is the audio state: ", this.state.audio);
+
           document.querySelector('#record').style = "display: none";
           document.querySelector('#querytext').style = "display: none";
           document.querySelector('#go').style = "display: none";
@@ -79,7 +81,6 @@ class QueryBox extends Component {
             //document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
             console.log("Wav url: ", blobURL);
             //mediaRecorder.save();
-
 
             var arrayBuffer;
             var fileReader = new FileReader();
@@ -135,15 +136,20 @@ class QueryBox extends Component {
     document.querySelector('#stop').onclick = function(){
       console.log('Stop clicked');
       mediaRecorder.stop();
+      document.querySelector('#record').style = "display: inline-block";
+      document.querySelector('#querytext').style = "display: inline-block";
+      document.querySelector('#go').style = "display: inline-block";
+      document.querySelector('#listening').style = "display: none";
+      document.querySelector('#stop').style = "display: none";
+      document.querySelector('#cancel').style = "display: none";
 
     }
   }
 
-  //handleClick(){
-    // console.log(this.props);
-    // console.log(this.state.text);
-    //this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.state.text));
-  //}
+  handleClose() {
+    this.forceUpdate();
+    document.getElementById('querybox').reset();
+  }
 
   handleSubmit(e){
     e.preventDefault();
@@ -165,15 +171,20 @@ class QueryBox extends Component {
     console.log(this.state.text);
     return (
       <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
-          <div>
-            <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
-            <div id="listening" className={s.listening}><p>Listening... </p></div>
-            <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
-            <button id="stop" type="button" className={s.stop}>Done</button>
-            <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
+            {/*{(this.state.audio) ?*/}
+              <div>
+                <div id="listening" className={s.listening}><p>Listening... </p></div>
+                <button id="stop" type="button" className={s.stop}>Done</button>
+                <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
+              </div>
+              {/*:*/}
+              <div>
+                <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
+                <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
+                <input id="go" type="submit" className={s.space} value="Go"/>
+              </div>
+            {/*}*/}
             {/*<div onClick={this.handleClose} id="close">x</div>*/}
-            <input id="go" type="submit" className={s.space} value="Go"/>
-          </div>
         </form>
     );
   }

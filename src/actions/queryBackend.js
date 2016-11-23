@@ -176,8 +176,8 @@ function sendQueryToEndpoint(data, dispatch){
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
         //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
-      console.log("QUERY");
-      console.log(query);
+      // console.log("QUERY");
+      // console.log(query);
       var jresult = JSON.parse(result.results.bindings[0].json.value);
       //---ranking--- is 2 requests necessary?
 
