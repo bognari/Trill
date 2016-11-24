@@ -46,6 +46,7 @@ class QueryBox extends Component {
 
     var MediaStreamRecorder = require('msr');
     var mediaRecorder;
+    var stopevent;
 
     document.querySelector('#record').onclick = function(){
       console.log('recording started');
@@ -76,57 +77,7 @@ class QueryBox extends Component {
           mediaRecorder.start(60000); //maximum length should be a 60s recording
 
           mediaRecorder.ondataavailable = function (blob) {
-
-            // POST/PUT "Blob" using FormData/XHR2
-            var blobURL = URL.createObjectURL(blob);
-            //document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
-            console.log("Wav url: ", blobURL);
-            //mediaRecorder.save();
-
-            var arrayBuffer;
-            var fileReader = new FileReader();
-
-            var that=this;
-            fileReader.onload = function() {
-              arrayBuffer = this.result;
-              console.log('onload reached, arraybuf:', arrayBuffer);
-
-              var buffer = new Int16Array(arrayBuffer);
-              console.log('int16array: ', buffer);
-
-              var mp3encoder = new lamejs.Mp3Encoder(1, 44100, 128); //mono 44.1khz (samplerate) encode to 128kbps
-              var mp3Tmp = mp3encoder.encodeBuffer(buffer); //encode mp3
-              var mp3Data = [];
-
-               //Push encode buffer to mp3Data variable
-               mp3Data.push(mp3Tmp);
-
-               // Get end part of mp3
-               mp3Tmp = mp3encoder.flush();
-
-              var mpblob = new Blob(mp3Data, {type: 'audio/mp3'});
-              var url = URL.createObjectURL(mpblob);
-              console.log('MP3 URl: ', url);
-              console.log(mpblob);
-
-              // var mparrayBuffer;
-              // var mpfileReader = new FileReader();
-
-              // mpfileReader.onload = function() {
-              //   mparrayBuffer = this.result;
-              //   console.log('mp onload reached, arraybuf:', mparrayBuffer);
-              //
-              //   var mpbuffer = new Int16Array(mparrayBuffer);
-              //   console.log('mp is it same????......int16array: ', mpbuffer);
-
-                //from here is a test to understand the audio service
-
-              var mpfile = new File([mpblob], "recording.mp3");
-              that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
-              Location.push("/question");
-
-             }
-            fileReader.readAsArrayBuffer(blob);
+            processStop(blob, stream, this);
           }.bind(this);
         }.bind(this))
         .catch(function(error) {
@@ -136,6 +87,7 @@ class QueryBox extends Component {
 
     document.querySelector('#stop').onclick = function(){
       console.log('Stop clicked');
+      stopevent = null;
       mediaRecorder.stop();
       document.querySelector('#record').style = "display: inline-block";
       document.querySelector('#querytext').style = "display: inline-block";
@@ -147,9 +99,9 @@ class QueryBox extends Component {
 
     document.querySelector('#cancel').onclick = function(e){
       console.log("This clicked me first: ", e);
-      mediaRecorder.pause();
+      stopevent = e;
+      mediaRecorder.stop();
       mediaRecorder = null;
-      //mediaRecorder.clear();
       document.querySelector('#record').style = "display: inline-block";
       document.querySelector('#querytext').style = "display: inline-block";
       document.querySelector('#go').style = "display: inline-block";
@@ -157,6 +109,63 @@ class QueryBox extends Component {
       document.querySelector('#stop').style = "display: none";
       document.querySelector('#cancel').style = "display: none";
 
+    }
+
+    function processStop(blob, stream, comp){
+      stream.stop();
+
+      if(stopevent == null){//check if cancel was used to stop the recorder. If not, then proceed
+      // POST/PUT "Blob" using FormData/XHR2
+      var blobURL = URL.createObjectURL(blob);
+      //document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
+      console.log("Wav url: ", blobURL);
+      //mediaRecorder.save();
+
+      var arrayBuffer;
+      var fileReader = new FileReader();
+
+      var that=comp;
+      fileReader.onload = function() {
+        arrayBuffer = this.result;
+        console.log('onload reached, arraybuf:', arrayBuffer);
+
+        var buffer = new Int16Array(arrayBuffer);
+        console.log('int16array: ', buffer);
+
+        var mp3encoder = new lamejs.Mp3Encoder(1, 44100, 128); //mono 44.1khz (samplerate) encode to 128kbps
+        var mp3Tmp = mp3encoder.encodeBuffer(buffer); //encode mp3
+        var mp3Data = [];
+
+        //Push encode buffer to mp3Data variable
+        mp3Data.push(mp3Tmp);
+
+        // Get end part of mp3
+        mp3Tmp = mp3encoder.flush();
+
+        var mpblob = new Blob(mp3Data, {type: 'audio/mp3'});
+        var url = URL.createObjectURL(mpblob);
+        console.log('MP3 URl: ', url);
+        console.log(mpblob);
+
+        // var mparrayBuffer;
+        // var mpfileReader = new FileReader();
+
+        // mpfileReader.onload = function() {
+        //   mparrayBuffer = this.result;
+        //   console.log('mp onload reached, arraybuf:', mparrayBuffer);
+        //
+        //   var mpbuffer = new Int16Array(mparrayBuffer);
+        //   console.log('mp is it same????......int16array: ', mpbuffer);
+
+        //from here is a test to understand the audio service
+
+        var mpfile = new File([mpblob], "recording.mp3");
+        that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
+        Location.push("/question");
+
+      }
+      fileReader.readAsArrayBuffer(blob);
+    }
     }
   }
 
