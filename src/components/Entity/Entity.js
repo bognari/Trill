@@ -212,7 +212,8 @@ class Entity extends Component {
 
               return (
                 <div className={s.entitybox} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}>
-                  <image id={"entityimage"+index} src="" height="100" alt={entityitem.value}/>
+
+                  <image id={"entityimage"+index} src="" height="100" alt={entityitem.value} className={s.eimage}/>
                   <p id={"entity"+index}>
                     {/*<input type="radio" name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}/> &nbsp; */}
                     {entityitem.value}

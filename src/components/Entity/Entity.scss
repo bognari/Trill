@@ -12,11 +12,11 @@
 .qbox {
   border: 2px solid #f5f5f5;
   padding: 10px;
+  height: 150px;
   height: -moz-calc(150px + 1em);
   height: -webkit-calc(150px + 1em);
   height: -o-calc(150px + 1em);
   height: calc(150px + 1em);
-  //height: 150px + 1em;
   overflow-x: scroll;
   margin-bottom: 10px;
   background-color: $background-gray;
@@ -28,6 +28,7 @@
   margin-right: 10px;
   display: inline-block;
   background-color: white;
+  min-width: 60px;
 }
 
 .entitybox:hover {
@@ -41,6 +42,12 @@
   margin-bottom: 0;
   font-size: large;
   font-weight: normal;
+}
+
+.eimage {
+  display: block;
+  margin: auto;
+  max-width: 200px;
 }
 
 .sparql,

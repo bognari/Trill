@@ -76,6 +76,7 @@ class QueryBox extends Component {
           mediaRecorder.start(60000); //maximum length should be a 60s recording
 
           mediaRecorder.ondataavailable = function (blob) {
+
             // POST/PUT "Blob" using FormData/XHR2
             var blobURL = URL.createObjectURL(blob);
             //document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
@@ -142,6 +143,19 @@ class QueryBox extends Component {
       document.querySelector('#listening').style = "display: none";
       document.querySelector('#stop').style = "display: none";
       document.querySelector('#cancel').style = "display: none";
+    }
+
+    document.querySelector('#cancel').onclick = function(e){
+      console.log("This clicked me first: ", e);
+      mediaRecorder.pause();
+      mediaRecorder = null;
+      //mediaRecorder.clear();
+      document.querySelector('#record').style = "display: inline-block";
+      document.querySelector('#querytext').style = "display: inline-block";
+      document.querySelector('#go').style = "display: inline-block";
+      document.querySelector('#listening').style = "display: none";
+      document.querySelector('#stop').style = "display: none";
+      document.querySelector('#cancel').style = "display: none";
 
     }
   }
@@ -175,7 +189,8 @@ class QueryBox extends Component {
               <div>
                 <div id="listening" className={s.listening}><p>Listening... </p></div>
                 <button id="stop" type="button" className={s.stop}>Done</button>
-                <a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>
+                {/*<a id="cancel" href={Location.createHref("/")} className={s.cancel}>x</a>*/}
+                <button id="cancel" className={s.cancel}>x</button>
               </div>
               {/*:*/}
               <div>
