@@ -6,6 +6,7 @@ import { combineReducers } from 'redux'
 import { SET_QUESTION} from '../actions/setQuestion'
 import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE } from '../actions/queryBackend'
 import { ROUTE_CHANGE } from '../routes';
+import { SET_AUDIO } from '../components/QueryBox/QueryBox';
 
 import { actionTypes } from 'react-redux-form';
 
@@ -19,7 +20,7 @@ const initialState = {
   query: false, //indicates if the answer or the query is displayed
   loaded: false, //indicates if the backend already gave back the answer
   error: false,
-  qinitiated: false,
+  audiofile: null,
   }
 
 const qaReducer = (state = initialState, action) => {
@@ -27,9 +28,8 @@ const qaReducer = (state = initialState, action) => {
     case QUESTION_ANSWERING_REQUEST: {
       return {
         ...state,
-        question: action.question,
+        //question: action.question,
         loaded: false,
-        qinitiated: true,
       }
       break;
     }
@@ -57,6 +57,7 @@ const qaReducer = (state = initialState, action) => {
       return {
         ...state,
         location: action.location,
+        question: action.question,
       }
       break;
     }
@@ -65,6 +66,13 @@ const qaReducer = (state = initialState, action) => {
         ...state,
         question: action.question,
     }
+      break;
+    }
+    case SET_AUDIO: {
+      return {
+        ...state,
+        audiofile: action.audiofile,
+      }
       break;
     }
   }

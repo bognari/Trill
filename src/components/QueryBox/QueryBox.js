@@ -19,6 +19,8 @@ import {setQuestion} from '../../actions/setQuestion';
 import store from '../../stores'
 import { QUESTION_ANSWERING_REQUEST } from '../../actions/queryBackend';
 
+export const SET_AUDIO = 'SET_AUDIO';
+
 @connect((store) => {
   return {
     question: store.qa.question,
@@ -112,7 +114,7 @@ class QueryBox extends Component {
     }
 
     function processStop(blob, stream, comp){
-      stream.stop();
+      stream.stop();//stop capturing
 
       if(stopevent == null){//check if cancel was used to stop the recorder. If not, then proceed
       // POST/PUT "Blob" using FormData/XHR2
@@ -160,9 +162,9 @@ class QueryBox extends Component {
         //from here is a test to understand the audio service
 
         var mpfile = new File([mpblob], "recording.mp3");
-        that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
+        // that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
+        store.dispatch({type: SET_AUDIO, audiofile: mpfile});
         Location.push("/question");
-
       }
       fileReader.readAsArrayBuffer(blob);
     }
@@ -176,14 +178,13 @@ class QueryBox extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
     //console.log("This is the question before dispatch: ", this.props.question);
     //store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value})
       //.done( function(){
     //   console.log("This is the question when done dispatch: ", this.props.question);
     // });
     //console.log("This is the question after dispatch: ", this.props.question);
-    Location.push("/question");
+    Location.push("/question?query="+document.querySelector("#querytext").value);
   }
 
   handleÍnput(e){
@@ -208,7 +209,6 @@ class QueryBox extends Component {
                 <input id="go" type="submit" className={s.space} value="Go"/>
               </div>
             {/*}*/}
-            {/*<div onClick={this.handleClose} id="close">x</div>*/}
         </form>
     );
   }

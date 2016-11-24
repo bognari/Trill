@@ -2,13 +2,16 @@
  * Created by Dennis on 11/11/16.
  */
 
+import Location from '../core/Location';
+
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS'
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE'
 
 export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
-    dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
+    //dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
+    dispatch({type: QUESTION_ANSWERING_REQUEST});
     var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
       sendQueryToEndpoint(data, dispatch);
       //Here we receive the namedGraph (data.graph)
@@ -123,6 +126,7 @@ function retriveQuestion(data, dispatch){
         success: function(result) {
             console.log(result);
             dispatch({type: 'SET_QUESTION', question: result});
+          //Location.push("/question?query="+result);
         },
         error: function (err){
             return err;

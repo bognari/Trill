@@ -22,9 +22,12 @@ import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 import Entity from '../Entity';
 import Location from '../../core/Location';
+import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
+import {setQuestion} from '../../actions/setQuestion';
 
 @connect((store) => {
   return {
+    location: store.qa.location,
     question: store.qa.question,
     namedGraph: store.qa.namedGraph,
     information: store.qa.information,
@@ -32,7 +35,7 @@ import Location from '../../core/Location';
     query: store.qa.query,                //indicates if the answer or the query is displayed
     loaded: store.qa.loaded,              //indicates if the backend already gave back the answer
     error: store.qa.error,
-    qinitiated: store.qa.qinitiated,
+    audiofile: store.qa.audiofile,
   }
 })
 class AnswerPage extends Component {
@@ -41,15 +44,26 @@ class AnswerPage extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    console.log("This is the location ..............: ", Location);
+
+    if(this.props.audiofile != null){
+      this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
+    }
+    else{
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+    }
+  }
+
   render() {
 
     //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
     // be empty)
-    if (this.props.qinitiated == false) {
-      Location.push("/");
-      return (<div className={s.container}></div>);
-    }
-    else {
+    // if (this.props.qinitiated == false) {
+    //   Location.push("/");
+    //   return (<div className={s.container}></div>);
+    // }
+    // else {
       //to refactor so don't have to check the same answer type multiple times
       return (
         <div className={s.container}>
@@ -99,7 +113,7 @@ class AnswerPage extends Component {
           </Loader>
         </div>
       );
-    }
+    //}
   }
 
 
