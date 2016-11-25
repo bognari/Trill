@@ -169,6 +169,22 @@ class QueryBox extends Component {
       fileReader.readAsArrayBuffer(blob);
     }
     }
+
+
+    document.querySelector('#record').style = "display: none";
+    //Hacks to determine the browser, mik working only for firefox and chrome
+    if (typeof window !== 'undefined') {
+      if (typeof window.chrome !== 'undefined') {
+        var isChrome = !!window.chrome && !!window.chrome.webstore;
+        if (isChrome){
+          document.querySelector('#record').style = "display: inline-block";
+        }
+      }
+    }
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+    if (isFirefox){
+      document.querySelector('#record').style = "display: inline-block";
+    }
   }
 
   handleClose() {
@@ -198,20 +214,6 @@ class QueryBox extends Component {
   }
 
   render() {
-    var mic =false;
-    //Hacks to determine the browser, mik working only for firefox and chrome
-    if (typeof window !== 'undefined') {
-      if (typeof window.chrome !== 'undefined') {
-        var isChrome = !!window.chrome && !!window.chrome.webstore;
-        if (isChrome){
-          mic=true;
-        }
-      }
-    }
-    var isFirefox = typeof InstallTrigger !== 'undefined';
-    if (isFirefox){
-      mic=true;
-    }
 
     console.log(this.state.text);
     return (
@@ -226,7 +228,7 @@ class QueryBox extends Component {
               {/*:*/}
               <div>
                 <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
-                {(mic==true) ? <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : null}
+                <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
                 <input id="go" type="submit" className={s.space} value="Go"/>
               </div>
             {/*}*/}
