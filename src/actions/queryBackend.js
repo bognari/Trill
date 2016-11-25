@@ -296,11 +296,10 @@ function configureResult(query, jresult, dispatch, namedGraph){
                 else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
 
                   console.log("Label: " + result.results.bindings[0].label.value);
-                  //console.log("Abstract: " + (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "");
 
                   information.push({
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "...",
+                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "",
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "map",
                     uri: value,
@@ -321,11 +320,10 @@ function configureResult(query, jresult, dispatch, namedGraph){
                 else {//case of regular detailed answer
 
                   console.log("Label: " + result.results.bindings[0].label.value);
-                  //console.log("Abstract: " + (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "...");
 
                   information.push({
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "...",
+                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "",
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "detail",
                     uri: value,
