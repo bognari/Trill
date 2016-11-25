@@ -5,13 +5,14 @@
 import Location from '../core/Location';
 
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
-export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS'
-export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE'
+export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
+export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
+export const ROUTE_CHANGE = 'ROUTE_CHANGE';
 
 export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
-    //dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
-    dispatch({type: QUESTION_ANSWERING_REQUEST});
+    dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
+    //dispatch({type: QUESTION_ANSWERING_REQUEST});
     var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
       sendQueryToEndpoint(data, dispatch);
       //Here we receive the namedGraph (data.graph)
@@ -373,5 +374,27 @@ function configureResult(query, jresult, dispatch, namedGraph){
         answertype: "simple"
       });
     }
+  }
+}
+
+// export function routeupdate(path, query){
+//   // return {
+//   //   type: ROUTE_CHANGE,
+//   //   location: path,
+//   //   question: query,
+//   // }
+//   return function (dispatch) {
+//     dispatch({type: ROUTE_CHANGE, location: path, question: query});
+//   }
+// }
+
+export function routeupdate(path){
+  // return {
+  //   type: ROUTE_CHANGE,
+  //   location: path,
+  //   question: query,
+  // }
+  return function (dispatch) {
+    dispatch({type: ROUTE_CHANGE, location: path});
   }
 }

@@ -162,8 +162,8 @@ class QueryBox extends Component {
         //from here is a test to understand the audio service
 
         var mpfile = new File([mpblob], "recording.mp3");
-        // that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
-        store.dispatch({type: SET_AUDIO, audiofile: mpfile});
+        that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
+        //store.dispatch({type: SET_AUDIO, audiofile: mpfile});
         Location.push("/question");
       }
       fileReader.readAsArrayBuffer(blob);
@@ -176,15 +176,21 @@ class QueryBox extends Component {
     document.getElementById('querybox').reset();
   }
 
+  // handleSubmit(e){
+  //   e.preventDefault();
+  //   //console.log("This is the question before dispatch: ", this.props.question);
+  //   //store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value})
+  //     //.done( function(){
+  //   //   console.log("This is the question when done dispatch: ", this.props.question);
+  //   // });
+  //   //console.log("This is the question after dispatch: ", this.props.question);
+  //   Location.push("/question?query="+document.querySelector("#querytext").value);
+  // }
+
   handleSubmit(e){
     e.preventDefault();
-    //console.log("This is the question before dispatch: ", this.props.question);
-    //store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value})
-      //.done( function(){
-    //   console.log("This is the question when done dispatch: ", this.props.question);
-    // });
-    //console.log("This is the question after dispatch: ", this.props.question);
-    Location.push("/question?query="+document.querySelector("#querytext").value);
+    this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
+    Location.push("/question");
   }
 
   handleÍnput(e){
