@@ -207,14 +207,21 @@ class Entity extends Component {
               $.get(
                 "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                 function (result) {
-                  document.querySelector("#entityimage" + index).src = (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "";
+                  var image = document.querySelector("#entityimage" + index);
+                  if(result.results.bindings[0].image != undefined){
+                    image.src = result.results.bindings[0].image.value;
+                  }
+                  else {
+                    image.style = "display: none";
+                    document.querySelector("#entity" + index).className = s.entitynoimage;
+                  }
                 }.bind(this));
 
               return (
-                <div className={s.entitybox} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}>
+                <div id={"entitybox"+index} className={s.entitybox} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}>
 
                   <image id={"entityimage"+index} src="" height="100" alt={entityitem.value} className={s.eimage}/>
-                  <p id={"entity"+index}>
+                  <p id={"entity"+index} className={s.entityname}>
                     {/*<input type="radio" name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}/> &nbsp; */}
                     {entityitem.value}
                   </p>
