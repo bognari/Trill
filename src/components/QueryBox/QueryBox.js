@@ -198,6 +198,21 @@ class QueryBox extends Component {
   }
 
   render() {
+    var mic =false;
+    //Hacks to determine the browser, mik working only for firefox and chrome
+    if (typeof window !== 'undefined') {
+      if (typeof window.chrome !== 'undefined') {
+        var isChrome = !!window.chrome && !!window.chrome.webstore;
+        if (isChrome){
+          mic=true;
+        }
+      }
+    }
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+    if (isFirefox){
+      mic=true;
+    }
+
     console.log(this.state.text);
     return (
       <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
@@ -211,7 +226,7 @@ class QueryBox extends Component {
               {/*:*/}
               <div>
                 <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
-                <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
+                {(mic==true) ? <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : null}
                 <input id="go" type="submit" className={s.space} value="Go"/>
               </div>
             {/*}*/}
