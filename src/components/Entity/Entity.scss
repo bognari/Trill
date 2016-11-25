@@ -1,0 +1,100 @@
+@import '../variables.scss';
+
+.root {
+}
+
+.container {
+  max-width: $max-content-width;
+  display: inline-block;
+  float: right;
+}
+
+.qbox {
+  border: 2px solid #f5f5f5;
+  padding: 10px;
+  height: 150px;
+  height: -moz-calc(150px + 1em);
+  height: -webkit-calc(150px + 1em);
+  height: -o-calc(150px + 1em);
+  height: calc(150px + 1em);
+  overflow-x: scroll;
+  margin-bottom: 10px;
+  background-color: $background-gray;
+}
+
+.entitybox {
+  border: 2px solid #f5f5f5;
+  padding: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px; //temp
+  display: inline-block;
+  background-color: white;
+  min-width: 60px;
+  height: 120px;
+  height: -moz-calc(110px + 1em);
+  height: -webkit-calc(110px + 1em);
+  height: -o-calc(110px + 1em);
+  height: calc(110px + 1em);
+  vertical-align: top;
+}
+
+.entitybox:hover {
+  cursor: pointer;
+  border-color: #e8e8e8;
+}
+
+.entityname,
+.entitynoimage{
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: large;
+  font-weight: normal;
+}
+
+.entitynoimage {
+  margin: 50px 20px 0 20px;
+  margin: -moz-calc(55px - 0.5em) 20px 0 20px;
+  margin: -webkit-calc(55px - 0.5em) 20px 0 20px;
+  margin: -o-calc(55px - 0.5em) 20px 0 20px;
+  margin: calc(55px - 0.5em) 20px 0 20px;
+}
+
+.eimage {
+  display: block;
+  margin: auto;
+  max-width: 200px;
+}
+
+.sparql,
+.sparqlpressed{
+  color: $foreground-gray;
+  font-size: large;
+  padding: 7px;
+  border: 2px solid $background-gray;
+  border-radius: 25px;
+  display: block;
+  height: 25px;
+  text-align: center;
+  font-weight: 400;
+  float: right;
+  margin: 0 0 10px 10px;
+}
+
+.sparql{
+  background-color: transparent;
+}
+
+.sparqlpressed{
+  background-color: $background-gray;
+}
+
+.sparql:hover,
+.sparqlpressed:hover{
+  cursor: pointer;
+  background-color: $background-gray;
+}
+
+.wrapfloat{
+  overflow: hidden;
+}

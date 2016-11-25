@@ -28,6 +28,16 @@
 
 .space {
   margin: 0 0 0 10px;
+  color: $foreground-gray;
+}
+
+.record {
+  margin: 0 0 0 10px;
+  display: inline-block;
+}
+
+.hide {
+  display: none;
 }
 
 .cancel,
@@ -40,6 +50,8 @@
   margin-left: 8px;
   text-decoration: none;
   font-size: medium;
+  background-color: transparent;
+  border: none;
 }
 
 .stop {

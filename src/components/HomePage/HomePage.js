@@ -8,9 +8,11 @@
  */
 
 import React, { Component, PropTypes } from 'react';
+import {connect} from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './HomePage.scss';
 import QueryBox from '../QueryBox';
+import AnswerPage from '../AnswerPage';
 
 const title = 'WDAqua';
 
@@ -28,9 +30,11 @@ class HomePage extends Component {
 
   render() {
     return (
-      <div className={s.container}>
+      <div>
+        <div className={s.container}>
           <img src={require('./../../public/WDAquaLogo.png')} height="96" alt="WDAqua" className={s.logo}/>
           <QueryBox size="70"/>
+        </div>
       </div>
     );
   }

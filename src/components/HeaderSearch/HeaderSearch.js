@@ -8,6 +8,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
+import {connect} from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './HeaderSearch.scss';
 import n from '../Navigation/Navigation.scss';
@@ -15,22 +16,26 @@ import Link from '../Link';
 import Navigation from '../Navigation';
 import QueryBox from '../QueryBox';
 
+@connect((store) => {
+  return {
+    question: store.qa.question,
+    location: store.qa.location,
+  }
+})
 class HeaderSearch extends Component {
 
-  static propTypes = {
-    path: PropTypes.string.isRequired,
-    query: PropTypes.string,
-  };
 
-  render() {
+render() {
+  console.log("This is the current path: ", this.props.location);
+
     return (
       <div className={s.root}>
         <div className={s.container}>
           <Navigation className={s.nav} linkClassName={n.darklink}/>
-          {this.props.path == "/" ? <div className={s.placeholder}></div> : <Link className={s.brand} to="/">
+          {(this.props.location == "/")? <div className={s.placeholder}></div> : <Link className={s.brand} to="/">
             <img src={require('./../../public/WDAquaLogoSmall.png')} height="24" alt="WDAqua" />
             </Link>}
-          {(this.props.path.substring(0, 9) != "/question") ? null : <QueryBox size="50" query={this.props.query}/>}
+          {(["/", "/about", "/contact", "/faq"].indexOf(this.props.location) > -1) ? null : <QueryBox size="50"/>}
           <div className={s.banner}>
           </div>
         </div>
