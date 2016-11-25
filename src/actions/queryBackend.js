@@ -250,13 +250,13 @@ function configureResult(query, jresult, dispatch, namedGraph){
             //There is only one uri
             var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
               + " OPTIONAL{ "
-              + "<" + value + "> rdfs:label ?label . "
+              + "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\"en\")"
               + "} "
               + " OPTIONAL{ "
               + "<" + value + "> dbo:thumbnail ?image . "
               + "} "
               + " OPTIONAL{ "
-              + "<" + value + "> dbo:abstract ?abstract . "
+              + "<" + value + "> dbo:abstract ?abstract . FILTER (lang(?abstract)=\"en\") "
               + "} "
               + " OPTIONAL{ "
               + "<" + value + "> geo:lat ?lat . "
@@ -267,7 +267,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
               + " OPTIONAL{ "
               + "?wikilink foaf:primaryTopic <" + value + "> . "
               + "} "
-              + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
+              // + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
               + " } ";
 
             $.get(
@@ -296,11 +296,11 @@ function configureResult(query, jresult, dispatch, namedGraph){
                 else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
 
                   console.log("Label: " + result.results.bindings[0].label.value);
-                  console.log("Abstract: " + result.results.bindings[0].abstract.value);
+                  //console.log("Abstract: " + (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "");
 
                   information.push({
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: result.results.bindings[0].abstract.value,
+                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "...",
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "map",
                     uri: value,
@@ -321,11 +321,11 @@ function configureResult(query, jresult, dispatch, namedGraph){
                 else {//case of regular detailed answer
 
                   console.log("Label: " + result.results.bindings[0].label.value);
-                  console.log("Abstract: " + result.results.bindings[0].abstract.value);
+                  //console.log("Abstract: " + (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "...");
 
                   information.push({
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: result.results.bindings[0].abstract.value,
+                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "...",
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "detail",
                     uri: value,
