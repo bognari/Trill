@@ -177,6 +177,7 @@ function sendQueryToEndpoint(data, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
+      console.log("This is the resaulttttt....", result );
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
@@ -186,6 +187,22 @@ function sendQueryToEndpoint(data, dispatch){
       // console.log(query);
       var jresult = JSON.parse(result.results.bindings[0].json.value);
       //---ranking--- is 2 requests necessary?
+
+      if (jresult.hasOwnProperty("boolean")) {
+        var information = [];
+        information.push({
+          label: (jresult.boolean == true) ? "True" : "False",
+          answertype: "simple",
+        })
+        dispatch({
+          type: QUESTION_ANSWERING_SUCCESS,
+          namedGraph: namedGraph,
+          SPARQLquery: query,
+          information: information,
+          loaded: true,
+        });
+      }
+      else {
 
       var variable=jresult.head.vars[0];
 
@@ -208,7 +225,7 @@ function sendQueryToEndpoint(data, dispatch){
         }.bind(this));
 
       //---------------------
-
+      }
     }
   });
 }
@@ -219,21 +236,21 @@ function configureResult(query, jresult, dispatch, namedGraph){
   console.log('This is the json result (ranked): ', jresult);
 
   //check if it is an ask query
-  if (jresult.hasOwnProperty("boolean")) {
-    var information = [];
-    information.push({
-      label: (jresult.boolean == true) ? "True" : "False",
-      answertype: "simple",
-    })
-    dispatch({
-      type: QUESTION_ANSWERING_SUCCESS,
-      namedGraph: namedGraph,
-      SPARQLquery: query,
-      information: information,
-      loaded: true,
-    });
-  }
-  else {
+  // if (jresult.hasOwnProperty("boolean")) {
+  //   var information = [];
+  //   information.push({
+  //     label: (jresult.boolean == true) ? "True" : "False",
+  //     answertype: "simple",
+  //   })
+  //   dispatch({
+  //     type: QUESTION_ANSWERING_SUCCESS,
+  //     namedGraph: namedGraph,
+  //     SPARQLquery: query,
+  //     information: information,
+  //     loaded: true,
+  //   });
+  // }
+  // else {
     var variable=jresult.head.vars[0];
     var information=[];
     //depending on the number of results, handle accordingly:
@@ -373,7 +390,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
         answertype: "simple"
       });
     }
-  }
+ // }
 }
 
 // export function routeupdate(path, query){

@@ -31,6 +31,15 @@
   color: $foreground-gray;
 }
 
+.record {
+  margin: 0 0 0 10px;
+  display: inline-block;
+}
+
+.hide {
+  display: none;
+}
+
 .cancel,
 .cancel:active,
 .cancel:visited {
