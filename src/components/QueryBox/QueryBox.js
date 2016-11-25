@@ -229,6 +229,7 @@ class QueryBox extends Component {
               <div>
                 <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
                 <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
+                {/*{(mic==true) ? <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : <div id="record" style={{display: "inline-block"}}></div> }*/}
                 <input id="go" type="submit" className={s.space} value="Go"/>
               </div>
             {/*}*/}
