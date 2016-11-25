@@ -7,6 +7,7 @@ import Location from '../core/Location';
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
+export const QUESTION_ANSWERING_ENTITY_CHANGE = 'QUESTION_ANSWERING_ENTITY_CHANGE';
 export const ROUTE_CHANGE = 'ROUTE_CHANGE';
 
 export function startQuestionAnsweringWithTextQuestion(question){
@@ -66,7 +67,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
 
 export function questionanswering(namedGraph, components){
   return function (dispatch) {
-    dispatch({type: QUESTION_ANSWERING_REQUEST});
+    dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
 
     var form = new FormData();
     form.append("componentlist[]", components);

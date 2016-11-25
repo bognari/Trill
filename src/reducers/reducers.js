@@ -4,7 +4,7 @@
 
 import { combineReducers } from 'redux'
 import { SET_QUESTION} from '../actions/setQuestion'
-import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, ROUTE_CHANGE } from '../actions/queryBackend'
+import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, QUESTION_ANSWERING_ENTITY_CHANGE, ROUTE_CHANGE } from '../actions/queryBackend'
 //import { ROUTE_CHANGE } from '../routes';
 import { SET_AUDIO } from '../components/QueryBox/QueryBox';
 
@@ -52,6 +52,14 @@ const qaReducer = (state = initialState, action) => {
         error: action.error,
         loaded: true,
         information: []
+      }
+      break;
+    }
+    case QUESTION_ANSWERING_ENTITY_CHANGE: {
+      return {
+        ...state,
+        loaded: false,
+        qinitiated: true,
       }
       break;
     }
