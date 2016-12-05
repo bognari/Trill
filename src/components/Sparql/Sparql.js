@@ -102,16 +102,16 @@ class Sparql extends Component {
         </div>
               {(this.state.query) ?
                 <div id="FiringSparql" className={s.qbox}>
-                  {this.props.sparqlquery.map(function (newitems, index) {
-                    return (
-                      <p id={"q"+index}>
-                      <input type="radio" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
-                      </p>)
-                        }.bind(this))
-                  }
-                  {/*<p id="q">*/}
-                    {/*{this.props.sparqlquery[0].query}*/}
-                  {/*</p>*/}
+                  {/*{this.props.sparqlquery.map(function (newitems, index) {*/}
+                    {/*return (*/}
+                      {/*<p id={"q"+index}>*/}
+                      {/*<input type="radio" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>*/}
+                      {/*</p>)*/}
+                        {/*}.bind(this))*/}
+                  {/*}*/}
+                  <p id="q">
+                    {this.props.sparqlquery[0].query}
+                  </p>
                 </div>: null
               }
       </div>
