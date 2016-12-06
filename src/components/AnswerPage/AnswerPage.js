@@ -104,8 +104,6 @@ class AnswerPage extends Component {
                     <div className={s.leftColumn}>
                       <div className={s.title}><p>{info.label}</p>
                         <LinksBar wiki={info.link} dbpedia={info.uri}/></div>
-                      {/*<a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>*/}
-
                       {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
                     </div> : null}
                   {(info.answertype == "map") ?
