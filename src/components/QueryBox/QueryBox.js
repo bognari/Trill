@@ -30,6 +30,7 @@ class QueryBox extends Component {
 
   static propTypes = {
     size: PropTypes.string.isRequired,
+    header: PropTypes.booleanValue,
   //  question: PropTypes.string,
   };
 
@@ -177,7 +178,7 @@ class QueryBox extends Component {
       if (typeof window.chrome !== 'undefined') {
         var isChrome = !!window.chrome && !!window.chrome.webstore;
         if (isChrome){
-          document.querySelector('#record').className = s.button;
+          document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
           //document.querySelector('#record').style = "display: inline-block";
           console.log("This is chrome");
         }
@@ -185,7 +186,7 @@ class QueryBox extends Component {
     }
     var isFirefox = typeof InstallTrigger !== 'undefined';
     if (isFirefox){
-      document.querySelector('#record').className = s.button;
+      document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
       //document.querySelector('#record').style = "display: inline-block";
       console.log("This is firefox");
     }
@@ -231,10 +232,10 @@ class QueryBox extends Component {
               </div>
               {/*:*/}
               <div className={s.queryform}>
-                <input id="querytext" type="text" name="query" className={s.textinput} placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
+                <input id="querytext" type="text" name="query" className={(this.props.header == true)? s.headertextinput : s.textinput} placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
                 <button id="record" type="button" className={s.hide}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
                 {/*{(mic==true) ? <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : <div id="record" style={{display: "inline-block"}}></div> }*/}
-                <input id="go" type="submit" className={s.button} value="Go"/>
+                <input id="go" type="submit" className={(this.props.header == true)? s.headerbutton : s.button} value="Go"/>
               </div>
             {/*}*/}
         </form>

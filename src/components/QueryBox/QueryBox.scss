@@ -67,25 +67,35 @@
   background-color: $background-gray;
 }
 
-.button {
+.button,
+.headerbutton{
   height: 35px;
   width: 35px;
   color: $foreground-gray;
   border: 1px solid $foreground-gray;
   border-left: none;
-  background-color: transparent;
+  background-color: #ffffff;
   vertical-align: top;
 }
 
-.button:hover {
+.button:hover,
+.headerbutton:hover {
   background-color: $background-gray;
 }
 
-.textinput {
+.headerbutton {
+  height: 30px;
+}
+
+.textinput,
+.headertextinput{
   height: 35px;
   box-sizing: border-box;
   padding: 5px;
   border: 1px solid $foreground-gray;
   box-shadow:inset 0 0 3px 0 $background-gray;
-  background: #fff;
+}
+
+.headertextinput {
+  height: 30px;
 }

@@ -35,7 +35,7 @@ render() {
           {(this.props.location == "/")? <div className={s.placeholder}></div> : <Link className={s.brand} to="/">
             <img src={require('./../../public/WDAquaLogoSmall.png')} height="24" alt="WDAqua" />
             </Link>}
-          {(["/", "/about", "/contact", "/faq"].indexOf(this.props.location) > -1) ? null : <QueryBox size="50"/>}
+          {(["/", "/about", "/contact", "/faq"].indexOf(this.props.location) > -1) ? null : <QueryBox size="50" header={true}/>}
           <div className={s.banner}>
           </div>
         </div>
