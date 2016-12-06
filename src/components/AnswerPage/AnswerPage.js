@@ -88,7 +88,7 @@ class AnswerPage extends Component {
             <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             </div>
-            <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
+            <Feedback/>
           </div>}
 
             {this.props.information.map(function (info, index) {

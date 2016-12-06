@@ -30,7 +30,7 @@ class QueryBox extends Component {
 
   static propTypes = {
     size: PropTypes.string.isRequired,
-    header: PropTypes.booleanValue,
+    header: PropTypes.bool,
   //  question: PropTypes.string,
   };
 

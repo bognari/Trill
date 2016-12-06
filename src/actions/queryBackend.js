@@ -323,8 +323,8 @@ function configureResult(query, jresult, dispatch, namedGraph){
                     uri: value,
                     link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
                     key: k,
-                    lat: result.results.bindings[0].lat.value,
-                    long: result.results.bindings[0].long.value,
+                    lat: parseFloat(result.results.bindings[0].lat.value),
+                    long: parseFloat(result.results.bindings[0].long.value),
                   })
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
