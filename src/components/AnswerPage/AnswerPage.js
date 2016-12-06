@@ -21,6 +21,7 @@ import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 import Entity from '../Entity';
+import LinksBar from '../LinksBar';
 import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
 import {setQuestion} from '../../actions/setQuestion';
@@ -101,7 +102,10 @@ class AnswerPage extends Component {
 
                   {(info.answertype == "detail") ?
                     <div className={s.leftColumn}>
-                      <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
+                      <div className={s.title}><p>{info.label}</p>
+                        <LinksBar wiki={info.link} dbpedia={info.uri}/></div>
+                      {/*<a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>*/}
+
                       {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
                     </div> : null}
                   {(info.answertype == "map") ?
