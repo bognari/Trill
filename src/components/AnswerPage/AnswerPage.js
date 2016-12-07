@@ -40,42 +40,56 @@ import {setQuestion} from '../../actions/setQuestion';
     qinitiated: store.qa.qinitiated,
   }
 })
+
 class AnswerPage extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      previousquestion: "",
+      previousaudio: null,
+    };
   }
 
   componentDidMount() {
-    // if(this.props.audiofile != null){
-    //   this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
-    // }
-    // else{
-    //   this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
-    // }
+    if(this.props.audiofile != null){
+      this.state.previousaudio = this.props.audiofile;
+      this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
+    }
+    else{
+      this.state.previousquestion = this.props.question;
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+    }
   }
 
-  // componentDidUpdate() {
-  //   console.log("This is the location ..............: ", Location);
-  //
-  //
-  //   if(this.props.audiofile != null){
-  //     this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
-  //   }
-  //   else{
-  //     this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
-  //   }
-  // }
+  componentDidUpdate() {
+    console.log("This is a testtttt");
+
+    if(this.state.previousquestion != this.props.question && this.props.audiofile == null){
+      console.log("We can start a new question answering because there is a new question");
+      this.state.previousquestion = this.props.question;
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+    }
+    else if(this.props.audiofile != null && this.state.previousaudio != this.props.audiofile){
+      console.log("We can start audio question answering because there is a new audio question");
+      this.state.previousaudio = this.props.audiofile;
+      this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
+    }
+    else {
+      console.log("We should not start qa, because something else changed in the store other than the question");
+    }
+  }
 
   render() {
 
     //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
     // be empty)
-    if (this.props.qinitiated == false) {
-      Location.push("/");
-      return (<div className={s.container}></div>);
-    }
-    else {
+
+    // if (this.props.qinitiated == false) {
+    //   Location.push("/");
+    //   return (<div className={s.container}></div>);
+    // }
+    // else {
       //to refactor so don't have to check the same answer type multiple times
       return (
         <div className={s.container}>
@@ -126,7 +140,7 @@ class AnswerPage extends Component {
           </Loader>
         </div>
       );
-    }
+   // }
   }
 
 

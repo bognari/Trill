@@ -67,7 +67,7 @@ const qaReducer = (state = initialState, action) => {
       return {
         ...state,
         location: action.location,
-        //question: action.question,
+        question: action.question,
       }
       break;
     }

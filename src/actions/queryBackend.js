@@ -9,6 +9,7 @@ export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
 export const QUESTION_ANSWERING_ENTITY_CHANGE = 'QUESTION_ANSWERING_ENTITY_CHANGE';
 export const ROUTE_CHANGE = 'ROUTE_CHANGE';
+import { SET_AUDIO } from '../components/QueryBox/QueryBox';
 
 export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
@@ -128,7 +129,8 @@ function retriveQuestion(data, dispatch){
         success: function(result) {
             console.log(result);
             dispatch({type: 'SET_QUESTION', question: result});
-          //Location.push("/question?query="+result);
+            //dispatch({type: SET_AUDIO, audiofile: null});
+            Location.push("/question?query="+result);
         },
         error: function (err){
             return err;
@@ -393,24 +395,19 @@ function configureResult(query, jresult, dispatch, namedGraph){
  // }
 }
 
-// export function routeupdate(path, query){
+export function routeupdate(path, query){
+  return function (dispatch) {
+    dispatch({type: ROUTE_CHANGE, location: path, question: query});
+  }
+}
+
+// export function routeupdate(path){
 //   // return {
 //   //   type: ROUTE_CHANGE,
 //   //   location: path,
 //   //   question: query,
 //   // }
 //   return function (dispatch) {
-//     dispatch({type: ROUTE_CHANGE, location: path, question: query});
+//     dispatch({type: ROUTE_CHANGE, location: path});
 //   }
 // }
-
-export function routeupdate(path){
-  // return {
-  //   type: ROUTE_CHANGE,
-  //   location: path,
-  //   question: query,
-  // }
-  return function (dispatch) {
-    dispatch({type: ROUTE_CHANGE, location: path});
-  }
-}
