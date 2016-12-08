@@ -11,13 +11,18 @@ import React, { Component, PropTypes } from 'react'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Feedback.scss';
 import $ from 'jquery';
+import { connect } from 'react-redux';
 import Label from '../Label';
 
+@connect((store) => {
+  return {
+    SPARQLquery: store.qa.SPARQLquery,
+    question: store.qa.question,
+  }
+})
 class Feedback extends Component {
 
   static propTypes = {
-    question: PropTypes.string.isRequired,
-    sparql: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -58,7 +63,7 @@ class Feedback extends Component {
           {(this.state.submitted && !this.state.error) ? <p>Thanks for your feedback!</p> :
             <form id="form" className={s.form} action="" method="POST">
               <input type="hidden" id="question" name="question" value={this.props.question}/>
-              <input type="hidden" id="sparql" name="sparql" value={this.props.sparql}/>
+              <input type="hidden" id="sparql" name="sparql" value={this.props.SPARQLquery[0].query}/>
               <p>Is this the right answer? &nbsp;&nbsp;
                 <input type="radio" name="correct" value="true" onChange={this.handleChange}/> Yes &nbsp;&nbsp;
                 <input type="radio" name="correct" value="false" onChange={this.handleChange}/>  No

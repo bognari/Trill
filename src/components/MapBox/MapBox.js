@@ -15,8 +15,8 @@ import { render } from 'react-dom';
 class MapBox extends Component {
 
   static propTypes = {
-    lat: PropTypes.float,
-    long: PropTypes.float,
+    lat: PropTypes.number,
+    long: PropTypes.number,
     mapid: PropTypes.string.isRequired,
   };
 

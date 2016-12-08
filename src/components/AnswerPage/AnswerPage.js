@@ -21,6 +21,7 @@ import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 import Entity from '../Entity';
+import LinksBar from '../LinksBar';
 import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
 import {setQuestion} from '../../actions/setQuestion';
@@ -39,42 +40,56 @@ import {setQuestion} from '../../actions/setQuestion';
     qinitiated: store.qa.qinitiated,
   }
 })
+
 class AnswerPage extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      previousquestion: "",
+      previousaudio: null,
+    };
   }
 
   componentDidMount() {
-    // if(this.props.audiofile != null){
-    //   this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
-    // }
-    // else{
-    //   this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
-    // }
+    if(this.props.audiofile != null){
+      this.state.previousaudio = this.props.audiofile;
+      this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
+    }
+    else{
+      this.state.previousquestion = this.props.question;
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+    }
   }
 
-  // componentDidUpdate() {
-  //   console.log("This is the location ..............: ", Location);
-  //
-  //
-  //   if(this.props.audiofile != null){
-  //     this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
-  //   }
-  //   else{
-  //     this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
-  //   }
-  // }
+  componentDidUpdate() {
+    console.log("This is a testtttt");
+
+    if(this.state.previousquestion != this.props.question && this.props.audiofile == null){
+      console.log("We can start a new question answering because there is a new question");
+      this.state.previousquestion = this.props.question;
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+    }
+    else if(this.props.audiofile != null && this.state.previousaudio != this.props.audiofile){
+      console.log("We can start audio question answering because there is a new audio question");
+      this.state.previousaudio = this.props.audiofile;
+      this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
+    }
+    else {
+      console.log("We should not start qa, because something else changed in the store other than the question");
+    }
+  }
 
   render() {
 
     //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
     // be empty)
-    if (this.props.qinitiated == false) {
-      Location.push("/");
-      return (<div className={s.container}></div>);
-    }
-    else {
+
+    // if (this.props.qinitiated == false) {
+    //   Location.push("/");
+    //   return (<div className={s.container}></div>);
+    // }
+    // else {
       //to refactor so don't have to check the same answer type multiple times
       return (
         <div className={s.container}>
@@ -87,7 +102,7 @@ class AnswerPage extends Component {
             <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             </div>
-            <Feedback question={this.props.question} sparql={this.props.SPARQLquery}/>
+            <Feedback/>
           </div>}
 
             {this.props.information.map(function (info, index) {
@@ -101,7 +116,8 @@ class AnswerPage extends Component {
 
                   {(info.answertype == "detail") ?
                     <div className={s.leftColumn}>
-                      <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
+                      <div className={s.title}><p>{info.label}</p>
+                        <LinksBar wiki={info.link} dbpedia={info.uri}/></div>
                       {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
                     </div> : null}
                   {(info.answertype == "map") ?
@@ -124,7 +140,7 @@ class AnswerPage extends Component {
           </Loader>
         </div>
       );
-    }
+   // }
   }
 
 

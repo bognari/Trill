@@ -1,0 +1,6 @@
+{
+  "name": "LinksBar",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LinksBar.js"
+}

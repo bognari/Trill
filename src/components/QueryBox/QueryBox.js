@@ -30,6 +30,7 @@ class QueryBox extends Component {
 
   static propTypes = {
     size: PropTypes.string.isRequired,
+    header: PropTypes.bool,
   //  question: PropTypes.string,
   };
 
@@ -162,8 +163,8 @@ class QueryBox extends Component {
         //from here is a test to understand the audio service
 
         var mpfile = new File([mpblob], "recording.mp3");
-        that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
-        //store.dispatch({type: SET_AUDIO, audiofile: mpfile});
+        // that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
+        store.dispatch({type: SET_AUDIO, audiofile: mpfile});
         Location.push("/question");
       }
       fileReader.readAsArrayBuffer(blob);
@@ -177,7 +178,7 @@ class QueryBox extends Component {
       if (typeof window.chrome !== 'undefined') {
         var isChrome = !!window.chrome && !!window.chrome.webstore;
         if (isChrome){
-          document.querySelector('#record').className = s.record;
+          document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
           //document.querySelector('#record').style = "display: inline-block";
           console.log("This is chrome");
         }
@@ -185,10 +186,14 @@ class QueryBox extends Component {
     }
     var isFirefox = typeof InstallTrigger !== 'undefined';
     if (isFirefox){
-      document.querySelector('#record').className = s.record;
+      document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
       //document.querySelector('#record').style = "display: inline-block";
       console.log("This is firefox");
     }
+  }
+
+  componentDidUpdate() {
+    document.querySelector("#querytext").defaultValue = this.props.question;
   }
 
   handleClose() {
@@ -196,25 +201,27 @@ class QueryBox extends Component {
     document.getElementById('querybox').reset();
   }
 
-  // handleSubmit(e){
-  //   e.preventDefault();
-  //   //console.log("This is the question before dispatch: ", this.props.question);
-  //   //store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value})
-  //     //.done( function(){
-  //   //   console.log("This is the question when done dispatch: ", this.props.question);
-  //   // });
-  //   //console.log("This is the question after dispatch: ", this.props.question);
-  //   Location.push("/question?query="+document.querySelector("#querytext").value);
-  // }
-
   handleSubmit(e){
     e.preventDefault();
-    this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
-    Location.push("/question");
+    //console.log("This is the question before dispatch: ", this.props.question);
+    //store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value})
+      //.done( function(){
+    //   console.log("This is the question when done dispatch: ", this.props.question);
+    // });
+    //console.log("This is the question after dispatch: ", this.props.question);
+    store.dispatch({type: SET_AUDIO, audiofile: null});//in case there was an audio file already performed, we need to empty it
+    Location.push("/question?query="+document.querySelector("#querytext").value);
   }
 
+  // handleSubmit(e){
+  //   e.preventDefault();
+  //   this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
+  //   Location.push("/question");
+  // }
+
   handleÍnput(e){
-    this.props.dispatch(setQuestion(e.target.value));
+    //this.props.dispatch(setQuestion(e.target.value));
+    //Location.push("/question?query="+e.target.value);
   }
 
   render() {
@@ -230,11 +237,11 @@ class QueryBox extends Component {
                 <button id="cancel" className={s.cancel}>x</button>
               </div>
               {/*:*/}
-              <div>
-                <input id="querytext" type="text" name="query" placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
+              <div className={s.queryform}>
+                <input id="querytext" type="text" name="query" className={(this.props.header == true)? s.headertextinput : s.textinput} placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} defaultValue={this.props.question}/>
                 <button id="record" type="button" className={s.hide}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
                 {/*{(mic==true) ? <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : <div id="record" style={{display: "inline-block"}}></div> }*/}
-                <input id="go" type="submit" className={s.space} value="Go"/>
+                <input id="go" type="submit" className={(this.props.header == true)? s.headerbutton : s.button} value="Go"/>
               </div>
             {/*}*/}
         </form>
