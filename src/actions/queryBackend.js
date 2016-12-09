@@ -9,24 +9,21 @@ export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
 export const QUESTION_ANSWERING_ENTITY_CHANGE = 'QUESTION_ANSWERING_ENTITY_CHANGE';
 export const ROUTE_CHANGE = 'ROUTE_CHANGE';
-import { SET_AUDIO } from '../components/QueryBox/QueryBox';
+
+const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
+const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
+const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
 export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     //dispatch({type: QUESTION_ANSWERING_REQUEST});
-    var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
+    var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
       sendQueryToEndpoint(data, dispatch);
-      //Here we receive the namedGraph (data.graph)
     });
 
     questionresult.fail(function (e) {
-      // var information = this.state.information;
-      // information.push({
-      //   message: e.statusCode + " " + e.statusText,
-      // });
       dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
-
     })
   }
 }
@@ -45,7 +42,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
     console.log("Contents of form: ", form);
 
     var questionresult = $.ajax({
-      url: "http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithaudioquestion",
+      url: qanary_services+"/startquestionansweringwithaudioquestion",
       data: form,
       processData: false,
       type: "POST",
@@ -74,24 +71,23 @@ export function questionanswering(namedGraph, components){
     form.append("componentlist[]", components);
     form.append("qanaryMessage", JSON.stringify({
       "values": {
-        "http://qanary/#endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+        "http://qanary/#endpoint": qanary_endpoint,
         "http://qanary/#inGraph": namedGraph,
         "http://qanary/#outGraph": namedGraph
       },
-      "endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+      "endpoint": qanary_endpoint,
       "outGraph": namedGraph,
       "inGraph": namedGraph
     }));
 
     var executeQuery = $.ajax({
-      url: "http://wdaqua-qanary.univ-st-etienne.fr/questionanswering",
+      url: qanary_services+"/questionanswering",
       type: "POST",
       data: form,
       processData: false,
       contentType: false,
       success: function (data) {
         retriveQuestion(data);
-        //retriveQuestion(data, dispatch);
         sendQueryToEndpoint(data, dispatch);
       }
     });
@@ -110,7 +106,7 @@ function retriveQuestion(data, dispatch){
     + "  ?c oa:hasBody ?uriText . "
     + "}";
   $.ajax({
-    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
+    url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
     type: "GET",
     beforeSend: function(xhr){
       xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
@@ -121,7 +117,7 @@ function retriveQuestion(data, dispatch){
       console.log(result);
       var uriText = result.results.bindings[0].uriText.value;
       console.log(uriText);
-      uriText=uriText.replace("http://qanaryhost:8080/question/","http://wdaqua-qanary.univ-st-etienne.fr/question/")+"/raw";
+      uriText=uriText.replace("http://qanaryhost:8080/question/",qanary_services+"/question/")+"/raw";
       //Dereference the uri and retrieve the text
       $.ajax({
           url: uriText,
@@ -172,7 +168,7 @@ function sendQueryToEndpoint(data, dispatch){
     + "ORDER BY DESC(?score)";
 
   $.ajax({
-    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
+    url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
     type: "GET",
     beforeSend: function(xhr){
       xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
@@ -219,7 +215,7 @@ function sendQueryToEndpoint(data, dispatch){
         "ORDER BY DESC(?v) LIMIT 1000";
 
       var rankedrequest = $.get(
-        "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+        dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
         function (rankedresult) {
 
           configureResult(query, rankedresult, dispatch, namedGraph);
@@ -291,7 +287,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
               + " } ";
 
             $.get(
-              "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+              dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
               function (result) {
                 console.log("The properties of the results are this: ", result);
 
@@ -400,14 +396,3 @@ export function routeupdate(path, query){
     dispatch({type: ROUTE_CHANGE, location: path, question: query});
   }
 }
-
-// export function routeupdate(path){
-//   // return {
-//   //   type: ROUTE_CHANGE,
-//   //   location: path,
-//   //   question: query,
-//   // }
-//   return function (dispatch) {
-//     dispatch({type: ROUTE_CHANGE, location: path});
-//   }
-// }
