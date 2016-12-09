@@ -15,7 +15,7 @@ export function startQuestionAnsweringWithTextQuestion(question){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     //dispatch({type: QUESTION_ANSWERING_REQUEST});
-    var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
+    var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0-wikidata, QueryExecuter", function (data) {
       sendQueryToEndpoint(data, dispatch);
       //Here we receive the namedGraph (data.graph)
     });
@@ -37,7 +37,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
     var form  = new FormData();
     //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
     form.append("question", mp3file, "recording.mp3");
-    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0, QueryExecuter"]);
+    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0-wikidata, QueryExecuter"]);
 
     //maybe should check if mpfile is proper
 
@@ -206,25 +206,27 @@ function sendQueryToEndpoint(data, dispatch){
       }
       else {
 
-      var variable=jresult.head.vars[0];
+        configureResult(query, jresult, dispatch, namedGraph);
 
-      var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-        "SELECT ?"+ variable + " " +
-        "FROM <http://dbpedia.org>" +
-        "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-        "WHERE {" +
-        "{"+ query[0].query +"} " +
-        "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
-        "}" +
-        "ORDER BY DESC(?v) LIMIT 1000";
+      // var variable=jresult.head.vars[0];
 
-      var rankedrequest = $.get(
-        "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-        function (rankedresult) {
-
-          configureResult(query, rankedresult, dispatch, namedGraph);
-
-        }.bind(this));
+      // var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
+      //   "SELECT ?"+ variable + " " +
+      //   "FROM <http://dbpedia.org>" +
+      //   "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
+      //   "WHERE {" +
+      //   "{"+ query[0].query +"} " +
+      //   "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
+      //   "}" +
+      //   "ORDER BY DESC(?v) LIMIT 1000";
+      //
+      // var rankedrequest = $.get(
+      //   "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+      //   function (rankedresult) {
+      //
+      //     configureResult(query, rankedresult, dispatch, namedGraph);
+      //
+      //   }.bind(this));
 
       //---------------------
       }
@@ -235,7 +237,7 @@ function sendQueryToEndpoint(data, dispatch){
 function configureResult(query, jresult, dispatch, namedGraph){
 
   var count = 0;
-  console.log('This is the json result (ranked): ', jresult);
+  console.log('This is the json result (now not ranked): ', jresult);
 
   //check if it is an ask query
   // if (jresult.hasOwnProperty("boolean")) {
@@ -290,8 +292,30 @@ function configureResult(query, jresult, dispatch, namedGraph){
               // + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
               + " } ";
 
+            var wikiSparqlQuery = "PREFIX dbo: <urn:dbo> " +
+              "select ?label ?abstract ?image ?lat ?long ?wikilink where { " +
+              "OPTIONAL{ " +
+              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\"en\") " +
+              "} " +
+              "OPTIONAL{ " +
+              "<" + value + "> wdt:P18 ?image . " +
+              "} " +
+              "OPTIONAL{ " +
+              "<" + value + "> dbo:abstract ?abstract . FILTER (lang(?abstract)=\"en\") " +
+              "} " +
+              "OPTIONAL{ " +
+              "<" + value + "> wdt:P625 ?lat . " +
+              "} " +
+              "OPTIONAL{ " +
+              "?wikilink foaf:primaryTopic <" + value + "> . " +
+              "} " +
+              "}";
+
+            var dbpediaQueryUrl = "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
+            var wikiQueryUrl = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
+
             $.get(
-              "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+              (value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl,
               function (result) {
                 console.log("The properties of the results are this: ", result);
 
@@ -301,6 +325,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
                   information.push({
                     label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                     answertype: "noinfo",
+                    uri: value,
                     link: value,
                     key: k,
                   })
@@ -315,7 +340,12 @@ function configureResult(query, jresult, dispatch, namedGraph){
 
                 else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
 
+                  if(result.results.bindings[0].long ==  undefined) {
+                    var coordinates = result.results.bindings[0].lat.value.replace("Point(", "").replace(")", "").split(" ");
+                  }
+
                   console.log("Label: " + result.results.bindings[0].label.value);
+                  console.log("These are the geo coordinates: ", coordinates);
 
                   information.push({
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
@@ -325,8 +355,8 @@ function configureResult(query, jresult, dispatch, namedGraph){
                     uri: value,
                     link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
                     key: k,
-                    lat: parseFloat(result.results.bindings[0].lat.value),
-                    long: parseFloat(result.results.bindings[0].long.value),
+                    lat: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[1]) : parseFloat(result.results.bindings[0].lat.value),
+                    long: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[0]) : parseFloat(result.results.bindings[0].long.value),
                   })
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
