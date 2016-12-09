@@ -122,7 +122,8 @@ class AnswerPage extends Component {
                     </div> : null}
                   {(info.answertype == "map") ?
                     <div className={s.leftColumn}>
-                      <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a>
+                      <div className={s.title}><p>{info.label}</p>
+                        <LinksBar wiki={info.link} dbpedia={info.uri}/></div>
                       {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
                       <MapBox mapid={"map" + info.key} lat={info.lat} long={info.long}></MapBox>
                     </div> : null}
