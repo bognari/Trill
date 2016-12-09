@@ -71,11 +71,11 @@ export function questionanswering(namedGraph, components){
     form.append("componentlist[]", components);
     form.append("qanaryMessage", JSON.stringify({
       "values": {
-        "http://qanary/#endpoint": qanary_endpoint,
+        "http://qanary/#endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
         "http://qanary/#inGraph": namedGraph,
         "http://qanary/#outGraph": namedGraph
       },
-      "endpoint": qanary_endpoint,
+      "endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
       "outGraph": namedGraph,
       "inGraph": namedGraph
     }));
@@ -181,7 +181,7 @@ function sendQueryToEndpoint(data, dispatch){
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
         //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
-      
+
       var jresult = JSON.parse(result.results.bindings[0].json.value);
 
       if (jresult.hasOwnProperty("boolean")) {
