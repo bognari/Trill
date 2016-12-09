@@ -181,10 +181,8 @@ function sendQueryToEndpoint(data, dispatch){
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
         //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
-      // console.log("QUERY");
-      // console.log(query);
+      
       var jresult = JSON.parse(result.results.bindings[0].json.value);
-      //---ranking--- is 2 requests necessary?
 
       if (jresult.hasOwnProperty("boolean")) {
         var information = [];
@@ -200,29 +198,29 @@ function sendQueryToEndpoint(data, dispatch){
           loaded: true,
         });
       }
-      else {
+      else if (jresult.head.vars[0]=="count") {
+        configureResult(query, jresult, dispatch, namedGraph);
+      } else{
+        var variable=jresult.head.vars[0];
+        var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
+          "SELECT ?"+ variable + " " +
+          "FROM <http://dbpedia.org>" +
+          "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
+          "WHERE {" +
+          "{"+ query[0].query +"} " +
+          "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
+          "}" +
+          "ORDER BY DESC(?v) LIMIT 1000";
+        console.log(rankedSparql);
 
-      var variable=jresult.head.vars[0];
+        var rankedrequest = $.get(
+          dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+          function (rankedresult) {
+            console.log(rankedresult);
+            configureResult(query, rankedresult, dispatch, namedGraph);
 
-      var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-        "SELECT ?"+ variable + " " +
-        "FROM <http://dbpedia.org>" +
-        "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-        "WHERE {" +
-        "{"+ query[0].query +"} " +
-        "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
-        "}" +
-        "ORDER BY DESC(?v) LIMIT 1000";
-
-      var rankedrequest = $.get(
-        dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-        function (rankedresult) {
-
-          configureResult(query, rankedresult, dispatch, namedGraph);
-
-        }.bind(this));
-
-      //---------------------
+          }.bind(this)
+        );
       }
     }
   });
@@ -233,22 +231,6 @@ function configureResult(query, jresult, dispatch, namedGraph){
   var count = 0;
   console.log('This is the json result (ranked): ', jresult);
 
-  //check if it is an ask query
-  // if (jresult.hasOwnProperty("boolean")) {
-  //   var information = [];
-  //   information.push({
-  //     label: (jresult.boolean == true) ? "True" : "False",
-  //     answertype: "simple",
-  //   })
-  //   dispatch({
-  //     type: QUESTION_ANSWERING_SUCCESS,
-  //     namedGraph: namedGraph,
-  //     SPARQLquery: query,
-  //     information: information,
-  //     loaded: true,
-  //   });
-  // }
-  // else {
     var variable=jresult.head.vars[0];
     var information=[];
     //depending on the number of results, handle accordingly:
