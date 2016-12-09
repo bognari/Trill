@@ -14,8 +14,8 @@ import s from './LinksBar.scss';
 class LinksBar extends Component {
 
   static propTypes = {
-    wiki: PropTypes.string,
-    dbpedia: PropTypes.string,
+    wikipedia: PropTypes.string,
+    uri: PropTypes.string,
     facebook: PropTypes.string,
     twitter: PropTypes.string,
     website: PropTypes.string,
@@ -31,8 +31,8 @@ class LinksBar extends Component {
   render() {
     return (
       <div className={s.container}>
-        {this.props.wiki != null ? <a href={this.props.wiki}><img src={require('./wikipedia-logo.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
-        {this.props.dbpedia != null ? <a href={this.props.dbpedia}><img src={require('./dbpedia-logo.png')} height="30" alt="dbpedia"  className={s.imglink}/></a> : null}
+        {this.props.wikipedia != null ? <a href={this.props.wikipedia}><img src={require('./wikipedia-logo.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
+        {this.props.uri != null ? <a href={this.props.uri}><img src={(this.props.uri.indexOf("wikidata") > -1) ? require('./wikidata-logo.png') : require('./dbpedia-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }

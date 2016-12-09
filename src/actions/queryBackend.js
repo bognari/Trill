@@ -353,7 +353,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "map",
                     uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
                     key: k,
                     lat: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[1]) : parseFloat(result.results.bindings[0].lat.value),
                     long: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[0]) : parseFloat(result.results.bindings[0].long.value),
@@ -377,7 +377,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "detail",
                     uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
                     key: k,
                   })
                   dispatch({
