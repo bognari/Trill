@@ -48,7 +48,7 @@ class TopK extends Component {
       }
     });
 
-    var url = "http://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + "en";
+    var url = "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + "en";
 
     // if (language != null) {
     //   url += "&language=" + language;
