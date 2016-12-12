@@ -177,7 +177,7 @@ function sendQueryToEndpoint(data, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
-      console.log("This is the resaulttttt....", result );
+      console.log("This is the jresulttttt....", result );
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
@@ -186,12 +186,31 @@ function sendQueryToEndpoint(data, dispatch){
       // console.log("QUERY");
       // console.log(query);
       var jresult = JSON.parse(result.results.bindings[0].json.value);
+
+      var done = false;
+      var firstquery = query[0].query;
+      var m = 0;
+      var uris = [];
+      var resourcetype = "";
+      while(!done){
+        if(firstquery.indexOf("<http://dbpedia.org/") > -1){
+          resourcetype = firstquery.substring(firstquery.indexOf("<http://dbpedia.org/")+20, firstquery.replace("/","").replace("/","").replace("/","").indexOf("/")+3);
+          uris[m] = firstquery.substring(firstquery.indexOf("<http://dbpedia.org/"+ resourcetype +"/")+21 + resourcetype.length, firstquery.indexOf(">"));
+          firstquery = firstquery.replace("<http://dbpedia.org/"+resourcetype+"/", "");
+          firstquery = firstquery.replace(">", "");
+          m++;
+        }
+        else {
+          done = true;
+        }
+      }
+
       //---ranking--- is 2 requests necessary?
 
       if (jresult.hasOwnProperty("boolean")) {
         var information = [];
         information.push({
-          label: (jresult.boolean == true) ? "True" : "False",
+          label: (jresult.boolean == true) ? "Yes." + " ("+uris.toString()+")" : "No",
           answertype: "simple",
         })
         dispatch({
