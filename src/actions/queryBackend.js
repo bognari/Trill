@@ -15,7 +15,7 @@ const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr
 const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
-export function languageFeedback(namedGraph, lang){
+export function languageFeedback(namedGraph, lang, dispatch){
   var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
     + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
     + "INSERT { "
@@ -31,16 +31,20 @@ export function languageFeedback(namedGraph, lang){
     + "BIND (now() as ?time) . "
     + "}";
 
+  console.log(sparql);
+
   $.ajax({
-    url: "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
     type: "POST",
     contentType: 'application/x-www-form-urlencoded',
     data: {query: sparql},
     beforeSend: function (xhr) {
+      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function (result) {
-      questionanswering(this.props.namedGraph, ["wdaqua-core0, QueryExecuter"]);
+      console.log("Language set in the Backend");
+      questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],dispatch);
     }.bind(this)
   })
 }
@@ -48,8 +52,11 @@ export function languageFeedback(namedGraph, lang){
 export function startQuestionAnsweringWithTextQuestion(question, lang){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
-    var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
-      languageFeedback(namedGraph, lang);
+    var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=", function (data) {
+      var namedGraph = data.graph.toString();
+      languageFeedback(namedGraph, lang, dispatch);
+      //questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"], dispatch);
+      //sendQueryToEndpoint(data, dispatch);
     });
 
     questionresult.fail(function (e) {
@@ -64,7 +71,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
     var form  = new FormData();
     //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
     form.append("question", mp3file, "recording.mp3");
-    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0, QueryExecuter"]);
+    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0-wikidata, QueryExecuter"]);
 
     //maybe should check if mpfile is proper
 
@@ -93,8 +100,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
   }
 }
 
-export function questionanswering(namedGraph, components){
-  return function (dispatch) {
+export function questionanswering(namedGraph, components, dispatch){
     dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
 
     var form = new FormData();
@@ -117,11 +123,14 @@ export function questionanswering(namedGraph, components){
       processData: false,
       contentType: false,
       success: function (data) {
+        console.log("QUESTION ANSWERING 3");
         retriveQuestion(data);
         sendQueryToEndpoint(data, dispatch);
+      },
+      error: function (err){
+        return err;
       }
     });
-  }
 }
 
 function retriveQuestion(data, dispatch){
@@ -230,27 +239,31 @@ function sendQueryToEndpoint(data, dispatch){
       }
       else if (jresult.head.vars[0]=="count") {
         configureResult(query, jresult, dispatch, namedGraph);
-      } else{
-        var variable=jresult.head.vars[0];
-        var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-          "SELECT ?"+ variable + " " +
-          "FROM <http://dbpedia.org>" +
-          "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-          "WHERE {" +
-          "{"+ query[0].query +"} " +
-          "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
-          "}" +
-          "ORDER BY DESC(?v) LIMIT 1000";
-        console.log(rankedSparql);
+      } else {
 
-        var rankedrequest = $.get(
-          dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-          function (rankedresult) {
-            console.log(rankedresult);
-            configureResult(query, rankedresult, dispatch, namedGraph);
+        configureResult(query, jresult, dispatch, namedGraph);
 
-          }.bind(this)
-        );
+      // var variable=jresult.head.vars[0];
+
+      // var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
+      //   "SELECT ?"+ variable + " " +
+      //   "FROM <http://dbpedia.org>" +
+      //   "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
+      //   "WHERE {" +
+      //   "{"+ query[0].query +"} " +
+      //   "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
+      //   "}" +
+      //   "ORDER BY DESC(?v) LIMIT 1000";
+      //
+      // var rankedrequest = $.get(
+      //   "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+      //   function (rankedresult) {
+      //
+      //     configureResult(query, rankedresult, dispatch, namedGraph);
+      //
+      //   }.bind(this));
+
+      //---------------------
       }
     }
   });
@@ -259,7 +272,7 @@ function sendQueryToEndpoint(data, dispatch){
 function configureResult(query, jresult, dispatch, namedGraph){
 
   var count = 0;
-  console.log('This is the json result (ranked): ', jresult);
+  console.log('This is the json result (now not ranked): ', jresult);
 
     var variable=jresult.head.vars[0];
     var information=[];
@@ -298,8 +311,30 @@ function configureResult(query, jresult, dispatch, namedGraph){
               // + " FILTER (lang(?label)=\"en\" && lang(?abstract)=\"en\") "
               + " } ";
 
+            var wikiSparqlQuery = "PREFIX dbo: <urn:dbo> " +
+              "select ?label ?abstract ?image ?lat ?long ?wikilink where { " +
+              "OPTIONAL{ " +
+              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\"en\") " +
+              "} " +
+              "OPTIONAL{ " +
+              "<" + value + "> wdt:P18 ?image . " +
+              "} " +
+              "OPTIONAL{ " +
+              "<" + value + "> dbo:abstract ?abstract . FILTER (lang(?abstract)=\"en\") " +
+              "} " +
+              "OPTIONAL{ " +
+              "<" + value + "> wdt:P625 ?lat . " +
+              "} " +
+              "OPTIONAL{ " +
+              "?wikilink foaf:primaryTopic <" + value + "> . " +
+              "} " +
+              "}";
+
+            var dbpediaQueryUrl = "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
+            var wikiQueryUrl = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
+
             $.get(
-              dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+              (value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl,
               function (result) {
                 console.log("The properties of the results are this: ", result);
 
@@ -309,6 +344,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
                   information.push({
                     label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                     answertype: "noinfo",
+                    uri: value,
                     link: value,
                     key: k,
                   })
@@ -323,7 +359,12 @@ function configureResult(query, jresult, dispatch, namedGraph){
 
                 else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
 
+                  if(result.results.bindings[0].long ==  undefined) {
+                    var coordinates = result.results.bindings[0].lat.value.replace("Point(", "").replace(")", "").split(" ");
+                  }
+
                   console.log("Label: " + result.results.bindings[0].label.value);
+                  console.log("These are the geo coordinates: ", coordinates);
 
                   information.push({
                     label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
@@ -331,10 +372,10 @@ function configureResult(query, jresult, dispatch, namedGraph){
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "map",
                     uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
                     key: k,
-                    lat: parseFloat(result.results.bindings[0].lat.value),
-                    long: parseFloat(result.results.bindings[0].long.value),
+                    lat: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[1]) : parseFloat(result.results.bindings[0].lat.value),
+                    long: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[0]) : parseFloat(result.results.bindings[0].long.value),
                   })
                   dispatch({
                     type: QUESTION_ANSWERING_SUCCESS,
@@ -355,7 +396,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
                     image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
                     answertype: "detail",
                     uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : value,
+                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
                     key: k,
                   })
                   dispatch({

@@ -142,7 +142,7 @@ class Entity extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"]));
+        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"], this.props.dispatch));
       }.bind(this)
     })
   }
@@ -158,6 +158,7 @@ class Entity extends Component {
 
     {this.props.sparqlquery.map(function(sparqlquery, qindex) {
       desiredString = (getFromBetween.get(sparqlquery.query,"<http://dbpedia.org/resource/",">"));
+      //wikidesiredString = (getFromBetween.get(sparqlquery.query,"<http://www.wikidata.org/entity/",">"));
 
       //Here we take the entities from the queries and construct the entities array to hold these entities
       //alongside the index of the query from which it was retrieved

@@ -59,7 +59,8 @@ class AnswerPage extends Component {
     }
     else{
       this.state.previousquestion = this.props.question;
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+      console.log("LANGUAGE "+ this.props.language);
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question, this.props.language));
     }
   }
 
@@ -69,7 +70,7 @@ class AnswerPage extends Component {
     if(this.state.previousquestion != this.props.question && this.props.audiofile == null){
       console.log("We can start a new question answering because there is a new question");
       this.state.previousquestion = this.props.question;
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question, this.props.language));
     }
     else if(this.props.audiofile != null && this.state.previousaudio != this.props.audiofile){
       console.log("We can start audio question answering because there is a new audio question");
@@ -92,6 +93,9 @@ class AnswerPage extends Component {
     // }
     // else {
       //to refactor so don't have to check the same answer type multiple times
+
+    console.log("This is the first query: ", this.props.SPARQLquery);
+
       return (
         <div className={s.container}>
 
@@ -101,7 +105,7 @@ class AnswerPage extends Component {
           <div className={s.feedback}>
             <div className={s.buttonmenu}>
             <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-            <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+              {(this.props.SPARQLquery != "") ? (this.props.SPARQLquery[0].query.indexOf("dbpedia") > -1) ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null : null}
             </div>
             <Feedback/>
           </div>}
@@ -118,13 +122,13 @@ class AnswerPage extends Component {
                   {(info.answertype == "detail") ?
                     <div className={s.leftColumn}>
                       <div className={s.title}><p>{info.label}</p>
-                        <LinksBar wiki={info.link} dbpedia={info.uri}/></div>
+                        <LinksBar wikipedia={info.link} uri={info.uri} /></div>
                       {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
                     </div> : null}
                   {(info.answertype == "map") ?
                     <div className={s.leftColumn}>
                       <div className={s.title}><p>{info.label}</p>
-                        <LinksBar wiki={info.link} dbpedia={info.uri}/></div>
+                        <LinksBar wikipedia={info.link} uri={info.uri} /></div>
                       {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
                       <MapBox mapid={"map" + info.key} lat={info.lat} long={info.long}></MapBox>
                     </div> : null}
@@ -133,7 +137,7 @@ class AnswerPage extends Component {
                     <div className={s.rightColumn}>
                       {(info.image != "") ?
                         <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
-                      <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
+                      {(info.uri.indexOf("dbpedia") > -1) ? <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/> : null}
                     </div> : null}
 
                 </div>
