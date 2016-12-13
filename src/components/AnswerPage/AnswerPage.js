@@ -135,7 +135,7 @@ class AnswerPage extends Component {
                     <div className={s.rightColumn}>
                       {(info.image != "") ?
                         <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
-                      {(info.uri.indexOf("dbpedia") > -1) ? <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/> : null}
+                      <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
                     </div> : null}
 
                 </div>

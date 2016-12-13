@@ -205,30 +205,32 @@ function sendQueryToEndpoint(data, dispatch){
         });
       }
       else {
+        var variable=jresult.head.vars[0];
 
-        configureResult(query, jresult, dispatch, namedGraph);
+        //check whether if the results are wikidata and then whether or not to rank the answers
+        if(jresult.results.bindings[0][variable].value.indexOf("wikidata") > -1){
+          configureResult(query, jresult, dispatch, namedGraph);
+        }
+        else {
 
-      // var variable=jresult.head.vars[0];
+          var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
+            "SELECT ?"+ variable + " " +
+            "FROM <http://dbpedia.org>" +
+            "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
+            "WHERE {" +
+            "{"+ query[0].query +"} " +
+            "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
+            "}" +
+            "ORDER BY DESC(?v) LIMIT 1000";
 
-      // var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-      //   "SELECT ?"+ variable + " " +
-      //   "FROM <http://dbpedia.org>" +
-      //   "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-      //   "WHERE {" +
-      //   "{"+ query[0].query +"} " +
-      //   "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
-      //   "}" +
-      //   "ORDER BY DESC(?v) LIMIT 1000";
-      //
-      // var rankedrequest = $.get(
-      //   "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-      //   function (rankedresult) {
-      //
-      //     configureResult(query, rankedresult, dispatch, namedGraph);
-      //
-      //   }.bind(this));
+          var rankedrequest = $.get(
+            "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+            function (rankedresult) {
 
-      //---------------------
+              configureResult(query, rankedresult, dispatch, namedGraph);
+
+            }.bind(this));
+        }
       }
     }
   });
@@ -307,88 +309,134 @@ function configureResult(query, jresult, dispatch, namedGraph){
               "<" + value + "> wdt:P625 ?lat . " +
               "} " +
               "OPTIONAL{ " +
-              "?wikilink foaf:primaryTopic <" + value + "> . " +
+              "?wikilink a schema:Article ; schema:about <" + value + "> ; schema:inLanguage \"en\" ; schema:isPartOf <https://en.wikipedia.org/> ." +
               "} " +
               "}";
 
             var dbpediaQueryUrl = "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
             var wikiQueryUrl = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
 
-            $.get(
-              (value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl,
-              function (result) {
+            var getpropertiesrequest = $.get(
+              (value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl);
+
+            getpropertiesrequest.success(function(result){
                 console.log("The properties of the results are this: ", result);
 
-                //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
-                //determine and set answertype
-                if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
-                  information.push({
-                    label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    answertype: "noinfo",
-                    uri: value,
-                    link: value,
-                    key: k,
-                  })
-                  dispatch({
-                    type: QUESTION_ANSWERING_SUCCESS,
-                    namedGraph: namedGraph,
-                    SPARQLquery: query,
-                    information: information,
-                    loaded: true,
-                  });
+                //in the case the abstract needs to be retrieved from wikipedia
+                if(value.indexOf("wikidata") > -1){
+                  var wikiabstract = "";
+
+                    //The following has been commented out because we cannot do the request due to access-control origin header missing
+
+                    // $.ajax({
+                    //   url: "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + result.results.bindings[0].wikilink.value.replace("https://en.wikipedia.org/wiki/",""),
+                    //   async: false,
+                    //   type: "GET",
+                    //   contentType: false,
+                    //   success: function (data) {
+                    //     for(var key in data.query.pages){
+                    //       if(data.query.pages.hasOwnProperty(key)){
+                    //         console.log("This is the received data on abstract from wikipedia: ", data.query.pages[key].extract);
+                    //         wikiabstract = data.query.pages[key].extract;
+                    //       }
+                    //     }
+                    //   }
+                    // });
+
+                    var getdbpediaabstract = "select ?v ?abstract where { "
+                      + "OPTIONAL { "
+                      + "<"+result.results.bindings[0].wikilink.value.replace("s","")+"> foaf:primaryTopic ?v . "
+                      + " ?v dbo:abstract ?abstract . FILTER (lang(?abstract)=\"en\"). "
+                      + " } "
+                      + " }"
+
+                    var getabstract = $.get("http://dbpedia.org/sparql?query=" + encodeURIComponent(getdbpediaabstract) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on")
+                  getabstract.success(
+                    function (data) {
+                      console.log("abstract retreived: ",data.results.bindings[0].abstract.value);
+                      wikiabstract = (data.results.bindings[0].abstract != null) ? data.results.bindings[0].abstract.value : "";
+                      setinformation(binding,result,wikiabstract);
+                    }
+                  );
+
                 }
 
-                else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
+                else {
+                  setinformation(binding, result, "");
+                }
 
-                  if(result.results.bindings[0].long ==  undefined) {
-                    var coordinates = result.results.bindings[0].lat.value.replace("Point(", "").replace(")", "").split(" ");
+                function setinformation(binding, result, wikiabstract){
+                  //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
+                  //determine and set answertype
+                  if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
+                    information.push({
+                      label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                      answertype: "noinfo",
+                      uri: value,
+                      link: value,
+                      key: k,
+                    })
+                    dispatch({
+                      type: QUESTION_ANSWERING_SUCCESS,
+                      namedGraph: namedGraph,
+                      SPARQLquery: query,
+                      information: information,
+                      loaded: true,
+                    });
                   }
 
-                  console.log("Label: " + result.results.bindings[0].label.value);
-                  console.log("These are the geo coordinates: ", coordinates);
+                  else if (result.results.bindings[0].lat != undefined) { //case there are geo coordinates
 
-                  information.push({
-                    label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "",
-                    image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                    answertype: "map",
-                    uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
-                    key: k,
-                    lat: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[1]) : parseFloat(result.results.bindings[0].lat.value),
-                    long: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[0]) : parseFloat(result.results.bindings[0].long.value),
-                  })
-                  dispatch({
-                    type: QUESTION_ANSWERING_SUCCESS,
-                    namedGraph: namedGraph,
-                    SPARQLquery: query,
-                    information: information,
-                    loaded: true,
-                  });
+                    if(result.results.bindings[0].long ==  undefined) {
+                      var coordinates = result.results.bindings[0].lat.value.replace("Point(", "").replace(")", "").split(" ");
+                    }
+
+                    console.log("Label: " + result.results.bindings[0].label.value);
+                    console.log("These are the geo coordinates: ", coordinates);
+
+                    information.push({
+                      label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                      abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : (wikiabstract != "") ? wikiabstract : "",
+                      image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
+                      answertype: "map",
+                      uri: value,
+                      link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
+                      key: k,
+                      lat: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[1]) : parseFloat(result.results.bindings[0].lat.value),
+                      long: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[0]) : parseFloat(result.results.bindings[0].long.value),
+                    })
+                    dispatch({
+                      type: QUESTION_ANSWERING_SUCCESS,
+                      namedGraph: namedGraph,
+                      SPARQLquery: query,
+                      information: information,
+                      loaded: true,
+                    });
+                  }
+
+                  else {//case of regular detailed answer
+
+                    console.log("Label: " + result.results.bindings[0].label.value);
+
+                    information.push({
+                      label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
+                      abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : (wikiabstract != "") ? wikiabstract : "",
+                      image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
+                      answertype: "detail",
+                      uri: value,
+                      link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
+                      key: k,
+                    })
+                    dispatch({
+                      type: QUESTION_ANSWERING_SUCCESS,
+                      namedGraph: namedGraph,
+                      SPARQLquery: query,
+                      information: information,
+                      loaded: true,
+                    });
+                  }
                 }
-
-                else {//case of regular detailed answer
-
-                  console.log("Label: " + result.results.bindings[0].label.value);
-
-                  information.push({
-                    label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
-                    abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : "",
-                    image: (result.results.bindings[0].image != undefined) ? result.results.bindings[0].image.value : "",
-                    answertype: "detail",
-                    uri: value,
-                    link: (result.results.bindings[0].wikilink != undefined) ? result.results.bindings[0].wikilink.value : null,
-                    key: k,
-                  })
-                  dispatch({
-                    type: QUESTION_ANSWERING_SUCCESS,
-                    namedGraph: namedGraph,
-                    SPARQLquery: query,
-                    information: information,
-                    loaded: true,
-                  });
-                }
-              })
+            });
           }
           else if (type == "typed-literal" || type == "literal") {
             information.push({
