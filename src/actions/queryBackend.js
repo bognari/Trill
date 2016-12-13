@@ -10,16 +10,46 @@ export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
 export const QUESTION_ANSWERING_ENTITY_CHANGE = 'QUESTION_ANSWERING_ENTITY_CHANGE';
 export const ROUTE_CHANGE = 'ROUTE_CHANGE';
 
-const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
+
+const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
 const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
-export function startQuestionAnsweringWithTextQuestion(question){
+export function languageFeedback(namedGraph, lang){
+  var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
+    + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
+    + "INSERT { "
+    + "GRAPH <" + namedGraph + "> { "
+    + "?a a qa:AnnotationOfQuestionLanguage . "
+    + "?a oa:hasBody \"" +lang+ "\" ;"
+    + "   oa:annotatedBy <www.wdaqua.eu/qa> ; "
+    + "   oa:annotatedAt ?time ; "
+    + " }} "
+    + "WHERE { "
+    + "BIND (IRI(str(RAND())) AS ?a) . "
+    + "BIND (IRI(str(RAND())) AS ?b) . "
+    + "BIND (now() as ?time) . "
+    + "}";
+
+  $.ajax({
+    url: "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+    type: "POST",
+    contentType: 'application/x-www-form-urlencoded',
+    data: {query: sparql},
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+    },
+    success: function (result) {
+      questionanswering(this.props.namedGraph, ["wdaqua-core0, QueryExecuter"]);
+    }.bind(this)
+  })
+}
+
+export function startQuestionAnsweringWithTextQuestion(question, lang){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
-    //dispatch({type: QUESTION_ANSWERING_REQUEST});
     var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0, QueryExecuter", function (data) {
-      sendQueryToEndpoint(data, dispatch);
+      languageFeedback(namedGraph, lang);
     });
 
     questionresult.fail(function (e) {

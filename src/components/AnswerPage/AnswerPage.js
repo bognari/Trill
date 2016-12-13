@@ -24,7 +24,7 @@ import Entity from '../Entity';
 import LinksBar from '../LinksBar';
 import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
-import {setQuestion} from '../../actions/setQuestion';
+import {setQuestion} from '../../actions/language';
 
 @connect((store) => {
   return {
@@ -38,6 +38,7 @@ import {setQuestion} from '../../actions/setQuestion';
     error: store.qa.error,
     audiofile: store.qa.audiofile,
     qinitiated: store.qa.qinitiated,
+    language: store.lang.language,
   }
 })
 

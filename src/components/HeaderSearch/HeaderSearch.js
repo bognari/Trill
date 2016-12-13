@@ -15,6 +15,7 @@ import n from '../Navigation/Navigation.scss';
 import Link from '../Link';
 import Navigation from '../Navigation';
 import QueryBox from '../QueryBox';
+import LanguageSelector from '../LanguageSelector';
 
 @connect((store) => {
   return {
@@ -37,6 +38,7 @@ render() {
             </Link>}
           {(["/", "/about", "/contact", "/faq"].indexOf(this.props.location) > -1) ? null : <QueryBox size="50" header={true}/>}
           <div className={s.banner}>
+            <LanguageSelector />
           </div>
         </div>
       </div>

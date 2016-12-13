@@ -3,9 +3,8 @@
  */
 
 import { combineReducers } from 'redux'
-import { SET_QUESTION} from '../actions/setQuestion'
+import { LANGUAGE_CHANGE, SET_QUESTION} from '../actions/language'
 import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, QUESTION_ANSWERING_ENTITY_CHANGE, ROUTE_CHANGE } from '../actions/queryBackend'
-//import { ROUTE_CHANGE } from '../routes';
 import { SET_AUDIO } from '../components/QueryBox/QueryBox';
 
 import { actionTypes } from 'react-redux-form';
@@ -89,7 +88,26 @@ const qaReducer = (state = initialState, action) => {
   return state;
 }
 
+const initialStateLanguage = {
+  language: "en", //initial language of the website set to english
+}
+
+const languageReducer = (state = initialStateLanguage, action) => {
+  switch (action.type) {
+    case LANGUAGE_CHANGE: {
+      return {
+        ...state,
+        language: action.language,
+      }
+      break;
+    }
+  }
+  return state;
+}
+
+
 
 export default combineReducers({
   qa: qaReducer,
+  lang: languageReducer,
 })
