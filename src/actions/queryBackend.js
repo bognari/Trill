@@ -80,16 +80,15 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
       success: function (data) {
         retriveQuestion(data, dispatch);
         sendQueryToEndpoint(data, dispatch);
+      },
+      error: function(e){
+        var information = [];
+        information.push({
+          message: e.statusCode + " " + e.statusText,
+        });
+        dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
       }
     });
-
-    questionresult.fail(function (e) {
-      var information = this.state.information;
-      information.push({
-        message: e.statusCode + " " + e.statusText,
-      });
-      dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
-    })
   }
 }
 
@@ -158,10 +157,12 @@ function retriveQuestion(data, dispatch){
             Location.push("/question?query="+result);
         },
         error: function (err){
+          dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
             return err;
           }})
     },
     error: function (err){
+      dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
       return err;
     }
   })
