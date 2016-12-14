@@ -44,7 +44,7 @@ export function languageFeedback(namedGraph, lang, dispatch){
     },
     success: function (result) {
       console.log("Language set in the Backend");
-      questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
+      questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang, dispatch);
     }.bind(this)
   })
 }
@@ -71,7 +71,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
     var form  = new FormData();
     //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
     form.append("question", mp3file, "recording.mp3");
-    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0-wikidata, QueryExecuter"]);
+    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0, QueryExecuter"]);
 
     //maybe should check if mpfile is proper
 
@@ -128,7 +128,7 @@ export function questionanswering(namedGraph, components, lang, dispatch){
         sendQueryToEndpoint(data, lang, dispatch);
       },
       error: function (err){
-        return err;
+        dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
       }
     });
 }
