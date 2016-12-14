@@ -22,20 +22,18 @@ import {setLanguage} from '../../actions/language';
 class LanguageSelector extends Component {
 
   handleChange(e){
-    console.log("Value ", e);
-    console.log("Value", e.target.value);
     //this.setState({language:e.target.value});
     this.props.dispatch(setLanguage(e.target.value));
   }
 
   render() {
-    console.log("this.props.language "+this.props.language);
+    console.log("Language: "+this.props.language);
     return (
         <div className={s.container}>
           <select
             value={this.props.language}
             onChange={this.handleChange.bind(this)} className={s.language}>
-            <option value="en" selected="selected">English</option>
+            <option value="en" defaultValue>English</option>
             <option value="fr">Francais</option>
             <option value="de">Deutsch</option>
             <option value="it">Italiano</option>

@@ -3,6 +3,7 @@
  */
 
 import Location from '../core/Location';
+import iri from 'iri';
 
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
@@ -31,8 +32,6 @@ export function languageFeedback(namedGraph, lang, dispatch){
     + "BIND (now() as ?time) . "
     + "}";
 
-  console.log(sparql);
-
   $.ajax({
     url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
     type: "POST",
@@ -43,8 +42,7 @@ export function languageFeedback(namedGraph, lang, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function (result) {
-      console.log("Language set in the Backend");
-      questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang, dispatch);
+      questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
     }.bind(this)
   })
 }
@@ -71,12 +69,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
     var form  = new FormData();
     //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
     form.append("question", mp3file, "recording.mp3");
-    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0, QueryExecuter"]);
-
-    //maybe should check if mpfile is proper
-
-    console.log("mp3 file :", mp3file);
-    console.log("Contents of form: ", form);
+    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0-wikidata, QueryExecuter"]);
 
     var questionresult = $.ajax({
       url: qanary_services+"/startquestionansweringwithaudioquestion",
@@ -123,8 +116,7 @@ export function questionanswering(namedGraph, components, lang, dispatch){
       processData: false,
       contentType: false,
       success: function (data) {
-        console.log("QUESTION ANSWERING 3");
-        retriveQuestion(data);
+        retriveQuestion(data, dispatch);
         sendQueryToEndpoint(data, lang, dispatch);
       },
       error: function (err){
@@ -134,7 +126,7 @@ export function questionanswering(namedGraph, components, lang, dispatch){
 }
 
 function retriveQuestion(data, dispatch){
-  console.log("Retrieve question text");
+
   var namedGraph = data.graph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
@@ -152,17 +144,15 @@ function retriveQuestion(data, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
-      console.log("RESULT");
-      console.log(result);
+
       var uriText = result.results.bindings[0].uriText.value;
-      console.log(uriText);
       uriText=uriText.replace("http://qanaryhost:8080/question/",qanary_services+"/question/")+"/raw";
       //Dereference the uri and retrieve the text
       $.ajax({
           url: uriText,
           type: "GET",
         success: function(result) {
-            console.log(result);
+            console.log("Question retrieved: ", result);
             dispatch({type: 'SET_QUESTION', question: result});
             //dispatch({type: SET_AUDIO, audiofile: null});
             Location.push("/question?query="+result);
@@ -214,7 +204,7 @@ function sendQueryToEndpoint(data, lang, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
-      console.log("This is the resaulttttt....", result );
+      console.log("This is the raw result: ", result );
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
@@ -242,6 +232,7 @@ function sendQueryToEndpoint(data, lang, dispatch){
 
         //check whether if the results are wikidata and then whether or not to rank the answers
         if(jresult.results.bindings[0][variable].value.indexOf("wikidata") > -1){
+          console.log('This is the json result (not ranked due to wikidata result): ', jresult);
           configureResult(query, jresult, lang, dispatch, namedGraph);
         }
         else {
@@ -260,6 +251,7 @@ function sendQueryToEndpoint(data, lang, dispatch){
             "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
             function (rankedresult) {
 
+              console.log('This is the json result (ranked): ', rankedresult);
               configureResult(query, rankedresult, lang, dispatch, namedGraph);
 
             }.bind(this));
@@ -272,7 +264,6 @@ function sendQueryToEndpoint(data, lang, dispatch){
 function configureResult(query, jresult, lang, dispatch, namedGraph){
 
   var count = 0;
-  console.log('This is the json result (now not ranked): ', jresult);
 
     var variable=jresult.head.vars[0];
     var information=[];
@@ -280,8 +271,6 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
     if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
       jresult.results.bindings.map(function(binding,k) {
         if (k<20) {
-          console.log('In each iteration: ');
-          console.log("k: " + k);
 
           var type = binding[variable].type;
           var value = binding[variable].value;
@@ -337,7 +326,7 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
               (value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl);
 
             getpropertiesrequest.success(function(result){
-                console.log("The properties of the results are this: ", result);
+                console.log("The properties of the results are: ", result);
 
                 //in the case the abstract needs to be retrieved from wikipedia
                 var wikiabstract = "";
@@ -362,7 +351,7 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
 
                     var getdbpediaabstract = "select ?v ?abstract where { "
                       + "OPTIONAL { "
-                      + "<"+result.results.bindings[0].wikilink.value.replace("s","").replace(lang,"en")+"> foaf:primaryTopic ?v . "
+                      + "<"+iri.toIRIString(result.results.bindings[0].wikilink.value.replace("s","").replace(lang,"en")).replace("%20","_")+"> foaf:primaryTopic ?v . "
                       + " ?v dbo:abstract ?abstract . FILTER (lang(?abstract)=\""+lang+"\"). "
                       + " } "
                       + " }"
@@ -406,9 +395,6 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
                       var coordinates = result.results.bindings[0].lat.value.replace("Point(", "").replace(")", "").split(" ");
                     }
 
-                    console.log("Label: " + result.results.bindings[0].label.value);
-                    console.log("These are the geo coordinates: ", coordinates);
-
                     information.push({
                       label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                       abstract: (result.results.bindings[0].abstract != undefined) ? result.results.bindings[0].abstract.value : (wikiabstract != "") ? wikiabstract : "",
@@ -430,8 +416,6 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
                   }
 
                   else {//case of regular detailed answer
-
-                    console.log("Label: " + result.results.bindings[0].label.value);
 
                     information.push({
                       label: (result.results.bindings[0].label != undefined) ? result.results.bindings[0].label.value : value.replace("http://dbpedia.org/resource/", "").replace("_", " "),

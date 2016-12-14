@@ -59,13 +59,11 @@ class AnswerPage extends Component {
     }
     else{
       this.state.previousquestion = this.props.question;
-      console.log("LANGUAGE "+ this.props.language);
       this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question, this.props.language));
     }
   }
 
   componentDidUpdate() {
-    console.log("This is a testtttt");
 
     if(this.state.previousquestion != this.props.question && this.props.audiofile == null){
       console.log("We can start a new question answering because there is a new question");
@@ -111,7 +109,6 @@ class AnswerPage extends Component {
             {this.props.information.map(function (info, index) {
               return (
                 <div className={s.contentholder}>
-                  {console.log("render")}
                   {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
                   {(info.answertype == "noinfo") ?

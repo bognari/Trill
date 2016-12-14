@@ -28,7 +28,6 @@ class ImageComponent extends Component {
   }
 
   render() {
-    console.log("prop image"+this.props.image);
     return (
       <div className={s.container}>
         <img src={this.props.image} className={s.img}></img>

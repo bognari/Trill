@@ -31,7 +31,6 @@ class QueryBox extends Component {
   static propTypes = {
     size: PropTypes.string.isRequired,
     header: PropTypes.bool,
-  //  question: PropTypes.string,
   };
 
   constructor(props) {
@@ -52,8 +51,7 @@ class QueryBox extends Component {
     var stopevent;
 
     document.querySelector('#record').onclick = function(){
-      console.log('recording started');
-      //navigator.mediaDevices.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+      console.log('Recording started');
 
       var getUserMedia = navigator.mediaDevices.getUserMedia;
 
@@ -61,9 +59,6 @@ class QueryBox extends Component {
       navigator.mediaDevices.getUserMedia({ audio: true })
         .then(function(stream) {
           console.log('Permission granted');
-
-          // this.setState({audio: true});
-          // console.log("This is the audio state: ", this.state.audio);
 
           document.querySelector('#record').style = "display: none";
           document.querySelector('#querytext').style = "display: none";
@@ -101,7 +96,6 @@ class QueryBox extends Component {
     }
 
     document.querySelector('#cancel').onclick = function(e){
-      console.log("This clicked me first: ", e);
       stopevent = e;
       mediaRecorder.stop();
       mediaRecorder = null;
@@ -116,13 +110,12 @@ class QueryBox extends Component {
 
     function processStop(blob, stream, comp){
       stream.stop();//stop capturing
+      console.log("Capturing stopped.");
 
       if(stopevent == null){//check if cancel was used to stop the recorder. If not, then proceed
       // POST/PUT "Blob" using FormData/XHR2
       var blobURL = URL.createObjectURL(blob);
-      //document.write('<a href="' + blobURL + '">' + blobURL + '</a>');
       console.log("Wav url: ", blobURL);
-      //mediaRecorder.save();
 
       var arrayBuffer;
       var fileReader = new FileReader();
@@ -130,10 +123,10 @@ class QueryBox extends Component {
       var that=comp;
       fileReader.onload = function() {
         arrayBuffer = this.result;
-        console.log('onload reached, arraybuf:', arrayBuffer);
+        //console.log('onload reached, arraybuf:', arrayBuffer);
 
         var buffer = new Int16Array(arrayBuffer);
-        console.log('int16array: ', buffer);
+        console.log('Int16array: ', buffer);
 
         var mp3encoder = new lamejs.Mp3Encoder(1, 44100, 128); //mono 44.1khz (samplerate) encode to 128kbps
         var mp3Tmp = mp3encoder.encodeBuffer(buffer); //encode mp3
@@ -148,7 +141,7 @@ class QueryBox extends Component {
         var mpblob = new Blob(mp3Data, {type: 'audio/mp3'});
         var url = URL.createObjectURL(mpblob);
         console.log('MP3 URl: ', url);
-        console.log(mpblob);
+        //console.log(mpblob);
 
         // var mparrayBuffer;
         // var mpfileReader = new FileReader();
@@ -179,16 +172,12 @@ class QueryBox extends Component {
         var isChrome = !!window.chrome && !!window.chrome.webstore;
         if (isChrome){
           document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
-          //document.querySelector('#record').style = "display: inline-block";
-          console.log("This is chrome");
         }
       }
     }
     var isFirefox = typeof InstallTrigger !== 'undefined';
     if (isFirefox){
       document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
-      //document.querySelector('#record').style = "display: inline-block";
-      console.log("This is firefox");
     }
   }
 
@@ -203,21 +192,9 @@ class QueryBox extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    //console.log("This is the question before dispatch: ", this.props.question);
-    //store.dispatch({type: QUESTION_ANSWERING_REQUEST, question: document.querySelector("#querytext").value})
-      //.done( function(){
-    //   console.log("This is the question when done dispatch: ", this.props.question);
-    // });
-    //console.log("This is the question after dispatch: ", this.props.question);
     store.dispatch({type: SET_AUDIO, audiofile: null});//in case there was an audio file already performed, we need to empty it
     Location.push("/question?query="+document.querySelector("#querytext").value);
   }
-
-  // handleSubmit(e){
-  //   e.preventDefault();
-  //   this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value));
-  //   Location.push("/question");
-  // }
 
   handleÍnput(e){
     //this.props.dispatch(setQuestion(e.target.value));
@@ -226,7 +203,6 @@ class QueryBox extends Component {
 
   render() {
 
-    console.log(this.state.text);
     return (
       <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
             {/*{(this.state.audio) ?*/}

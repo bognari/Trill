@@ -27,7 +27,7 @@ class HeaderSearch extends Component {
 
 
 render() {
-  console.log("This is the current path: ", this.props.location);
+  console.log("Current path: ", this.props.location);
 
     return (
       <div className={s.root}>

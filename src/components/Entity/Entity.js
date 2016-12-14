@@ -192,7 +192,7 @@ class Entity extends Component {
     }.bind(this));
   }
 
-    console.log("this is the obj entities: ", entities);
+    console.log("These are the entities: ", entities);
 
     return (
       <div className={s.container}>
