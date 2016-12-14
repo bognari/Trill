@@ -94,8 +94,6 @@ class AnswerPage extends Component {
     // else {
       //to refactor so don't have to check the same answer type multiple times
 
-    console.log("This is the first query: ", this.props.SPARQLquery);
-
       return (
         <div className={s.container}>
 

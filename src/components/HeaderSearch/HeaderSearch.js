@@ -33,12 +33,12 @@ render() {
       <div className={s.root}>
         <div className={s.container}>
           <Navigation className={s.nav} linkClassName={n.darklink}/>
+          <LanguageSelector />
           {(this.props.location == "/")? <div className={s.placeholder}></div> : <Link className={s.brand} to="/">
-            <img src={require('./../../public/WDAquaLogoSmall.png')} height="24" alt="WDAqua" />
+            <img src={require('./../../public/WDAquaLogoSmall.png')} height="24" alt="WDAqua" className={s.logo}/>
             </Link>}
           {(["/", "/about", "/contact", "/faq"].indexOf(this.props.location) > -1) ? null : <QueryBox size="50" header={true}/>}
           <div className={s.banner}>
-            <LanguageSelector />
           </div>
         </div>
       </div>

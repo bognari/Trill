@@ -31,19 +31,16 @@ class LanguageSelector extends Component {
   render() {
     console.log("this.props.language "+this.props.language);
     return (
-      <div>
-        <div>
+        <div className={s.container}>
           <select
             value={this.props.language}
-            onChange={this.handleChange.bind(this)}
-          >
-            <option value="en">English</option>
+            onChange={this.handleChange.bind(this)} className={s.language}>
+            <option value="en" selected="selected">English</option>
             <option value="fr">Francais</option>
             <option value="de">Deutsch</option>
             <option value="it">Italiano</option>
           </select>
         </div>
-      </div>
     );
   }
 }
