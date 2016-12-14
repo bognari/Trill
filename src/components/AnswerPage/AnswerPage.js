@@ -24,7 +24,7 @@ import Entity from '../Entity';
 import LinksBar from '../LinksBar';
 import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
-import {setQuestion} from '../../actions/setQuestion';
+import {setQuestion} from '../../actions/language';
 
 @connect((store) => {
   return {
@@ -38,6 +38,7 @@ import {setQuestion} from '../../actions/setQuestion';
     error: store.qa.error,
     audiofile: store.qa.audiofile,
     qinitiated: store.qa.qinitiated,
+    language: store.lang.language,
   }
 })
 
@@ -58,7 +59,8 @@ class AnswerPage extends Component {
     }
     else{
       this.state.previousquestion = this.props.question;
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+      console.log("LANGUAGE "+ this.props.language);
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question, this.props.language));
     }
   }
 
@@ -68,7 +70,7 @@ class AnswerPage extends Component {
     if(this.state.previousquestion != this.props.question && this.props.audiofile == null){
       console.log("We can start a new question answering because there is a new question");
       this.state.previousquestion = this.props.question;
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question));
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question, this.props.language));
     }
     else if(this.props.audiofile != null && this.state.previousaudio != this.props.audiofile){
       console.log("We can start audio question answering because there is a new audio question");

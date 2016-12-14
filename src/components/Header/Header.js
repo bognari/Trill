@@ -8,9 +8,9 @@
  */
 
 import React, { Component } from 'react';
+import LanguageSelector from '../LanguageSelector';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Header.scss';
-import Link from '../Link';
 import Navigation from '../Navigation';
 import n from '../Navigation/Navigation.scss';
 
@@ -21,6 +21,7 @@ class Header extends Component {
       <div className={s.root}>
         <div className={s.container}>
           <Navigation className={s.nav} linkClassName={n.darklink} />
+          <LanguageSelector />
           <div className={s.banner}>
           </div>
         </div>

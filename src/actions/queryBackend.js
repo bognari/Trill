@@ -9,24 +9,58 @@ export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
 export const QUESTION_ANSWERING_ENTITY_CHANGE = 'QUESTION_ANSWERING_ENTITY_CHANGE';
 export const ROUTE_CHANGE = 'ROUTE_CHANGE';
-import { SET_AUDIO } from '../components/QueryBox/QueryBox';
 
-export function startQuestionAnsweringWithTextQuestion(question){
+
+const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
+const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
+const dbpedia_endpoint = "https://dbpedia.org/sparql";
+
+export function languageFeedback(namedGraph, lang, dispatch){
+  var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
+    + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
+    + "INSERT { "
+    + "GRAPH <" + namedGraph + "> { "
+    + "?a a qa:AnnotationOfQuestionLanguage . "
+    + "?a oa:hasBody \"" +lang+ "\" ;"
+    + "   oa:annotatedBy <www.wdaqua.eu/qa> ; "
+    + "   oa:annotatedAt ?time ; "
+    + " }} "
+    + "WHERE { "
+    + "BIND (IRI(str(RAND())) AS ?a) . "
+    + "BIND (IRI(str(RAND())) AS ?b) . "
+    + "BIND (now() as ?time) . "
+    + "}";
+
+  console.log(sparql);
+
+  $.ajax({
+    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+    type: "POST",
+    contentType: 'application/x-www-form-urlencoded',
+    data: {query: sparql},
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+    },
+    success: function (result) {
+      console.log("Language set in the Backend");
+      questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
+    }.bind(this)
+  })
+}
+
+export function startQuestionAnsweringWithTextQuestion(question, lang){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
-    //dispatch({type: QUESTION_ANSWERING_REQUEST});
-    var questionresult = $.post("http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=wdaqua-core0-wikidata, QueryExecuter", function (data) {
-      sendQueryToEndpoint(data, dispatch);
-      //Here we receive the namedGraph (data.graph)
+    var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=", function (data) {
+      var namedGraph = data.graph.toString();
+      languageFeedback(namedGraph, lang, dispatch);
+      //questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"], dispatch);
+      //sendQueryToEndpoint(data, dispatch);
     });
 
     questionresult.fail(function (e) {
-      // var information = this.state.information;
-      // information.push({
-      //   message: e.statusCode + " " + e.statusText,
-      // });
       dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
-
     })
   }
 }
@@ -45,7 +79,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
     console.log("Contents of form: ", form);
 
     var questionresult = $.ajax({
-      url: "http://wdaqua-qanary.univ-st-etienne.fr/startquestionansweringwithaudioquestion",
+      url: qanary_services+"/startquestionansweringwithaudioquestion",
       data: form,
       processData: false,
       type: "POST",
@@ -66,8 +100,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
   }
 }
 
-export function questionanswering(namedGraph, components){
-  return function (dispatch) {
+export function questionanswering(namedGraph, components, lang, dispatch){
     dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
 
     var form = new FormData();
@@ -84,18 +117,20 @@ export function questionanswering(namedGraph, components){
     }));
 
     var executeQuery = $.ajax({
-      url: "http://wdaqua-qanary.univ-st-etienne.fr/questionanswering",
+      url: qanary_services+"/questionanswering",
       type: "POST",
       data: form,
       processData: false,
       contentType: false,
       success: function (data) {
+        console.log("QUESTION ANSWERING 3");
         retriveQuestion(data);
-        //retriveQuestion(data, dispatch);
-        sendQueryToEndpoint(data, dispatch);
+        sendQueryToEndpoint(data, lang, dispatch);
+      },
+      error: function (err){
+        return err;
       }
     });
-  }
 }
 
 function retriveQuestion(data, dispatch){
@@ -110,7 +145,7 @@ function retriveQuestion(data, dispatch){
     + "  ?c oa:hasBody ?uriText . "
     + "}";
   $.ajax({
-    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
+    url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
     type: "GET",
     beforeSend: function(xhr){
       xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
@@ -121,7 +156,7 @@ function retriveQuestion(data, dispatch){
       console.log(result);
       var uriText = result.results.bindings[0].uriText.value;
       console.log(uriText);
-      uriText=uriText.replace("http://qanaryhost:8080/question/","http://wdaqua-qanary.univ-st-etienne.fr/question/")+"/raw";
+      uriText=uriText.replace("http://qanaryhost:8080/question/",qanary_services+"/question/")+"/raw";
       //Dereference the uri and retrieve the text
       $.ajax({
           url: uriText,
@@ -142,7 +177,7 @@ function retriveQuestion(data, dispatch){
   })
 }
 
-function sendQueryToEndpoint(data, dispatch){
+function sendQueryToEndpoint(data, lang, dispatch){
   var namedGraph = data.graph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
@@ -172,7 +207,7 @@ function sendQueryToEndpoint(data, dispatch){
     + "ORDER BY DESC(?score)";
 
   $.ajax({
-    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query?query=" + encodeURIComponent(sparqlQuery),
+    url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
     type: "GET",
     beforeSend: function(xhr){
       xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
@@ -185,10 +220,8 @@ function sendQueryToEndpoint(data, dispatch){
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
         //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
-      // console.log("QUERY");
-      // console.log(query);
+
       var jresult = JSON.parse(result.results.bindings[0].json.value);
-      //---ranking--- is 2 requests necessary?
 
       if (jresult.hasOwnProperty("boolean")) {
         var information = [];
@@ -209,7 +242,7 @@ function sendQueryToEndpoint(data, dispatch){
 
         //check whether if the results are wikidata and then whether or not to rank the answers
         if(jresult.results.bindings[0][variable].value.indexOf("wikidata") > -1){
-          configureResult(query, jresult, dispatch, namedGraph);
+          configureResult(query, jresult, lang, dispatch, namedGraph);
         }
         else {
 
@@ -227,7 +260,7 @@ function sendQueryToEndpoint(data, dispatch){
             "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
             function (rankedresult) {
 
-              configureResult(query, rankedresult, dispatch, namedGraph);
+              configureResult(query, rankedresult, lang, dispatch, namedGraph);
 
             }.bind(this));
         }
@@ -236,27 +269,11 @@ function sendQueryToEndpoint(data, dispatch){
   });
 }
 
-function configureResult(query, jresult, dispatch, namedGraph){
+function configureResult(query, jresult, lang, dispatch, namedGraph){
 
   var count = 0;
   console.log('This is the json result (now not ranked): ', jresult);
 
-  //check if it is an ask query
-  // if (jresult.hasOwnProperty("boolean")) {
-  //   var information = [];
-  //   information.push({
-  //     label: (jresult.boolean == true) ? "True" : "False",
-  //     answertype: "simple",
-  //   })
-  //   dispatch({
-  //     type: QUESTION_ANSWERING_SUCCESS,
-  //     namedGraph: namedGraph,
-  //     SPARQLquery: query,
-  //     information: information,
-  //     loaded: true,
-  //   });
-  // }
-  // else {
     var variable=jresult.head.vars[0];
     var information=[];
     //depending on the number of results, handle accordingly:
@@ -274,13 +291,13 @@ function configureResult(query, jresult, dispatch, namedGraph){
             //There is only one uri
             var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
               + " OPTIONAL{ "
-              + "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\"en\")"
+              + "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\"" + lang + "\")"
               + "} "
               + " OPTIONAL{ "
               + "<" + value + "> dbo:thumbnail ?image . "
               + "} "
               + " OPTIONAL{ "
-              + "<" + value + "> dbo:abstract ?abstract . FILTER (lang(?abstract)=\"en\") "
+              + "<" + value + "> dbo:abstract ?abstract . FILTER (lang(?abstract)=\"" + lang + "\") "
               + "} "
               + " OPTIONAL{ "
               + "<" + value + "> geo:lat ?lat . "
@@ -297,19 +314,19 @@ function configureResult(query, jresult, dispatch, namedGraph){
             var wikiSparqlQuery = "PREFIX dbo: <urn:dbo> " +
               "select ?label ?abstract ?image ?lat ?long ?wikilink where { " +
               "OPTIONAL{ " +
-              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\"en\") " +
+              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" ) " +
               "} " +
               "OPTIONAL{ " +
               "<" + value + "> wdt:P18 ?image . " +
               "} " +
               "OPTIONAL{ " +
-              "<" + value + "> dbo:abstract ?abstract . FILTER (lang(?abstract)=\"en\") " +
+              "<" + value + "> dbo:abstract ?abstract . FILTER (lang(?abstract)=\"" + lang + "\" ) " +
               "} " +
               "OPTIONAL{ " +
               "<" + value + "> wdt:P625 ?lat . " +
               "} " +
               "OPTIONAL{ " +
-              "?wikilink a schema:Article ; schema:about <" + value + "> ; schema:inLanguage \"en\" ; schema:isPartOf <https://en.wikipedia.org/> ." +
+              "?wikilink a schema:Article ; schema:about <" + value + "> ; schema:inLanguage \""+ lang +"\" ; schema:isPartOf <https://"+lang+".wikipedia.org/> ." +
               "} " +
               "}";
 
@@ -323,8 +340,8 @@ function configureResult(query, jresult, dispatch, namedGraph){
                 console.log("The properties of the results are this: ", result);
 
                 //in the case the abstract needs to be retrieved from wikipedia
-                if(value.indexOf("wikidata") > -1){
-                  var wikiabstract = "";
+                var wikiabstract = "";
+                if(value.indexOf("wikidata") > -1 && result.results.bindings[0].wikilink != null){
 
                     //The following has been commented out because we cannot do the request due to access-control origin header missing
 
@@ -345,20 +362,18 @@ function configureResult(query, jresult, dispatch, namedGraph){
 
                     var getdbpediaabstract = "select ?v ?abstract where { "
                       + "OPTIONAL { "
-                      + "<"+result.results.bindings[0].wikilink.value.replace("s","")+"> foaf:primaryTopic ?v . "
-                      + " ?v dbo:abstract ?abstract . FILTER (lang(?abstract)=\"en\"). "
+                      + "<"+result.results.bindings[0].wikilink.value.replace("s","").replace(lang,"en")+"> foaf:primaryTopic ?v . "
+                      + " ?v dbo:abstract ?abstract . FILTER (lang(?abstract)=\""+lang+"\"). "
                       + " } "
                       + " }"
 
                     var getabstract = $.get("http://dbpedia.org/sparql?query=" + encodeURIComponent(getdbpediaabstract) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on")
                   getabstract.success(
                     function (data) {
-                      console.log("abstract retreived: ",data.results.bindings[0].abstract.value);
                       wikiabstract = (data.results.bindings[0].abstract != null) ? data.results.bindings[0].abstract.value : "";
                       setinformation(binding,result,wikiabstract);
                     }
                   );
-
                 }
 
                 else {
@@ -368,7 +383,7 @@ function configureResult(query, jresult, dispatch, namedGraph){
                 function setinformation(binding, result, wikiabstract){
                   //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
                   //determine and set answertype
-                  if (typeof result.results.bindings[0]=="undefined") { //Case when there is no information... is it a possible scenario?
+                  if (Object.keys(result.results.bindings[0]).length == 0) { //Case when there is no information... is it a possible scenario?
                     information.push({
                       label: value.replace("http://dbpedia.org/resource/", "").replace("_", " "),
                       answertype: "noinfo",
@@ -478,14 +493,3 @@ export function routeupdate(path, query){
     dispatch({type: ROUTE_CHANGE, location: path, question: query});
   }
 }
-
-// export function routeupdate(path){
-//   // return {
-//   //   type: ROUTE_CHANGE,
-//   //   location: path,
-//   //   question: query,
-//   // }
-//   return function (dispatch) {
-//     dispatch({type: ROUTE_CHANGE, location: path});
-//   }
-// }

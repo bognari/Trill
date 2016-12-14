@@ -14,7 +14,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
 import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
-import {setQuestion} from '../../actions/setQuestion';
+import {setQuestion} from '../../actions/language';
 
 import store from '../../stores'
 import { QUESTION_ANSWERING_REQUEST } from '../../actions/queryBackend';
