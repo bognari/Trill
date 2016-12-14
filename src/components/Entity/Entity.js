@@ -48,6 +48,7 @@ var getFromBetween = {
 
 @connect((store) => {
   return {
+    language: store.lang.language,
   }
 })
 
@@ -142,7 +143,7 @@ class Entity extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"], this.props.dispatch));
+        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"], this.props.language, this.props.dispatch));
       }.bind(this)
     })
   }
