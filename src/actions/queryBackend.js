@@ -79,7 +79,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
       contentType: false,
       success: function (data) {
         retriveQuestion(data, dispatch);
-        sendQueryToEndpoint(data, dispatch);
+        sendQueryToEndpoint(data, "en", dispatch);
       },
       error: function(e){
         var information = [];

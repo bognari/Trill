@@ -24,6 +24,7 @@ export const SET_AUDIO = 'SET_AUDIO';
 @connect((store) => {
   return {
     question: store.qa.question,
+    language: store.lang.language,
   }
 })
 class QueryBox extends Component {
@@ -179,10 +180,26 @@ class QueryBox extends Component {
     if (isFirefox){
       document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
     }
+
+    // if(this.props.language != "en"){
+    //   document.querySelector('#record').className = s.hide;
+    // }
+    // else {
+    //   document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
+    // }
   }
 
   componentDidUpdate() {
-    document.querySelector("#querytext").defaultValue = this.props.question;
+    document.querySelector("#querytext").defaultValue = (this.props.question != undefined) ? this.props.question : "";
+
+    //to hide the mic when the language is not set to english
+
+    // if(this.props.language != "en"){
+    //   document.querySelector('#record').className = s.hide;
+    // }
+    // else {
+    //   document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
+    // }
   }
 
   handleClose() {
