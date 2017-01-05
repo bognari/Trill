@@ -20,7 +20,7 @@ import QueryBox from '../QueryBox';
 @connect((store) => {
   return {
     question: store.qa.question,
-    location: store.qa.location,
+    location: store.route.location,
   }
 })
 class HeaderSearch extends Component {

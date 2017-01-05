@@ -22,23 +22,21 @@ import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 import Entity from '../Entity';
 import LinksBar from '../LinksBar';
-import Location from '../../core/Location';
-import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
-import {setQuestion} from '../../actions/language';
+import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
-    location: store.qa.location,
     question: store.qa.question,
     namedGraph: store.qa.namedGraph,
     information: store.qa.information,
     SPARQLquery: store.qa.SPARQLquery,    //containes the generated sparql query
-    query: store.qa.query,                //indicates if the answer or the query is displayed
+    query: store.route.query,                //indicates if the answer or the query is displayed
     loaded: store.qa.loaded,              //indicates if the backend already gave back the answer
     error: store.qa.error,
     audiofile: store.qa.audiofile,
     qinitiated: store.qa.qinitiated,
     language: store.lang.language,
+    uriInput: store.qa.uriInput,
   }
 })
 
@@ -46,102 +44,65 @@ class AnswerPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      previousquestion: "",
-      previousaudio: null,
-    };
   }
 
   componentDidMount() {
-    if(this.props.audiofile != null){
-      this.state.previousaudio = this.props.audiofile;
-      this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
-    }
-    else{
-      this.state.previousquestion = this.props.question;
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question, this.props.language));
-    }
-  }
-
-  componentDidUpdate() {
-
-    if(this.state.previousquestion != this.props.question && this.props.audiofile == null){
-      console.log("We can start a new question answering because there is a new question");
-      this.state.previousquestion = this.props.question;
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.question, this.props.language));
-    }
-    else if(this.props.audiofile != null && this.state.previousaudio != this.props.audiofile){
-      console.log("We can start audio question answering because there is a new audio question");
-      this.state.previousaudio = this.props.audiofile;
-      this.props.dispatch(startQuestionAnsweringWithAudioQuestion(this.props.audiofile));
-    }
-    else {
-      console.log("We should not start qa, because something else changed in the store other than the question");
+    if (this.props.uriInput == true) {
+      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.query, "en"));
     }
   }
 
   render() {
+    return (
+      <div className={s.container}>
 
-    //if there is a refresh, then the user is redirected to the home page (because the store will be reset and the question will
-    // be empty)
+        <Loader loaded={this.props.loaded} color="#333">
 
-    // if (this.props.qinitiated == false) {
-    //   Location.push("/");
-    //   return (<div className={s.container}></div>);
-    // }
-    // else {
-      //to refactor so don't have to check the same answer type multiple times
+      {(this.props.error) ? <Error>Error</Error> :
+        <div className={s.feedback}>
+          <div className={s.buttonmenu}>
+          <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+            {(this.props.SPARQLquery != "") ? (this.props.SPARQLquery[0].query.indexOf("dbpedia") > -1) ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null : null}
+          </div>
+          <Feedback/>
+        </div>}
 
-      return (
-        <div className={s.container}>
+          {this.props.information.map(function (info, index) {
+            return (
+              <div className={s.contentholder}>
+                {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
-          <Loader loaded={this.props.loaded} color="#333">
+                {(info.answertype == "noinfo") ?
+                  <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
 
-        {(this.props.error) ? <Error>Error</Error> :
-          <div className={s.feedback}>
-            <div className={s.buttonmenu}>
-            <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-              {(this.props.SPARQLquery != "") ? (this.props.SPARQLquery[0].query.indexOf("dbpedia") > -1) ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null : null}
-            </div>
-            <Feedback/>
-          </div>}
+                {(info.answertype == "detail") ?
+                  <div className={s.leftColumn}>
+                    <div className={s.title}><p>{info.label}</p>
+                      <LinksBar wikipedia={info.link} uri={info.uri} /></div>
+                    {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
+                  </div> : null}
+                {(info.answertype == "map") ?
+                  <div className={s.leftColumn}>
+                    <div className={s.title}><p>{info.label}</p>
+                      <LinksBar wikipedia={info.link} uri={info.uri} /></div>
+                    {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
+                    <MapBox mapid={"map" + info.key} lat={info.lat} long={info.long}></MapBox>
+                  </div> : null}
 
-            {this.props.information.map(function (info, index) {
-              return (
-                <div className={s.contentholder}>
-                  {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
+                {(info.answertype == "detail" || info.answertype == "map") ?
+                  <div className={s.rightColumn}>
+                    {(info.image != "") ?
+                      <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
+                    <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
+                  </div> : null}
 
-                  {(info.answertype == "noinfo") ?
-                    <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
-
-                  {(info.answertype == "detail") ?
-                    <div className={s.leftColumn}>
-                      <div className={s.title}><p>{info.label}</p>
-                        <LinksBar wikipedia={info.link} uri={info.uri} /></div>
-                      {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
-                    </div> : null}
-                  {(info.answertype == "map") ?
-                    <div className={s.leftColumn}>
-                      <div className={s.title}><p>{info.label}</p>
-                        <LinksBar wikipedia={info.link} uri={info.uri} /></div>
-                      {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
-                      <MapBox mapid={"map" + info.key} lat={info.lat} long={info.long}></MapBox>
-                    </div> : null}
-
-                  {(info.answertype == "detail" || info.answertype == "map") ?
-                    <div className={s.rightColumn}>
-                      {(info.image != "") ?
-                        <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
-                      <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
-                    </div> : null}
-
-                </div>
-              )
-            })}
-          </Loader>
-        </div>
-      );
-   // }
+              </div>
+            )
+          })}
+        </Loader>
+      </div>
+    );
   }
 
 

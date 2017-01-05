@@ -7,7 +7,6 @@
  */
 
 export const LANGUAGE_CHANGE = 'LANGUAGE_CHANGE'
-export const SET_QUESTION = 'SET_QUESTION'
 
 /*
  * other constants

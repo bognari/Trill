@@ -8,9 +8,9 @@ import iri from 'iri';
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
-export const QUESTION_ANSWERING_ENTITY_CHANGE = 'QUESTION_ANSWERING_ENTITY_CHANGE';
-export const ROUTE_CHANGE = 'ROUTE_CHANGE';
+export const SET_QUESTION = 'SET_QUESTION';
 
+export const URI_INPUT = "URI_INPUT"
 
 const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
 const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
@@ -93,7 +93,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
 }
 
 export function questionanswering(namedGraph, components, lang, dispatch){
-    dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
+    //dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
 
     var form = new FormData();
     form.append("componentlist[]", components);
@@ -154,7 +154,7 @@ function retriveQuestion(data, dispatch){
             console.log("Question retrieved: ", result);
             dispatch({type: 'SET_QUESTION', question: result});
             //dispatch({type: SET_AUDIO, audiofile: null});
-            Location.push("/question?query="+result);
+            //Location.push("/question?query="+result);
         },
         error: function (err){
           dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
@@ -472,8 +472,4 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
  // }
 }
 
-export function routeupdate(path, query){
-  return function (dispatch) {
-    dispatch({type: ROUTE_CHANGE, location: path, question: query});
-  }
-}
+

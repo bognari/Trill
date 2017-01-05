@@ -19,7 +19,8 @@ import NotFoundPage from './components/NotFoundPage';
 import ErrorPage from './components/ErrorPage';
 import AnswerPage from './components/AnswerPage';
 import HomePage from './components/HomePage';
-import {routeupdate} from './actions/queryBackend';
+import {startQuestionAnsweringWithTextQuestion} from './actions/queryBackend';
+import {routechange} from './actions/route';
 
 import { Provider } from 'react-redux';
 import store from './stores';
@@ -30,7 +31,8 @@ const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
     //store.dispatch({type: ROUTE_CHANGE, location: state.path, question: state.query.query}); //may want to remove this if there is a looping problem from audio question, since this will cause state updates, causing the loop
-    store.dispatch(routeupdate(state.path, state.query.query));
+
+    store.dispatch(routechange(state.path, state.query.query));
     return component && <Provider store={store}><App query={state.query} context={state.context}>{component}</App></Provider>;
   });
 

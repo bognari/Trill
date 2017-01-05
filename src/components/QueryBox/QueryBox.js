@@ -16,11 +16,6 @@ import Location from '../../core/Location';
 import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
 import {setQuestion} from '../../actions/language';
 
-import store from '../../stores'
-import { QUESTION_ANSWERING_REQUEST } from '../../actions/queryBackend';
-
-export const SET_AUDIO = 'SET_AUDIO';
-
 @connect((store) => {
   return {
     question: store.qa.question,
@@ -157,8 +152,7 @@ class QueryBox extends Component {
         //from here is a test to understand the audio service
 
         var mpfile = new File([mpblob], "recording.mp3");
-        // that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
-        store.dispatch({type: SET_AUDIO, audiofile: mpfile});
+        that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
         Location.push("/question");
       }
       fileReader.readAsArrayBuffer(blob);
@@ -167,6 +161,7 @@ class QueryBox extends Component {
 
 
     document.querySelector('#record').className = s.hide;
+
     //Hacks to determine the browser, mik working only for firefox and chrome
     if (typeof window !== 'undefined') {
       if (typeof window.chrome !== 'undefined') {
@@ -180,26 +175,18 @@ class QueryBox extends Component {
     if (isFirefox){
       document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
     }
-
-    // if(this.props.language != "en"){
-    //   document.querySelector('#record').className = s.hide;
-    // }
-    // else {
-    //   document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
-    // }
   }
 
   componentDidUpdate() {
     document.querySelector("#querytext").defaultValue = (this.props.question != undefined) ? this.props.question : "";
 
     //to hide the mic when the language is not set to english
-
-    // if(this.props.language != "en"){
-    //   document.querySelector('#record').className = s.hide;
-    // }
-    // else {
-    //   document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
-    // }
+    if(this.props.language != "en"){
+       document.querySelector('#record').className = s.hide;
+    }
+    else {
+       document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
+    }
   }
 
   handleClose() {
@@ -209,7 +196,8 @@ class QueryBox extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    store.dispatch({type: SET_AUDIO, audiofile: null});//in case there was an audio file already performed, we need to empty it
+    //this.props.dispatch({type: URI_INPUT, uriInput: false});//in case there was an audio file already performed, we need to empty it
+    this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value, this.props.language));
     Location.push("/question?query="+document.querySelector("#querytext").value);
   }
 

@@ -3,11 +3,9 @@
  */
 
 import { combineReducers } from 'redux'
-import { LANGUAGE_CHANGE, SET_QUESTION} from '../actions/language'
-import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, QUESTION_ANSWERING_ENTITY_CHANGE, ROUTE_CHANGE } from '../actions/queryBackend'
-import { SET_AUDIO } from '../components/QueryBox/QueryBox';
-
-import { actionTypes } from 'react-redux-form';
+import { LANGUAGE_CHANGE} from '../actions/language'
+import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, SET_QUESTION} from '../actions/queryBackend'
+import { ROUTE_CHANGE} from '../actions/route'
 
 
 const initialState = {
@@ -21,6 +19,7 @@ const initialState = {
   error: false,
   audiofile: null,
   qinitiated: false,
+  uriInput: true,
   }
 
 const qaReducer = (state = initialState, action) => {
@@ -31,6 +30,7 @@ const qaReducer = (state = initialState, action) => {
         question: action.question,
         loaded: false,
         qinitiated: true,
+        uriInput: false,
       }
       break;
     }
@@ -41,7 +41,7 @@ const qaReducer = (state = initialState, action) => {
         information: action.information.concat(),
         SPARQLquery: action.SPARQLquery,
         loaded: true,
-        error: false
+        error: false,
       }
       break;
     }
@@ -54,34 +54,11 @@ const qaReducer = (state = initialState, action) => {
       }
       break;
     }
-    case QUESTION_ANSWERING_ENTITY_CHANGE: {
-      return {
-        ...state,
-        loaded: false,
-        qinitiated: true,
-      }
-      break;
-    }
-    case ROUTE_CHANGE: {
-      return {
-        ...state,
-        location: action.location,
-        question: action.question,
-      }
-      break;
-    }
     case SET_QUESTION: {
       return {
         ...state,
         question: action.question,
     }
-      break;
-    }
-    case SET_AUDIO: {
-      return {
-        ...state,
-        audiofile: action.audiofile,
-      }
       break;
     }
   }
@@ -105,9 +82,28 @@ const languageReducer = (state = initialStateLanguage, action) => {
   return state;
 }
 
+const initialStateRoute = {
+  location: "/", //where the user is currently in the website
+  question: "",
+}
+
+const routeReducer = (state = initialStateRoute, action) => {
+  switch (action.type) {
+    case ROUTE_CHANGE: {
+      return {
+        ...state,
+        location: action.location,
+        query: action.query,
+      }
+      break;
+    }
+  }
+  return state;
+}
 
 
 export default combineReducers({
   qa: qaReducer,
   lang: languageReducer,
+  route: routeReducer,
 })
