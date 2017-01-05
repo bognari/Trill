@@ -79,7 +79,7 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
       contentType: false,
       success: function (data) {
         retriveQuestion(data, dispatch);
-        sendQueryToEndpoint(data, dispatch);
+        sendQueryToEndpoint(data, "en", dispatch);
       },
       error: function(e){
         var information = [];
@@ -213,7 +213,7 @@ function sendQueryToEndpoint(data, lang, dispatch){
       }
 
       var jresult = JSON.parse(result.results.bindings[0].json.value);
-
+      console.log("JSON resurl ", jresult);
       if (jresult.hasOwnProperty("boolean")) {
         var information = [];
         information.push({
@@ -227,12 +227,11 @@ function sendQueryToEndpoint(data, lang, dispatch){
           information: information,
           loaded: true,
         });
-      }
-      else {
+      } else {
         var variable=jresult.head.vars[0];
 
         //check whether if the results are wikidata and then whether or not to rank the answers
-        if(jresult.results.bindings[0][variable].value.indexOf("wikidata") > -1){
+        if(result.results.bindings[0].sparql.value.indexOf("wikidata") > -1){
           console.log('This is the json result (not ranked due to wikidata result): ', jresult);
           configureResult(query, jresult, lang, dispatch, namedGraph);
         }
@@ -268,11 +267,11 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
 
     var variable=jresult.head.vars[0];
     var information=[];
+    console.log(jresult.results.bindings.length, "  --- ", );
     //depending on the number of results, handle accordingly:
     if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
       jresult.results.bindings.map(function(binding,k) {
         if (k<20) {
-
           var type = binding[variable].type;
           var value = binding[variable].value;
           console.log("Result type and value: " + type + "; " + value);
@@ -304,7 +303,7 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
             var wikiSparqlQuery = "PREFIX dbo: <urn:dbo> " +
               "select ?label ?abstract ?image ?lat ?long ?wikilink where { " +
               "OPTIONAL{ " +
-              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" ) " +
+              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" ) " +
               "} " +
               "OPTIONAL{ " +
               "<" + value + "> wdt:P18 ?image . " +
@@ -358,7 +357,7 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
                       + " }"
 
                     var getabstract = $.get("http://dbpedia.org/sparql?query=" + encodeURIComponent(getdbpediaabstract) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on")
-                  getabstract.success(
+                    getabstract.success(
                     function (data) {
                       wikiabstract = (data.results.bindings[0].abstract != null) ? data.results.bindings[0].abstract.value : "";
                       setinformation(binding,result,wikiabstract);
