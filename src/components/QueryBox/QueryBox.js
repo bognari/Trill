@@ -24,6 +24,7 @@ export const SET_AUDIO = 'SET_AUDIO';
 @connect((store) => {
   return {
     question: store.qa.question,
+    language: store.lang.language,
   }
 })
 class QueryBox extends Component {
@@ -179,10 +180,26 @@ class QueryBox extends Component {
     if (isFirefox){
       document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
     }
+
+    // if(this.props.language != "en"){
+    //   document.querySelector('#record').className = s.hide;
+    // }
+    // else {
+    //   document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
+    // }
   }
 
   componentDidUpdate() {
-    document.querySelector("#querytext").defaultValue = this.props.question;
+    document.querySelector("#querytext").defaultValue = (this.props.question != undefined) ? this.props.question : "";
+
+    //to hide the mic when the language is not set to english
+
+    // if(this.props.language != "en"){
+    //   document.querySelector('#record').className = s.hide;
+    // }
+    // else {
+    //   document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
+    // }
   }
 
   handleClose() {
@@ -202,7 +219,12 @@ class QueryBox extends Component {
   }
 
   render() {
-
+    var placeholder = {
+      en: "Enter your question... ",
+      de: "Gebe eine Frage ein ... ",
+      fr: "Entrez une question ... ",
+      it: "Fammi una domanda ... ",
+    };
     return (
       <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
             {/*{(this.state.audio) ?*/}
@@ -214,7 +236,7 @@ class QueryBox extends Component {
               </div>
               {/*:*/}
               <div className={s.queryform}>
-                <input id="querytext" type="text" name="query" className={(this.props.header == true)? s.headertextinput : s.textinput} placeholder="Enter your question..." required autoFocus size={this.props.size} onChange={this.handleÍnput} defaultValue={this.props.question}/>
+                <input id="querytext" type="text" name="query" className={(this.props.header == true)? s.headertextinput : s.textinput} placeholder={placeholder[this.props.language]} required autoFocus size={this.props.size} onChange={this.handleÍnput} defaultValue={this.props.question}/>
                 <button id="record" type="button" className={s.hide}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
                 {/*{(mic==true) ? <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : <div id="record" style={{display: "inline-block"}}></div> }*/}
                 <input id="go" type="submit" className={(this.props.header == true)? s.headerbutton : s.button} value="Go"/>

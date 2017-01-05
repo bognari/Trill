@@ -18,6 +18,7 @@ import Label from '../Label';
   return {
     SPARQLquery: store.qa.SPARQLquery,
     question: store.qa.question,
+    language: store.lang.language,
   }
 })
 class Feedback extends Component {
@@ -55,18 +56,46 @@ class Feedback extends Component {
   }
 
   render() {
+    var right = {
+      en: "Is this the right answer?",
+      de: "Ist diese Antwort korrekt?",
+      fr: "Cette response est correcte?",
+      it: "Questa risposta è giusta?",
+    }
+
+    var yes = {
+      en: "Yes",
+      de: "Ja",
+      fr: "Oui",
+      it: "Sì",
+    }
+
+    var no = {
+      en: "No",
+      de: "Nein",
+      fr: "No",
+      it: "No",
+    }
+
+    var thanks = {
+      en: "Thanks for your feedback!",
+      de: "Danke für ihr Feedback!",
+      fr: "Merci!",
+      it: "Grazie!",
+    }
+
     return (
       <div id="holder">
         {/*<div id="button" onClick={this.handleClick} className={(this.state.feedbackbox) ? s.buttonpressed : s.button}>Feedback</div>*/}
 
         <div id="container" className={s.container}>
-          {(this.state.submitted && !this.state.error) ? <p>Thanks for your feedback!</p> :
+          {(this.state.submitted && !this.state.error) ? <p>{thanks[this.props.language]}</p> :
             <form id="form" className={s.form} action="" method="POST">
               <input type="hidden" id="question" name="question" value={this.props.question}/>
               <input type="hidden" id="sparql" name="sparql" value={this.props.SPARQLquery[0].query}/>
-              <p>Is this the right answer? &nbsp;&nbsp;
-                <input type="radio" name="correct" value="true" onChange={this.handleChange}/> Yes &nbsp;&nbsp;
-                <input type="radio" name="correct" value="false" onChange={this.handleChange}/>  No
+              <p>{right[this.props.language]} &nbsp;&nbsp;
+                <input type="radio" name="correct" value="true" onChange={this.handleChange}/> {yes[this.props.language]} &nbsp;&nbsp;
+                <input type="radio" name="correct" value="false" onChange={this.handleChange}/>  {no[this.props.language]}
               </p>
             </form>
           }

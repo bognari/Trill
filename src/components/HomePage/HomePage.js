@@ -12,9 +12,7 @@ import {connect} from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './HomePage.scss';
 import QueryBox from '../QueryBox';
-import AnswerPage from '../AnswerPage';
-
-const title = 'WDAqua';
+import Location from '../../core/Location';
 
 class HomePage extends Component {
 
@@ -28,7 +26,12 @@ class HomePage extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    //Location.push("/?query=dennis");
+  }
+
   render() {
+    console.log("RELODED")
     return (
       <div>
         <div className={s.container}>
