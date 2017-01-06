@@ -13,7 +13,8 @@ import cx from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Navigation.scss';
 import Link from '../Link';
-import LanguageSelectorFlags from '../LanguageSelectorFlags';
+import SelectorLanguageFlags from '../SelectorLanguageFlags';
+import SelectorKnowledgeBase from '../SelectorKnowledgeBase';
 
 @connect((store) => {
   return {
@@ -54,7 +55,8 @@ class Navigation extends Component {
         <Link className={this.props.linkClassName} to={"/about_"+this.props.language}>{about[this.props.language]}</Link>
         <Link className={this.props.linkClassName} to="/faq">{faq[this.props.language]}</Link>
         <Link className={this.props.linkClassName} to="/contact">{contact[this.props.language]}</Link>
-        <div className={s.flags}> <LanguageSelectorFlags/></div>
+        <div className={s.flags}> <SelectorKnowledgeBase/></div>
+        <div className={s.flags}> <SelectorLanguageFlags/></div>
       </div>
     );
   }
