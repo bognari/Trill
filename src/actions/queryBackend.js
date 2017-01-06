@@ -10,7 +10,7 @@ export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
 export const SET_QUESTION = 'SET_QUESTION';
 
-export const URI_INPUT = "URI_INPUT"
+export const URI_INPUT = "URI_INPUT";
 
 const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
 const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
@@ -303,7 +303,9 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
             var wikiSparqlQuery = "PREFIX dbo: <urn:dbo> " +
               "select ?label ?abstract ?image ?lat ?long ?wikilink where { " +
               "OPTIONAL{ " +
-              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" ) " +
+              //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
+              "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=?lang) . " +
+              " values (?lang ?lang_) { (\""+lang+"\" 1) (\"en\" 2) (\"de\" 3) (\"fr\" 4) (\"it\" 5)} " + //Trick to find the labels if they do not exist in the desired language, otherwise the "Q number" appears which is ugly
               "} " +
               "OPTIONAL{ " +
               "<" + value + "> wdt:P18 ?image . " +
@@ -317,7 +319,7 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
               "OPTIONAL{ " +
               "?wikilink a schema:Article ; schema:about <" + value + "> ; schema:inLanguage \""+ lang +"\" ; schema:isPartOf <https://"+lang+".wikipedia.org/> ." +
               "} " +
-              "}";
+              "} order by ?lang_ ";
 
             var dbpediaQueryUrl = "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
             var wikiQueryUrl = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
@@ -334,35 +336,45 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
 
                     //The following has been commented out because we cannot do the request due to access-control origin header missing
 
-                    // $.ajax({
-                    //   url: "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + result.results.bindings[0].wikilink.value.replace("https://en.wikipedia.org/wiki/",""),
-                    //   async: false,
-                    //   type: "GET",
-                    //   contentType: false,
-                    //   success: function (data) {
-                    //     for(var key in data.query.pages){
-                    //       if(data.query.pages.hasOwnProperty(key)){
-                    //         console.log("This is the received data on abstract from wikipedia: ", data.query.pages[key].extract);
-                    //         wikiabstract = data.query.pages[key].extract;
-                    //       }
-                    //     }
-                    //   }
-                    // });
+                    console.log("SITE"+"https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/",""));
 
+                    $.ajax({
+                      url: "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_"),
+                      async: false,
+                      type: "GET",
+                      contentType: false,
+                      success: function (data) {
+                        for(var key in data.query.pages){
+                          if(data.query.pages.hasOwnProperty(key)){
+                            console.log("This is the received data on abstract from wikipedia: ", data.query.pages[key].extract);
+                            wikiabstract = data.query.pages[key].extract;
+                            if (wikiabstract!=undefined){
+                              setinformation(binding,result,wikiabstract);
+                            } else {
+                              setinformation(binding,result,"");
+                            }
+                          }
+                        }
+                      }
+                    });
+
+
+                  //Retriveing the abstract from dbpedia
+                  /*
                     var getdbpediaabstract = "select ?v ?abstract where { "
                       + "OPTIONAL { "
                       + "<"+iri.toIRIString(result.results.bindings[0].wikilink.value.replace("s","").replace(lang,"en")).replace("%20","_")+"> foaf:primaryTopic ?v . "
                       + " ?v dbo:abstract ?abstract . FILTER (lang(?abstract)=\""+lang+"\"). "
                       + " } "
-                      + " }"
-
+                      + " }"*/
+/*
                     var getabstract = $.get("http://dbpedia.org/sparql?query=" + encodeURIComponent(getdbpediaabstract) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on")
                     getabstract.success(
                     function (data) {
                       wikiabstract = (data.results.bindings[0].abstract != null) ? data.results.bindings[0].abstract.value : "";
                       setinformation(binding,result,wikiabstract);
                     }
-                  );
+                  );*/
                 }
 
                 else {
