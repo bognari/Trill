@@ -30,13 +30,13 @@ class SelectorKnowledgeBase extends Component {
 
     var flagTemplate = function(item, search) {
       var knowledgeBases = {
-        dbpedia: require('./images/dbpedia-logo.png'),
-        wikidata: require('./images/wikidata-logo.png'),
+        Dbpedia: require('./images/dbpedia-logo.png'),
+        Wikidata: require('./images/wikidata-logo.png'),
       };
 
       return(
         <div key="item.name">
-          <img className="flag" src={knowledgeBases[item.name]}/>
+          <img className={s.img} src={knowledgeBases[item.name]}/>
         </div>);
     };
 

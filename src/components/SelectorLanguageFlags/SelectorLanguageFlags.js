@@ -52,7 +52,7 @@ class LanguageSelectorFlags extends Component {
 
       return(
         <div key="item.name">
-          <img className="flag" src={flags[item.name]}/>
+          <img className={s.img} src={flags[item.name]}/>
         </div>);
     };
 
