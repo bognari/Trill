@@ -10,7 +10,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './LanguageSelectorFlags.scss';
+import s from './SelectorLanguageFlags.scss';
 import ReactSuperSelect from 'react-super-select';
 import {setLanguage} from '../../actions/language';
 

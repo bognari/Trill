@@ -1,0 +1,6 @@
+{
+  "name": "SelectorLanguageFlags",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SelectorLanguageFlags.js"
+}
