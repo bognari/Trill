@@ -8,13 +8,29 @@
  */
 
 import React, { Component } from 'react';
+import {connect} from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Footer.scss';
 import Link from '../Link';
 
+@connect((store) => {
+  return {
+    language: store.lang.language,
+  }
+})
 class Footer extends Component {
 
+
+
   render() {
+
+    var issue = {
+      en: "Report an issue",
+      de: "Fehler Melden",
+      fr: "Signaler une erreur",
+      it: "Segnalare un errore",
+    }
+
     return (
       <div className={s.root}>
         <div className={s.container}>
@@ -25,7 +41,7 @@ class Footer extends Component {
           <a
             className={s.link}
             href="https://github.com/WDAqua/frontEnd/issues/new"
-          >Report an issue</a>
+          >{issue[this.props.language]}</a>
         </div>
       </div>
     );
