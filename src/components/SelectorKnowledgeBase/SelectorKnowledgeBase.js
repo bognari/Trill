@@ -14,20 +14,25 @@ import {setKnowledgebase} from '../../actions/knowledgebase';
 class SelectorKnowledgeBase extends Component {
 
   handleChange(option){
-      this.props.dispatch(setKnowledgebase(option.title));
+      this.props.dispatch(setKnowledgebase(option.name));
   }
 
   render() {
 
     var options = [
       {
-        id: 1,
+        id: "wikidata",
         name: "wikidata",
       },{
-        id: 2,
+        id: "dbpedia",
         name: "dbpedia",
       }
     ];
+
+    var initialKnowledgebase = {
+      id: this.props.knowledgebase,
+      name: this.props.knowledgebase,
+    }
 
     var flagTemplate = function(item, search) {
       var knowledgeBases = {
@@ -41,10 +46,8 @@ class SelectorKnowledgeBase extends Component {
         </div>);
     };
 
-    console.log("Knowledgebase"+this.props.knowledgebase);
-
     return (
-      <ReactSuperSelect onChange={this.handleChange.bind(this)} customOptionTemplateFunction={flagTemplate}  dataSource={(this.props.language=="en") ? options : [options[0]]} initialValue={(this.props.knowledgebase=="wikidata") ? options[0] : options[1]} clearable={false} deselectOnSelectedOptionClick={false} />
+      <ReactSuperSelect onChange={this.handleChange.bind(this)} customOptionTemplateFunction={flagTemplate}  dataSource={(this.props.language=="en") ? options : [options[0]]} initialValue={initialKnowledgebase} clearable={false} deselectOnSelectedOptionClick={false} />
     );
 
   }

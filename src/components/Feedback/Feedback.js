@@ -19,6 +19,7 @@ import Label from '../Label';
     SPARQLquery: store.qa.SPARQLquery,
     question: store.qa.question,
     language: store.lang.language,
+    knowledgebase: store.knowledgebase.knowledgebase,
   }
 })
 class Feedback extends Component {
@@ -93,6 +94,8 @@ class Feedback extends Component {
             <form id="form" className={s.form} action="" method="POST">
               <input type="hidden" id="question" name="question" value={this.props.question}/>
               <input type="hidden" id="sparql" name="sparql" value={this.props.SPARQLquery[0].query}/>
+              <input type="hidden" id="language" name="language" value={this.props.language}/>
+              <input type="hidden" id="knowledgebase" name="knowledgebase" value={this.props.knowledgebase}/>
               <p>{right[this.props.language]} &nbsp;&nbsp;
                 <input type="radio" name="correct" value="true" onChange={this.handleChange}/> {yes[this.props.language]} &nbsp;&nbsp;
                 <input type="radio" name="correct" value="false" onChange={this.handleChange}/>  {no[this.props.language]}

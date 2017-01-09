@@ -37,6 +37,7 @@ import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend
     qinitiated: store.qa.qinitiated,
     language: store.lang.language,
     uriInput: store.qa.uriInput,
+    knowledgebase: store.knowledgebase.knowledgebase,
   }
 })
 
@@ -49,7 +50,7 @@ class AnswerPage extends Component {
   componentDidMount() {
     if (this.props.uriInput == true) {
       this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.query, "en"));
+      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.query, this.props.language, this.props.knowledgebase));
     }
   }
 

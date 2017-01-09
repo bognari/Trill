@@ -30,18 +30,24 @@ class LanguageSelectorFlags extends Component {
   }
 
   render() {
+
+    var initialFlag = {
+      id: this.props.language,
+      name: this.props.language,
+    }
+
     var flags = [
       {
-        id: 1,
+        id: "en",
         name: "en",
       },{
-        id: 2,
+        id: "de",
         name: "de",
       },{
-        id: 3,
+        id: "fr",
         name: "fr",
       },{
-        id: 4,
+        id: "it",
         name: "it",
       }
     ];
@@ -61,7 +67,7 @@ class LanguageSelectorFlags extends Component {
     };
 
     return (
-      <ReactSuperSelect onChange={this.handleChange.bind(this)} customOptionTemplateFunction={flagTemplate}  dataSource={flags} initialValue={flags[0]} clearable={false} deselectOnSelectedOptionClick={false} />
+      <ReactSuperSelect onChange={this.handleChange.bind(this)} customOptionTemplateFunction={flagTemplate}  dataSource={flags} initialValue={initialFlag} clearable={false} deselectOnSelectedOptionClick={false} />
     );
   }
 }

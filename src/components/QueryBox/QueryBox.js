@@ -199,7 +199,7 @@ class QueryBox extends Component {
     e.preventDefault();
     //this.props.dispatch({type: URI_INPUT, uriInput: false});//in case there was an audio file already performed, we need to empty it
     this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value, this.props.language, this.props.knowledgebase));
-    Location.push("/question?query="+document.querySelector("#querytext").value);
+    Location.push("/question?query="+document.querySelector("#querytext").value+"&lang="+this.props.language);
   }
 
   handleÍnput(e){

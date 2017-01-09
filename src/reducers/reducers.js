@@ -18,8 +18,6 @@ const initialState = {
   query: false, //indicates if the answer or the query is displayed
   loaded: false, //indicates if the backend already gave back the answer
   error: false,
-  audiofile: null,
-  qinitiated: false,
   uriInput: true,
   }
 
@@ -77,6 +75,15 @@ const languageReducer = (state = initialStateLanguage, action) => {
         ...state,
         language: action.language,
       }
+      break;
+    }
+    case ROUTE_CHANGE: {
+        if (action.language!=undefined){
+          return {
+            ...state,
+            language: action.language,
+          }
+        }
       break;
     }
   }
