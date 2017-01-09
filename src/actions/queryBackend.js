@@ -335,9 +335,15 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
             getpropertiesrequest.success(function(result){
                 console.log("The properties of the results are: ", result);
 
-                //in the case the abstract needs to be retrieved from wikipedia
+                //in the case of wikidata the abstract needs to be retrieved from wikipedia and the image needs to be shrinked
                 var wikiabstract = "";
                 if(value.indexOf("wikidata") > -1 && result.results.bindings[0].wikilink != null){
+
+                    //Shrink the image size
+                    if (result.results.bindings[0].image != undefined){
+                      result.results.bindings[0].image.value +="?width=300";
+                    }
+
 
                     //The following has been commented out because we cannot do the request due to access-control origin header missing
 
