@@ -50,7 +50,7 @@ class TopK extends Component {
       }
     });
 
-    var url = (uri.indexOf("wikidata") > -1) ? "http://km.aifb.kit.edu/services/okno/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang : "http://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+    var url = (uri.indexOf("wikidata") > -1) ? "https://km.aifb.kit.edu/services/okno/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang : "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
 
     // if (language != null) {
     //   url += "&language=" + language;
@@ -144,7 +144,7 @@ class TopK extends Component {
     return (
       <div className={s.container}>
         <div className={s.sum} id={this.props.sumid}></div>
-        <p className={s.caption}>Summary by <a href="http://km.aifb.kit.edu/services/link">http://km.aifb.kit.edu/services/link</a></p>
+        <p className={s.caption}>Summary by <a href="https://km.aifb.kit.edu/services/link">https://km.aifb.kit.edu/services/link</a></p>
       </div>
     );
   }
