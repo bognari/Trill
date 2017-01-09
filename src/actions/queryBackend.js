@@ -33,7 +33,7 @@ export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
     + "}";
 
   $.ajax({
-    url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+    url: qanary_endpoint,
     type: "POST",
     contentType: 'application/x-www-form-urlencoded',
     data: {query: sparql},
