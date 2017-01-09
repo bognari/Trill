@@ -95,12 +95,12 @@ class AnswerPage extends Component {
                   <div className={s.rightColumn}>
                     {(info.image != "") ?
                       <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
-                    <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5}/>
+                    <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5} lang={this.props.language}/>
                   </div> : null}
 
               </div>
             )
-          })}
+          }.bind(this))}
         </Loader>
       </div>
     );

@@ -12,12 +12,14 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import $ from 'jquery';
 import s from './TopK.scss';
 
+
 class TopK extends Component {
 
   static propTypes = {
     sumid: PropTypes.string.isRequired,
     uri: PropTypes.string.isRequired,
     topK: PropTypes.number.isRequired,
+    lang: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -48,7 +50,7 @@ class TopK extends Component {
       }
     });
 
-    var url = (uri.indexOf("wikidata") > -1) ? "http://km.aifb.kit.edu/services/okno/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + "en" : "http://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + "en";
+    var url = (uri.indexOf("wikidata") > -1) ? "http://km.aifb.kit.edu/services/okno/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang : "http://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
 
     // if (language != null) {
     //   url += "&language=" + language;
