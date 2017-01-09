@@ -253,7 +253,7 @@ function sendQueryToEndpoint(data, lang, dispatch){
             "ORDER BY DESC(?v) LIMIT 1000";
 
           var rankedrequest = $.get(
-            "http://dbpedia.org/sparql?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+            dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
             function (rankedresult) {
 
               console.log('This is the json result (ranked): ', rankedresult);
@@ -326,7 +326,7 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
               "} " +
               "} order by ?lang_ ";
 
-            var dbpediaQueryUrl = "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
+            var dbpediaQueryUrl = dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
             var wikiQueryUrl = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
 
             var getpropertiesrequest = $.get(
