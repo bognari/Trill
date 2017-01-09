@@ -20,6 +20,7 @@ import {setQuestion} from '../../actions/language';
   return {
     question: store.qa.question,
     language: store.lang.language,
+    knowledgebase: store.knowledgebase.knowledgebase,
   }
 })
 class QueryBox extends Component {
@@ -197,7 +198,7 @@ class QueryBox extends Component {
   handleSubmit(e){
     e.preventDefault();
     //this.props.dispatch({type: URI_INPUT, uriInput: false});//in case there was an audio file already performed, we need to empty it
-    this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value, this.props.language));
+    this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value, this.props.language, this.props.knowledgebase));
     Location.push("/question?query="+document.querySelector("#querytext").value);
   }
 

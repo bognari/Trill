@@ -16,7 +16,7 @@ const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr
 const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
-export function languageFeedback(namedGraph, lang, dispatch){
+export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
   var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
     + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
     + "INSERT { "
@@ -42,17 +42,22 @@ export function languageFeedback(namedGraph, lang, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function (result) {
-      questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
+      if (knowledgebase=="wikidata"){
+        questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
+      } else {
+        questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang, dispatch);
+      }
+
     }.bind(this)
   })
 }
 
-export function startQuestionAnsweringWithTextQuestion(question, lang){
+export function startQuestionAnsweringWithTextQuestion(question, lang, knowledgebase){
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=", function (data) {
       var namedGraph = data.graph.toString();
-      languageFeedback(namedGraph, lang, dispatch);
+      languageFeedback(namedGraph, lang, dispatch, knowledgebase);
       //questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"], dispatch);
       //sendQueryToEndpoint(data, dispatch);
     });

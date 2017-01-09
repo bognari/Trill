@@ -13,6 +13,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SelectorLanguageFlags.scss';
 import ReactSuperSelect from 'react-super-select';
 import {setLanguage} from '../../actions/language';
+import {setKnowledgebase} from '../../actions/knowledgebase';
 
 @connect((store) => {
   return {
@@ -23,6 +24,9 @@ class LanguageSelectorFlags extends Component {
 
   handleChange(option){
     this.props.dispatch(setLanguage(option.name));
+    if (option.name!="en"){
+      this.props.dispatch(setKnowledgebase("wikidata"));
+    }
   }
 
   render() {

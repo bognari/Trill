@@ -4,6 +4,7 @@
 
 import { combineReducers } from 'redux'
 import { LANGUAGE_CHANGE} from '../actions/language'
+import { KNOWLEDGEBASE_CHANGE} from '../actions/knowledgebase'
 import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, SET_QUESTION} from '../actions/queryBackend'
 import { ROUTE_CHANGE} from '../actions/route'
 
@@ -82,6 +83,23 @@ const languageReducer = (state = initialStateLanguage, action) => {
   return state;
 }
 
+const initialStateKnowledgebase = {
+  knowledgebase: "wikidata", //initial language of the website set to english
+}
+
+const knowledgebaseReducer = (state = initialStateKnowledgebase, action) => {
+  switch (action.type) {
+    case KNOWLEDGEBASE_CHANGE: {
+      return {
+        ...state,
+        knowledgebase: action.knowledgebase,
+      }
+      break;
+    }
+  }
+  return state;
+}
+
 const initialStateRoute = {
   location: "/", //where the user is currently in the website
   question: "",
@@ -106,4 +124,5 @@ export default combineReducers({
   qa: qaReducer,
   lang: languageReducer,
   route: routeReducer,
+  knowledgebase: knowledgebaseReducer,
 })
