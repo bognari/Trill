@@ -163,32 +163,21 @@ class QueryBox extends Component {
 
     document.querySelector('#record').className = s.hide;
 
-    //Hacks to determine the browser, mik working only for firefox and chrome
+    //Hacks to determine the browser, mik working only for firefox and chrome (and only for english)
     if (typeof window !== 'undefined') {
       if (typeof window.chrome !== 'undefined') {
         var isChrome = !!window.chrome && !!window.chrome.webstore;
-        if (isChrome){
+        if (isChrome && this.props.language != "en"){
           document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
         }
       }
     }
     var isFirefox = typeof InstallTrigger !== 'undefined';
-    if (isFirefox){
+    if (isFirefox && this.props.language != "en"){
       document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
     }
   }
 
-  componentDidUpdate() {
-    document.querySelector("#querytext").defaultValue = (this.props.question != undefined) ? this.props.question : "";
-
-    //to hide the mic when the language is not set to english
-    if(this.props.language != "en"){
-       document.querySelector('#record').className = s.hide;
-    }
-    else {
-       document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
-    }
-  }
 
   handleClose() {
     this.forceUpdate();
