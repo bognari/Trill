@@ -213,7 +213,7 @@ class QueryBox extends Component {
     }
 
     return (
-      <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
+      <form id="querybox" name="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
             {/*{(this.state.audio) ?*/}
               <div>
                 <div id="listening" className={s.listening}><p>Listening... </p></div>

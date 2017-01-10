@@ -12,11 +12,12 @@ export const SET_QUESTION = 'SET_QUESTION';
 
 export const URI_INPUT = "URI_INPUT";
 
-export const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
+export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
 export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
 export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
+  console.log("NEW REQUEST");
   var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
     + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
     + "INSERT { "
@@ -42,13 +43,19 @@ export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function (result) {
+      console.log("DONE2");
       if (knowledgebase=="wikidata"){
         questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
       } else {
         questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang, dispatch);
       }
-
-    }.bind(this)
+    }.bind(this),
+    error: function(e){
+      var information = [];
+      information.push({
+        message: e.statusCode + " " + e.statusText,
+      })
+    }
   })
 }
 
@@ -57,6 +64,7 @@ export function startQuestionAnsweringWithTextQuestion(question, lang, knowledge
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=", function (data) {
       var namedGraph = data.graph.toString();
+      console.log("DONE");
       languageFeedback(namedGraph, lang, dispatch, knowledgebase);
       //questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"], dispatch);
       //sendQueryToEndpoint(data, dispatch);
