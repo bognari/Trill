@@ -159,23 +159,6 @@ class QueryBox extends Component {
       fileReader.readAsArrayBuffer(blob);
     }
     }
-
-
-    document.querySelector('#record').className = s.hide;
-
-    //Hacks to determine the browser, mik working only for firefox and chrome (and only for english)
-    if (typeof window !== 'undefined') {
-      if (typeof window.chrome !== 'undefined') {
-        var isChrome = !!window.chrome && !!window.chrome.webstore;
-        if (isChrome && this.props.language == "en"){
-          document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
-        }
-      }
-    }
-    var isFirefox = typeof InstallTrigger !== 'undefined';
-    if (isFirefox && this.props.language == "en"){
-      document.querySelector('#record').className = (this.props.header == true)? s.headerbutton : s.button;
-    }
   }
 
 
@@ -199,8 +182,6 @@ class QueryBox extends Component {
 
   render() {
 
-    console.log("STATE",this.state);
-
     var placeholder = {
       en: "Enter your question... ",
       de: "Gebe eine Frage ein ... ",
@@ -214,6 +195,23 @@ class QueryBox extends Component {
       fr: "Go",
       it: "Vai",
     }
+
+    var mic = false;
+    //Hacks to determine the browser, mik working only for firefox and chrome (and only for english)
+    if (typeof window !== 'undefined') {
+      if (typeof window.chrome !== 'undefined') {
+        var isChrome = !!window.chrome && !!window.chrome.webstore;
+        if (isChrome && this.props.language == "en"){
+          var mic = true;
+        }
+      }
+    }
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+    if (isFirefox && this.props.language == "en"){
+      var mic = true;
+
+    }
+
     return (
       <form id="querybox" action="/question"  method="GET" autoComplete="on" className={s.querybox} onSubmit={this.handleSubmit}>
             {/*{(this.state.audio) ?*/}
@@ -226,8 +224,8 @@ class QueryBox extends Component {
               {/*:*/}
               <div className={s.queryform}>
                 <input id="querytext" type="text" name="query" className={(this.props.header == true)? s.headertextinput : s.textinput} placeholder={placeholder[this.props.language]} required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
-                <button id="record" type="button" className={s.hide}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>
-                {/*{(mic==true) ? <button id="record" type="button" className={s.space}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : <div id="record" style={{display: "inline-block"}}></div> }*/}
+                {/*<button id="record" type="button" className={s.hide}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>*/}
+                {(mic==true) ? <button id="record" type="button" className={(this.props.header == true)? s.headerbutton : s.button}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : <div id="record" style={{display: "inline-block"}}></div> }
                 <input id="go" type="submit" className={(this.props.header == true)? s.headerbutton : s.button} value={go[this.props.language]}/>
               </div>
             {/*}*/}
