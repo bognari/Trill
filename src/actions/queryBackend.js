@@ -12,9 +12,9 @@ export const SET_QUESTION = 'SET_QUESTION';
 
 export const URI_INPUT = "URI_INPUT";
 
-const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
-const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
-const dbpedia_endpoint = "https://dbpedia.org/sparql";
+export const qanary_endpoint =  "https://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
+export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
+export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
 export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
   var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "

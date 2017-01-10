@@ -12,7 +12,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Feedback.scss';
 import $ from 'jquery';
 import { connect } from 'react-redux';
-import Label from '../Label';
+import qanary_services from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
@@ -43,7 +43,7 @@ class Feedback extends Component {
   }
 
   handleChange() {
-    var feedbackreq = $.post('http://wdaqua-qanary.univ-st-etienne.fr/feedback', $('#form').serialize(), function(data) {
+    var feedbackreq = $.post(qanary_services+'/feedback', $('#form').serialize(), function(data) {
       this.setState({submitted: !this.state.submitted}); //if feedback was submitted successfully
       document.querySelector('#holder').className = s.hide; //animate hiding
       setTimeout(function(){
