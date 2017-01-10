@@ -12,7 +12,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Feedback.scss';
 import $ from 'jquery';
 import { connect } from 'react-redux';
-import qanary_services from '../../actions/queryBackend';
+import {qanary_services} from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
