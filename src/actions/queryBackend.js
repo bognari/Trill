@@ -156,7 +156,6 @@ function retriveQuestion(data, dispatch){
           url: uriText,
           type: "GET",
         success: function(result) {
-            console.log("Question retrieved: ", result);
             dispatch({type: 'SET_QUESTION', question: result});
             //dispatch({type: SET_AUDIO, audiofile: null});
             //Location.push("/question?query="+result);
@@ -210,7 +209,6 @@ function sendQueryToEndpoint(data, lang, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
-      console.log("This is the raw result: ", result );
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
@@ -218,7 +216,6 @@ function sendQueryToEndpoint(data, lang, dispatch){
       }
 
       var jresult = JSON.parse(result.results.bindings[0].json.value);
-      console.log("JSON resurl ", jresult);
       if (jresult.hasOwnProperty("boolean")) {
         var information = [];
         information.push({
@@ -333,7 +330,6 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
             var getpropertiesrequest = $.get((value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl);
 
             getpropertiesrequest.success(function(result){
-              console.log("The properties of the results are: ", result);
 
                 //in the case of wikidata the abstract needs to be retrieved from wikipedia and the image needs to be shrinked
                 var wikiabstract = "";
@@ -344,11 +340,6 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
                       result.results.bindings[0].image.value +="?width=300";
                     }
 
-
-                    //The following has been commented out because we cannot do the request due to access-control origin header missing
-
-                    console.log("SITE"+"https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/",""));
-
                     $.ajax({
                       url: "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_"),
                       async: false,
@@ -357,7 +348,6 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
                       success: function (data) {
                         for(var key in data.query.pages){
                           if(data.query.pages.hasOwnProperty(key)){
-                            console.log("This is the received data on abstract from wikipedia: ", data.query.pages[key].extract);
                             wikiabstract = data.query.pages[key].extract;
                             if (wikiabstract!=undefined){
                               setinformation(binding,result,wikiabstract);
