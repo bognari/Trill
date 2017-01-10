@@ -97,7 +97,6 @@ class AnswerPage extends Component {
                       <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
                     <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5} lang={this.props.language}/>
                   </div> : null}
-
               </div>
             )
           }.bind(this))}

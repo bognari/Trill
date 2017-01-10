@@ -329,11 +329,11 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
             var dbpediaQueryUrl = dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
             var wikiQueryUrl = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
 
-            var getpropertiesrequest = $.get(
-              (value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl);
+
+            var getpropertiesrequest = $.get((value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl);
 
             getpropertiesrequest.success(function(result){
-                console.log("The properties of the results are: ", result);
+              console.log("The properties of the results are: ", result);
 
                 //in the case of wikidata the abstract needs to be retrieved from wikipedia and the image needs to be shrinked
                 var wikiabstract = "";
