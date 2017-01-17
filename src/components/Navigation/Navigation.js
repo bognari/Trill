@@ -46,7 +46,7 @@ class Navigation extends Component {
     var contact = {
       en: "Contact",
       de: "Kontakt",
-      fr: "Contacte nous",
+      fr: "Contactez nous",
       it: "Contatto",
     };
 
