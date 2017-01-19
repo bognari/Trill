@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Entity.scss';
-import {questionanswering} from '../../actions/queryBackend';
+import {questionanswering, qanary_endpoint, dbpedia_endpoint} from '../../actions/queryBackend';
 
 var getFromBetween = {
   results:[],
@@ -134,7 +134,7 @@ class Entity extends Component {
       + "}";
 
     this.serverRequest = $.ajax({
-      url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+      url: qanary_endpoint,
       type: "POST",
       contentType: 'application/x-www-form-urlencoded',
       data: {query: sparql},
@@ -207,7 +207,7 @@ class Entity extends Component {
               //get image for each entity
               var sparqlQuery = "select ?image where { OPTIONAL{ " + entityitem.entity + " dbo:thumbnail ?image . } } ";
               $.get(
-                "http://dbpedia.org/sparql?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+                dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                 function (result) {
                   var image = document.querySelector("#entityimage" + index);
                   if(result.results.bindings[0].image != undefined){
