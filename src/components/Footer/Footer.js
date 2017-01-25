@@ -34,7 +34,7 @@ class Footer extends Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <span className={s.text}>© WDAqua</span>
+          <a href="http://laboratoirehubertcurien.univ-st-etienne.fr/"><img src={require("./logo_lab.png")}/></a>
           <span className={s.spacer}>·</span>
           <Link className={s.link} to="/">Home</Link>
           <span className={s.spacer}>·</span>
