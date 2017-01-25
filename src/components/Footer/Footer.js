@@ -34,7 +34,7 @@ class Footer extends Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <a href="http://laboratoirehubertcurien.univ-st-etienne.fr/"><img src={require("./logo_lab.png")}/></a>
+          <a target="_blank"  href="https://laboratoirehubertcurien.univ-st-etienne.fr/en/teams/connected-intelligence.html"><img src={require("./logo_lab.png")}/></a>
           <span className={s.spacer}>·</span>
           <Link className={s.link} to="/">Home</Link>
           <span className={s.spacer}>·</span>
