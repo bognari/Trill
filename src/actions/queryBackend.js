@@ -36,11 +36,11 @@ export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
   $.ajax({
     url: qanary_endpoint,
     type: "POST",
-    contentType: 'application/x-www-form-urlencoded',
+    //contentType: 'application/x-www-form-urlencoded',
     data: {query: sparql},
     beforeSend: function (xhr) {
-      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
-      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+      //xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+      //xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function (result) {
       console.log("DONE2");
@@ -152,7 +152,7 @@ function retriveQuestion(data, dispatch){
     url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
     type: "GET",
     beforeSend: function(xhr){
-      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+      //xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
@@ -213,7 +213,7 @@ function sendQueryToEndpoint(data, lang, dispatch){
     url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
     type: "GET",
     beforeSend: function(xhr){
-      xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+      //xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
