@@ -63,7 +63,7 @@ export function startQuestionAnsweringWithTextQuestion(question, lang, knowledge
   return function (dispatch) {
     dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     var questionresult = $.post(qanary_services+"/startquestionansweringwithtextquestion", "question=" + encodeURIComponent(question) + "&componentlist[]=", function (data) {
-      var namedGraph = data.graph.toString();
+      var namedGraph = data.inGraph.toString();
       console.log("DONE");
       languageFeedback(namedGraph, lang, dispatch, knowledgebase);
       //questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"], dispatch);
@@ -110,16 +110,18 @@ export function questionanswering(namedGraph, components, lang, dispatch){
 
     var form = new FormData();
     form.append("componentlist[]", components);
-    form.append("qanaryMessage", JSON.stringify({
-      "values": {
-        "http://qanary/#endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
-        "http://qanary/#inGraph": namedGraph,
-        "http://qanary/#outGraph": namedGraph
-      },
-      "endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
-      "outGraph": namedGraph,
-      "inGraph": namedGraph
-    }));
+    form.append("graph", namedGraph);
+    form.append("language", lang);
+    //form.append("qanaryMessage", JSON.stringify({
+    //  "values": {
+    //    "http://qanary/#endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+    //    "http://qanary/#inGraph": namedGraph,
+    //    "http://qanary/#outGraph": namedGraph
+    //  },
+    //  "endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+    //  "outGraph": namedGraph,
+    //  "inGraph": namedGraph
+    //}));
 
     var executeQuery = $.ajax({
       url: qanary_services+"/questionanswering",
@@ -139,7 +141,7 @@ export function questionanswering(namedGraph, components, lang, dispatch){
 
 function retriveQuestion(data, dispatch){
 
-  var namedGraph = data.graph.toString();
+  var namedGraph = data.inGraph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
     + "SELECT ?uriText "
@@ -181,7 +183,7 @@ function retriveQuestion(data, dispatch){
 }
 
 function sendQueryToEndpoint(data, lang, dispatch){
-  var namedGraph = data.graph.toString();
+  var namedGraph = data.inGraph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
     + "SELECT ?sparql ?json ?score "
