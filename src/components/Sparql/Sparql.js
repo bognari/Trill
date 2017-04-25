@@ -43,55 +43,6 @@ class Sparql extends Component {
     document.querySelector("#q0").style="background-color: #f5f5f5";
     }
 
-  handleClick2(selectedquery, index, e){
-
-    var replacedsparql = this.props.sparqlquery ;
-    replacedsparql[0].query = selectedquery;
-    replacedsparql[0].score = replacedsparql[0].score+100;
-    replacedsparql.splice(index, 1);
-    console.log("This is the updated sparql queries list: ",replacedsparql);
-
-    var sparqlPart1 = "";
-    var sparqlPart2 = "";
-    //console.log("this is the index you selected: ", index);
-
-    for (var i=0; i<Math.min(replacedsparql.length ,30); i++){
-      sparqlPart1+=" ?a"+i+" a qa:AnnotationOfAnswerSPARQL . "
-        + "  ?a"+i+" oa:hasTarget <URIAnswer> . "
-        + "  ?a"+i+" oa:hasBody \"" +  replacedsparql[i].query.replace("\n", " ") + "\" ;"
-        + "     oa:annotatedBy <www.wdaqua.eu> ; "
-        + "         oa:annotatedAt ?time ; "
-        + "         qa:hasScore "+ replacedsparql[i].score + " . \n";
-      sparqlPart2+= " BIND (IRI(str(RAND())) AS ?a"+i+") . \n";
-    }
-
-    var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
-      + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
-      + "INSERT { "
-      + "GRAPH <" + this.props.namedGraph + "> { "
-      + sparqlPart1
-      + " }} "
-      + "WHERE { "
-      + sparqlPart2
-      + "BIND (IRI(str(RAND())) AS ?b) . "
-      + "BIND (now() as ?time) . "
-      + "}";
-
-    this.serverRequest = $.ajax({
-      url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
-      type: "POST",
-      contentType: 'application/x-www-form-urlencoded',
-      data: {query: sparql},
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:admin"));
-        xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-      },
-      success: function (result) {
-        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"]));
-      }.bind(this)
-    })
-  }
-
   render() {
     return (
       <div className={s.container}>

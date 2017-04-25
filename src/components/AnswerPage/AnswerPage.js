@@ -20,6 +20,7 @@ import TopK from '../TopK';
 import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
+import Interpretation from '../Interpretation';
 import Entity from '../Entity';
 import LinksBar from '../LinksBar';
 import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend';
@@ -64,6 +65,7 @@ class AnswerPage extends Component {
         <div className={s.feedback}>
           <div className={s.buttonmenu}>
           <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+          <Interpretation sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             {(this.props.SPARQLquery != "") ? (this.props.SPARQLquery[0].query.indexOf("dbpedia") > -1) ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null : null}
           </div>
           <Feedback/>
