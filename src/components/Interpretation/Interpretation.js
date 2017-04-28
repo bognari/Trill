@@ -35,7 +35,7 @@ class Sparql extends Component {
 
   componentDidMount(selectedquery, index, e){
     this.serverRequest = $.ajax({
-      url: "http://localhost:8080/sparqltouser",
+      url: "http://localhost:1920/sparqltouser",
       type: "POST",
       contentType: 'application/x-www-form-urlencoded',
       data: {sparql: this.props.sparqlquery[0].query, lang: "en", kb: "wikidata"},
@@ -49,7 +49,7 @@ class Sparql extends Component {
     }
     })
   }
-  
+
 
   render() {
     return (
@@ -59,7 +59,6 @@ class Sparql extends Component {
               {(this.state.retrived) ?
                 <div id="FiringSparql" className={s.qbox}>
                  <p id="q">
-                  
                     {this.state.sparql}
                   </p>
                 </div>: null
