@@ -20,6 +20,7 @@ import TopK from '../TopK';
 import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
+import SparqlList from '../SparqlList';
 import Entity from '../Entity';
 import LinksBar from '../LinksBar';
 import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend';

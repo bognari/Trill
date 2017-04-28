@@ -1,0 +1,6 @@
+{
+  "name": "SparqlList",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./SparqlList.js"
+}

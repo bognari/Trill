@@ -1,0 +1,56 @@
+@import '../variables.scss';
+
+.root {
+}
+
+.container {
+  display: inline-block;
+  float: right;
+  max-width: 1000px;
+}
+
+.qbox {
+  border: 2px solid #f5f5f5;
+  padding: 2px 20px 2px 20px;
+  //height: 200px;
+  //overflow-y: scroll;
+  margin-bottom: 10px;
+}
+
+.qbox p {
+
+}
+
+.sparql,
+.sparqlpressed{
+  color: $foreground-gray;
+  font-size: large;
+  padding: 7px;
+  border: 2px solid $background-gray;
+  display: block;
+  border-radius: 100%;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  font-weight: 400;
+  float: right;
+  margin: 0 0 10px 10px;
+}
+
+.sparql{
+  background-color: transparent;
+}
+
+.sparqlpressed{
+  background-color: $background-gray;
+}
+
+.sparql:hover,
+.sparqlpressed:hover{
+  cursor: pointer;
+  background-color: $background-gray;
+}
+
+.wrapfloat{
+  overflow: hidden;
+}
