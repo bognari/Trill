@@ -17,6 +17,8 @@ import {questionanswering} from '../../actions/queryBackend';
   return {
     SPARQLquery: store.qa.SPARQLquery,
     namedGraph: store.qa.namedGraph,
+    language: store.lang.language,
+    kbknowledgebase: store.knowledgebase.knowledgebase,
   }
 })
 class Sparql extends Component {
@@ -28,8 +30,10 @@ class Sparql extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        retrived: false,
-        sparql: "",
+    retrived: false,
+    sparql: "",
+    lang: "",
+    kb: "",
     };
   }
 
@@ -38,11 +42,15 @@ class Sparql extends Component {
       url: "http://localhost:1920/sparqltouser",
       type: "POST",
       contentType: 'application/x-www-form-urlencoded',
-      data: {sparql: this.props.sparqlquery[0].query, lang: "en", kb: "wikidata"},
+      data: {sparql: this.props.sparqlquery[0].query, lang: this.props.language , kb: this.props.knowledgebase },
       success: function (result) {
             var res = result.s;
-            console.log(res);
-            this.setState({retrived: true, sparql: res });
+            var lan = result.lang;
+            var knbs=result.kb;
+            //alert(lan);
+           // console.log(result);
+           // console.log(result);
+            this.setState({retrived: true, sparql: res, lang: lan, kb: knbs});
       }.bind(this),
       error: function(err){
       console.log(err)
