@@ -47,7 +47,7 @@ class Sparql extends Component {
             var res = result.s;
             var lan = result.lang;
             var knbs=result.kb;
-            //alert(lan);
+            //alert(knbs);
            // console.log(result);
            // console.log(result);
             this.setState({retrived: true, sparql: res, lang: lan, kb: knbs});

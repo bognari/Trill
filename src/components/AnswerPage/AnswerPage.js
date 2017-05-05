@@ -64,11 +64,13 @@ class AnswerPage extends Component {
       {(this.props.error) ? <Error>Error</Error> :
         <div className={s.feedback}>
           <div className={s.buttonmenu}>
-            <Interpretation sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
                       {(this.props.SPARQLquery != "") ? (this.props.SPARQLquery[0].query.indexOf("dbpedia") > -1) ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null : null}
+
           </div>
           <Feedback/>
+          <Interpretation sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+
         </div>}
 
           {this.props.information.map(function (info, index) {
@@ -76,7 +78,7 @@ class AnswerPage extends Component {
               <div className={s.contentholder}>
                 {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
-                {(info.answertype == "noinfo") ?
+               {(info.answertype == "noinfo") ?
                   <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
 
                 {(info.answertype == "detail") ?
@@ -99,6 +101,7 @@ class AnswerPage extends Component {
                       <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
                     <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5} lang={this.props.language}/>
                   </div> : null}
+
               </div>
             )
           }.bind(this))}
