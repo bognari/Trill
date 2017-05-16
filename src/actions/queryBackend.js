@@ -2,8 +2,10 @@
  * Created by Dennis on 11/11/16.
  */
 
-import Location from '../core/Location';
 import iri from 'iri';
+
+import {sparqlToUser} from '../actions/sparqlToUser';
+
 
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
@@ -15,6 +17,8 @@ export const URI_INPUT = "URI_INPUT";
 export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
 export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 export const dbpedia_endpoint = "https://dbpedia.org/sparql";
+
+
 
 export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
   console.log("NEW REQUEST");
@@ -45,9 +49,9 @@ export function languageFeedback(namedGraph, lang, dispatch, knowledgebase){
     success: function (result) {
       console.log("DONE2");
       if (knowledgebase=="wikidata"){
-        questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
+        dispatch(questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, knowledgebase));
       } else {
-        questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang, dispatch);
+        dispatch(questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang, knowledgebase));
       }
     }.bind(this),
     error: function(e){
@@ -105,7 +109,8 @@ export function startQuestionAnsweringWithAudioQuestion(mp3file){
   }
 }
 
-export function questionanswering(namedGraph, components, lang, dispatch){
+export function questionanswering(namedGraph, components, lang, knowledgebase){
+  return function (dispatch) {
     //dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
 
     var form = new FormData();
@@ -124,19 +129,20 @@ export function questionanswering(namedGraph, components, lang, dispatch){
     //}));
 
     var executeQuery = $.ajax({
-      url: qanary_services+"/questionanswering",
+      url: qanary_services + "/questionanswering",
       type: "POST",
       data: form,
       processData: false,
       contentType: false,
       success: function (data) {
         retriveQuestion(data, dispatch);
-        sendQueryToEndpoint(data, lang, dispatch);
+        sendQueryToEndpoint(data, lang, knowledgebase, dispatch);
       },
-      error: function (err){
+      error: function (err) {
         dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
       }
     });
+  }
 }
 
 function retriveQuestion(data, dispatch){
@@ -182,7 +188,7 @@ function retriveQuestion(data, dispatch){
   })
 }
 
-function sendQueryToEndpoint(data, lang, dispatch){
+function sendQueryToEndpoint(data, lang, knowledgebase, dispatch){
   var namedGraph = data.inGraph.toString();
   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
@@ -219,12 +225,17 @@ function sendQueryToEndpoint(data, lang, dispatch){
       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
     },
     success: function(result) {
+
       var query = [];
       for(var i=0; i<result.results.bindings.length; i++) {
         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
         //Here we receive the question converted to a query (first one in an array of ranked possible queries)
       }
-
+      if (query.length>0){
+        console.log("Dispatch");
+        console.log(dispatch);
+        dispatch(sparqlToUser(query[0].query, lang, knowledgebase));
+      }
       var jresult = JSON.parse(result.results.bindings[0].json.value);
       if (jresult.hasOwnProperty("boolean")) {
         var information = [];
