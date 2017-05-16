@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d1b7d3e-696c-49a2-a067-2fd8395df3d7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/QueryBox/testvoice.mp3" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/public/lame.all.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/public/testvoice.mp3" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/queryBackend.js" afterPath="$PROJECT_DIR$/src/actions/queryBackend.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js" afterPath="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/QueryBox/QueryBox.js" afterPath="$PROJECT_DIR$/src/components/QueryBox/QueryBox.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/index.jade" afterPath="$PROJECT_DIR$/src/views/index.jade" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/webpack.config.js" afterPath="$PROJECT_DIR$/tools/webpack.config.js" />
     </list>
     <ignored path="wd-aqua.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,13 +28,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="QueryBox.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="QueryBox.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/QueryBox/QueryBox.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
-              <caret line="156" column="17" selection-start-line="156" selection-start-column="17" selection-end-line="156" selection-end-column="17" />
+            <state relative-caret-position="153">
+              <caret line="173" column="46" selection-start-line="173" selection-start-column="46" selection-end-line="173" selection-end-column="46" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
                 <element signature="e#262#314#0" expanded="true" />
               </folding>
             </state>
@@ -49,42 +43,46 @@
       <file leaf-file-name="AnswerPage.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-115">
-              <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+            <state relative-caret-position="5">
+              <caret line="56" column="33" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="33" />
               <folding>
                 <element signature="e#262#314#0" expanded="true" />
-                <element signature="e#8815#8847#0" expanded="false" />
-                <element signature="e#9173#9193#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lame.all.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/public/lame.all.js">
+      <file leaf-file-name="queryBackend.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/actions/queryBackend.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99484">
-              <caret line="5852" column="6" selection-start-line="5852" selection-start-column="6" selection-end-line="5852" selection-end-column="6" />
-              <folding />
+            <state relative-caret-position="340">
+              <caret line="102" column="85" selection-start-line="102" selection-start-column="85" selection-end-line="102" selection-end-column="85" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+                <element signature="e#43#83#0" expanded="true" />
+                <element signature="n#!!block;n#retriveQuestion#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.jade" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/views/index.jade">
+      <file leaf-file-name="SparqlList.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/SparqlList/SparqlList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="1003">
+              <caret line="111" column="27" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="27" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HeaderSearch.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.js">
+      <file leaf-file-name="reducers.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/reducers/reducers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="30" column="65" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="65" />
+            <state relative-caret-position="1479">
+              <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -106,21 +104,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/HeaderContainer/HeaderContainer.js" />
-        <option value="$PROJECT_DIR$/src/components/Header/Header.js" />
-        <option value="$PROJECT_DIR$/src/components/Header/Header.scss" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/components/ImageComponent/ImageComponent.js" />
-        <option value="$PROJECT_DIR$/src/components/App/App.js" />
-        <option value="$PROJECT_DIR$/src/components/Feedback/Feedback.scss" />
-        <option value="$PROJECT_DIR$/src/components/Footer/Footer.scss" />
-        <option value="$PROJECT_DIR$/src/content/faq.jade" />
-        <option value="$PROJECT_DIR$/src/components/Navigation/Navigation.js" />
-        <option value="$PROJECT_DIR$/src/public/browserconfig.xml" />
-        <option value="$PROJECT_DIR$/src/components/Footer/Footer.js" />
-        <option value="$PROJECT_DIR$/src/config.js" />
-        <option value="$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.js" />
-        <option value="$PROJECT_DIR$/src/components/HomePage/HomePage.js" />
         <option value="$PROJECT_DIR$/node_modules/leaflet/dist/leaflet.scss" />
         <option value="$PROJECT_DIR$/src/components/AnswerPage/package.json" />
         <option value="$PROJECT_DIR$/src/components/Map/package.json" />
@@ -132,31 +115,46 @@
         <option value="$PROJECT_DIR$/src/components/MapBox/package.json" />
         <option value="$PROJECT_DIR$/src/components/MapBox/MapBox.html" />
         <option value="$PROJECT_DIR$/src/public/leaflet.css" />
-        <option value="$PROJECT_DIR$/src/components/MapBox/MapBox.js" />
         <option value="$PROJECT_DIR$/src/components/TopK/package.json" />
         <option value="$PROJECT_DIR$/src/components/ContactPage/ContactPage.js" />
-        <option value="$PROJECT_DIR$/src/routes.js" />
-        <option value="$PROJECT_DIR$/src/components/variables.scss" />
-        <option value="$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.scss" />
         <option value="$PROJECT_DIR$/src/components/MapBox/MapBox.scss" />
         <option value="$PROJECT_DIR$/src/components/TopK/TopK.scss" />
         <option value="$PROJECT_DIR$/src/components/ImageComponent/ImageComponent.scss" />
         <option value="$PROJECT_DIR$/src/components/HomePage/HomePage.scss" />
-        <option value="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.scss" />
         <option value="$PROJECT_DIR$/src/components/App/App.scss" />
         <option value="$PROJECT_DIR$/src/components/ContentPage/ContentPage.scss" />
-        <option value="$PROJECT_DIR$/src/components/TopK/TopK.js" />
-        <option value="$PROJECT_DIR$/src/components/QueryBox/QueryBox.scss" />
         <option value="$PROJECT_DIR$/src/components/Label/Label.scss" />
         <option value="$PROJECT_DIR$/src/components/Label/Label.js" />
         <option value="$PROJECT_DIR$/src/components/QueryBox/webworkers/mp3_worker.js" />
         <option value="$PROJECT_DIR$/tools/webpack.config.js" />
         <option value="$PROJECT_DIR$/node_modules/lamejs/src/js/lametest.js" />
         <option value="$PROJECT_DIR$/src/public/libmp3lame.js" />
-        <option value="$PROJECT_DIR$/src/views/index.jade" />
         <option value="$PROJECT_DIR$/src/public/lame.all.js" />
+        <option value="$PROJECT_DIR$/src/components/variables.scss" />
+        <option value="$PROJECT_DIR$/src/components/Entity/Entity.scss" />
+        <option value="$PROJECT_DIR$/src/components/Sparql/Sparql.scss" />
+        <option value="$PROJECT_DIR$/src/views/index.jade" />
+        <option value="$PROJECT_DIR$/src/components/LinksBar/Label.js" />
+        <option value="$PROJECT_DIR$/src/components/LinksBar/package.json" />
+        <option value="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.scss" />
+        <option value="$PROJECT_DIR$/src/components/LinksBar/LinksBar.scss" />
+        <option value="$PROJECT_DIR$/src/components/MapBox/MapBox.js" />
+        <option value="$PROJECT_DIR$/src/components/Feedback/Feedback.js" />
+        <option value="$PROJECT_DIR$/src/components/Sparql/Sparql.js" />
+        <option value="$PROJECT_DIR$/src/routes.js" />
+        <option value="$PROJECT_DIR$/src/reducers/reducers.js" />
+        <option value="$PROJECT_DIR$/src/components/TopK/TopK.js" />
+        <option value="$PROJECT_DIR$/src/components/QueryBox/QueryBox.scss" />
+        <option value="$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.scss" />
+        <option value="$PROJECT_DIR$/src/components/LanguageSelector/LanguageSelector.scss" />
+        <option value="$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.js" />
+        <option value="$PROJECT_DIR$/src/components/Entity/Entity.js" />
+        <option value="$PROJECT_DIR$/src/components/LanguageSelector/LanguageSelector.js" />
+        <option value="$PROJECT_DIR$/src/components/ImageComponent/ImageComponent.js" />
+        <option value="$PROJECT_DIR$/src/components/LinksBar/LinksBar.js" />
         <option value="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js" />
         <option value="$PROJECT_DIR$/src/components/QueryBox/QueryBox.js" />
+        <option value="$PROJECT_DIR$/src/actions/queryBackend.js" />
       </list>
     </option>
   </component>
@@ -200,10 +198,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files" />
-      </pane>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -232,20 +226,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="tools" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="frontEnd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="frontEnd" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -264,7 +244,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="stores" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -282,7 +262,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
+              <option name="myItemId" value="reducers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontEnd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontEnd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="constants" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -301,6 +299,50 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontEnd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontEnd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SparqlList" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontEnd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontEnd" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SelectorLanguageFlags" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -340,16 +382,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AnswerPage" />
+              <option name="myItemId" value="actions" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files" />
+      </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -367,11 +409,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\Documents\GitHub\frontEnd\src\components\LinksBar" />
+      <recent name="C:\Users\USER\Documents\GitHub\frontEnd\src\components" />
       <recent name="C:\Users\USER\Documents\GitHub\frontEnd\src\public" />
       <recent name="C:\Users\USER\Documents\GitHub\frontEnd\src\components\QueryBox" />
       <recent name="C:\Users\USER\Documents\GitHub\frontEnd\node_modules\fs.realpath" />
-      <recent name="C:\Users\USER\Documents\GitHub\frontEnd\src\components" />
-      <recent name="C:\Users\USER\Documents\GitHub\frontEnd\src\components\MapBox" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\USER\Documents\GitHub\frontEnd\node_modules\fs" />
@@ -487,24 +529,29 @@
       <workItem from="1476097318638" duration="144186000" />
       <workItem from="1476776960278" duration="51814000" />
       <workItem from="1476969433266" duration="31401000" />
+      <workItem from="1479734803320" duration="79154000" />
+      <workItem from="1480000202440" duration="160257000" />
+      <workItem from="1481897447119" duration="3072000" />
+      <workItem from="1481904660472" duration="744000" />
+      <workItem from="1494858237625" duration="15536000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="499192000" />
+    <option name="totallyTimeSpent" value="757955000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="728" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24849397" sideWeight="0.48324022" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24814814" sideWeight="0.48324022" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31699347" sideWeight="0.50446427" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25744048" sideWeight="0.51675975" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34128168" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25671142" sideWeight="0.4955357" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3457189" sideWeight="0.4955357" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41503268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -529,277 +576,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="6" />
+      <option name="time" value="9" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/content/index.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/content/contact.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="41" column="43" selection-start-line="41" selection-start-column="43" selection-end-line="41" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ContactPage/ContactPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1042">
-          <caret line="65" column="14" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="14" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#262#314#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/public/leaflet.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="334" column="30" selection-start-line="334" selection-start-column="24" selection-end-line="334" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/Soundwave.png" />
-    <entry file="file://$PROJECT_DIR$/src/components/HomePage/HomePage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="32" column="31" selection-start-line="32" selection-start-column="31" selection-end-line="32" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="66" column="29" selection-start-line="66" selection-start-column="29" selection-end-line="66" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Link/Link.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="10" column="43" selection-start-line="10" selection-start-column="43" selection-end-line="10" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/MapBox/MapBox.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Navigation/Navigation.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-94">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="25" column="37" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ImageComponent/ImageComponent.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/variables.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-224">
-          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Footer/Footer.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="27" column="1" selection-start-line="27" selection-start-column="1" selection-end-line="27" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/App/App.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/HomePage/HomePage.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ContentPage/ContentPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-358">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ContentPage/ContentPage.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Footer/Footer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopK/TopK.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="32" column="7" selection-start-line="32" selection-start-column="2" selection-end-line="32" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopK/TopK.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="e#262#314#0" expanded="false" />
-            <marker date="1476444447527" expanded="true" signature="4084:4090" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4090:4096" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4096:4102" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4102:4108" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4343:4349" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4349:4355" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4355:4361" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4361:4367" ph=" " />
-            <marker date="1476444447527" expanded="true" signature="4495:4509" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Label/Label.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Label/Label.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-321">
-          <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/dist/user_media_recorder.js" />
-    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/user_media_recording.js" />
-    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/user_media_recorder.js" />
-    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/webworkers/mp3_worker.js" />
-    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/webworkers/wav_worker.js" />
-    <entry file="file://$PROJECT_DIR$/node_modules/use-strict/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/convert-source-map/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/fs.realpath/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/fs/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/lamejs/src/js/lametest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/MapBox/MapBox.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/QueryBox.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="50" column="1" selection-start-line="50" selection-start-column="1" selection-end-line="50" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/content/index.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/lamejs/lame.all.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/clone-stats/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -813,27 +598,10 @@
     <entry file="file://$PROJECT_DIR$/src/public/libmp3lame.js" />
     <entry file="file://$PROJECT_DIR$/src/components/QueryBox/webworkers/libmp3lame.js" />
     <entry file="file://$PROJECT_DIR$/build/public/libmp3lame.js" />
-    <entry file="file://$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="30" column="65" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/index.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/public/lame.all.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="99484">
           <caret line="5852" column="6" selection-start-line="5852" selection-start-column="6" selection-end-line="5852" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -841,29 +609,349 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Footer/Footer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Footer/Footer.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Link/Link.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/App/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-901">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/stores/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="14" column="47" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js">
+    <entry file="file://$PROJECT_DIR$/src/views/index.jade">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-115">
-          <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="30" />
+        <state relative-caret-position="161">
+          <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Sparql/Sparql.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinksBar/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ImageComponent/ImageComponent.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopK/TopK.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/HomePage/HomePage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="34" column="61" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinksBar/dbpedia-logo.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Label/Label.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="50" column="12" selection-start-line="50" selection-start-column="12" selection-end-line="50" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Label/Label.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="19" column="16" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinksBar/LinksBar.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="254">
+          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/MapBox/MapBox.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Feedback/Feedback.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="57" column="12" selection-start-line="57" selection-start-column="12" selection-end-line="57" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Sparql/Sparql.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="107" column="41" selection-start-line="107" selection-start-column="41" selection-end-line="107" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/setQuestion.js" />
+    <entry file="file://$PROJECT_DIR$/src/components/variables.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="26" column="2" selection-start-line="26" selection-start-column="2" selection-end-line="26" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/language.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-34">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Entity/Entity.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Navigation/Navigation.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="12" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Navigation/Navigation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LanguageSelector/LanguageSelector.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="26" selection-start-line="15" selection-start-column="26" selection-end-line="15" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopK/TopK.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" column="29" selection-start-line="33" selection-start-column="29" selection-end-line="33" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="41" column="17" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LinksBar/LinksBar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="31" column="12" selection-start-line="31" selection-start-column="12" selection-end-line="31" selection-end-column="12" />
           <folding>
-            <element signature="e#262#314#0" expanded="true" />
-            <element signature="e#8815#8847#0" expanded="false" />
-            <element signature="e#9173#9193#0" expanded="false" />
+            <marker date="1494859058330" expanded="true" signature="447:1221" ph="{...}" />
+            <marker date="1494859058330" expanded="true" signature="471:481" ph="{&quot;wikipedia&quot;: PropTypes.string...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ImageComponent/ImageComponent.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+          <folding>
+            <marker date="1494859057783" expanded="false" signature="269:442" ph="..." />
+            <marker date="1494859057783" expanded="true" signature="507:552" ph="{&quot;image&quot;: PropTypes.string.isRequired...}" />
+            <marker date="1494859057783" expanded="true" signature="576:635" ph="{...}" />
+            <marker date="1494859057783" expanded="true" signature="678:813" ph="{...}" />
+            <marker date="1494859057783" expanded="true" signature="699:802" ph="&lt;div/&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopK/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/LanguageSelector/LanguageSelector.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="29" column="26" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding>
+            <marker date="1494859057733" expanded="false" signature="269:322" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/QueryBox/QueryBox.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1394">
+          <caret line="84" column="29" selection-start-line="84" selection-start-column="29" selection-end-line="84" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/knowledgebase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-143">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Entity/Entity.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="98" column="11" selection-start-line="98" selection-start-column="11" selection-end-line="98" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/route.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/constants/ActionTypes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/reducers/reducers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1479">
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/QueryBox/QueryBox.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="156" column="17" selection-start-line="156" selection-start-column="17" selection-end-line="156" selection-end-column="17" />
+        <state relative-caret-position="153">
+          <caret line="173" column="46" selection-start-line="173" selection-start-column="46" selection-end-line="173" selection-end-column="46" />
+          <folding>
+            <element signature="e#262#314#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5">
+          <caret line="56" column="33" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="33" />
+          <folding>
+            <element signature="e#262#314#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/SparqlList/SparqlList.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1003">
+          <caret line="111" column="27" selection-start-line="111" selection-start-column="27" selection-end-line="111" selection-end-column="27" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <element signature="e#262#314#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actions/queryBackend.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="102" column="85" selection-start-line="102" selection-start-column="85" selection-end-line="102" selection-end-column="85" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#43#83#0" expanded="true" />
+            <element signature="n#!!block;n#retriveQuestion#0" expanded="false" />
           </folding>
         </state>
       </provider>

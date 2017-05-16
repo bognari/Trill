@@ -13,7 +13,7 @@ import { Field } from 'react-redux-form';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
 import Location from '../../core/Location';
-import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion} from '../../actions/queryBackend';
+import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion ,questionansweringfull} from '../../actions/queryBackend';
 import {setQuestion} from '../../actions/language';
 
 @connect((store) => {
@@ -171,6 +171,7 @@ class QueryBox extends Component {
     e.preventDefault();
     //this.props.dispatch({type: URI_INPUT, uriInput: false});//in case there was an audio file already performed, we need to empty it
     this.props.dispatch(startQuestionAnsweringWithTextQuestion(document.querySelector("#querytext").value, this.props.language, this.props.knowledgebase));
+    this.props.dispatch(questionansweringfull(document.querySelector("#querytext").value, this.props.language, this.props.knowledgebase));
     Location.push("/question?query="+document.querySelector("#querytext").value+"&lang="+this.props.language);
   }
 
