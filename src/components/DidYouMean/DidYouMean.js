@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Entity.scss';
+import s from './DidYouMean.scss';
 import {questionanswering, qanary_endpoint, dbpedia_endpoint} from '../../actions/queryBackend';
 
 var getFromBetween = {
@@ -53,7 +53,7 @@ var getFromBetween = {
 })
 
 
-class Entity extends Component {
+class DidYouMean extends Component {
 
   static propTypes = {
     sparqlquery: PropTypes.array,
@@ -237,4 +237,4 @@ class Entity extends Component {
   }
 
 }
-export default withStyles(Entity, s);
+export default withStyles(DidYouMean, s);
