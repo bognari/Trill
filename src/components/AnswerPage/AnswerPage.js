@@ -24,8 +24,7 @@ import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../Entity';
 import LinksBar from '../LinksBar';
-import {startQuestionAnsweringWithTextQuestion} from '../../actions/queryBackend';
-import {questionansweringfull} from '../../actions/queryBackend';
+import {startQuestionAnsweringWithTextQuestion, questionansweringfull} from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
@@ -53,8 +52,8 @@ class AnswerPage extends Component {
   componentDidMount() {
     if (this.props.uriInput == true) {
       this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
-      //this.props.dispatch(questionansweringfull(this.props.query, this.props.language, this.props.knowledgebase));
-      this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.query, this.props.language, this.props.knowledgebase));
+      this.props.dispatch(questionansweringfull(this.props.query, this.props.language, this.props.knowledgebase));
+      //this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.query, this.props.language, this.props.knowledgebase));
     }
   }
 

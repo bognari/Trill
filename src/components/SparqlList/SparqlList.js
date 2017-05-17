@@ -48,9 +48,9 @@ class SparqlList extends Component {
   handleClick2(selectedquery, index, e){
 
     var replacedsparql = this.props.sparqlquery ;
-    replacedsparql[0].query = selectedquery;
-    replacedsparql[0].score = replacedsparql[0].score+100;
-    replacedsparql.splice(index, 1);
+    replacedsparql[0].query = selectedquery; //replace the first query with the selected query
+    replacedsparql[0].score = replacedsparql[0].score+100; //increase its score
+    replacedsparql.splice(index, 1); //remove the selected query from where it was in the list before
     console.log("This is the updated sparql queries list: ",replacedsparql);
 
     var sparqlPart1 = "";
