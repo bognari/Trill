@@ -20,8 +20,6 @@ import Link from '../Link';
 })
 class Footer extends Component {
 
-
-
   render() {
 
     var issue = {
