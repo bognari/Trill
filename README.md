@@ -4,8 +4,9 @@ This repository contains a Reusable Front-End for Question Answering (QA) System
 
 ### Getting Started
 
-  * The repository is based on the following starter kit, [#react-starter-kit](https://gitter.im/kriasoft/react-starter-kit), therefore the related documentation can be usefull.   
-  * To run it install node and npm. The webservice will start using "npm start". If you want to create a production ready version first execute "npm run build -- --release --verbose" and then "node build/server.js".
+  * To run it install node and npm.
+  * The webservice will start using "npm start".
+  * If you want to create a production ready version first execute "npm run build -- --release --verbose" and then "node build/server.js".
 
 ### Publication
 
@@ -15,12 +16,13 @@ This repository contains a Reusable Front-End for Question Answering (QA) System
 ### Learn More
 
   * [Getting Started with React.js](http://facebook.github.io/react/)
+  * The repository is based on the [#react-starter-kit](https://gitter.im/kriasoft/react-starter-kit), therefore the related documentation can be usefull.
   * [The Future of React](https://github.com/reactjs/react-future)
   * [Learn ES6](https://babeljs.io/docs/learn-es6/), [ES6 Features](https://github.com/lukehoban/es6features#readme)
 
 ### License
 
-Copyright © 2014-2016 Kriasoft, LLC. This source code is licensed under the MIT
+Copyright © 2014-2017 UJMS. This source code is licensed under the MIT
 license found in the [LICENSE.txt](https://github.com/kriasoft/react-starter-kit/blob/master/LICENSE.txt)
 file.
 
