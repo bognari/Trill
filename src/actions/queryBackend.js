@@ -125,6 +125,7 @@ export function questionansweringfull(question, lang, knowledgebase){
 
           var namedGraph = data.namedgraph;
           var jresult = JSON.parse(data.json);
+
           if (jresult.hasOwnProperty("boolean")) {
             var information = [];
             information.push({
@@ -142,7 +143,7 @@ export function questionansweringfull(question, lang, knowledgebase){
             var variable=jresult.head.vars[0];
 
             //check whether if the results are wikidata and then whether or not to rank the answers
-            if(data.sparql.indexOf("wikidata") > -1){
+            if(knowledgebase == "wikidata"){
               console.log('This is the json result (not ranked due to wikidata result): ', jresult);
               configureResult(query, jresult, lang, dispatch, namedGraph);
             }
