@@ -45,9 +45,9 @@ export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 //     success: function (result) {
 //       console.log("DONE2");
 //       if (knowledgebase=="wikidata"){
-//         questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang, dispatch);
+//         questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"],lang);
 //       } else {
-//         questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang, dispatch);
+//         questionanswering(namedGraph, ["wdaqua-core0, QueryExecuter"],lang);
 //       }
 //     }.bind(this),
 //     error: function(e){
@@ -67,7 +67,7 @@ export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 //       var namedGraph = data.inGraph.toString();
 //       console.log("DONE");
 //       languageFeedback(namedGraph, lang, dispatch, knowledgebase);
-//       //questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"], dispatch);
+//       //questionanswering(namedGraph, ["wdaqua-core0-wikidata, QueryExecuter"]);
 //       //sendQueryToEndpoint(data, dispatch);
 //     });
 //
@@ -145,7 +145,7 @@ export function questionansweringfull(question, lang, knowledgebase){
             //check whether if the results are wikidata and then whether or not to rank the answers
             if(knowledgebase == "wikidata"){
               console.log('This is the json result (not ranked due to wikidata result): ', jresult);
-              configureResult(query, jresult, lang, dispatch, namedGraph);
+              dispatch(configureResult(query, jresult, lang, namedGraph));
             }
             else {
 
@@ -164,7 +164,7 @@ export function questionansweringfull(question, lang, knowledgebase){
                 function (rankedresult) {
 
                   console.log('This is the json result (ranked): ', rankedresult);
-                  configureResult(query, rankedresult, lang, dispatch, namedGraph);
+                  dispatch(configureResult(query, rankedresult, lang, namedGraph));
 
                 }.bind(this));
             }
@@ -212,7 +212,8 @@ export function questionansweringfull(question, lang, knowledgebase){
 // }
 
 //for question answering using specific namedgraph that exists (used by SPARQLList component)
-export function questionanswering(namedGraph, components, lang, dispatch){
+export function questionanswering(namedGraph, components, lang){
+  return function (dispatch){
     //dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
 
     var form = new FormData();
@@ -244,6 +245,7 @@ export function questionanswering(namedGraph, components, lang, dispatch){
         dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
       }
     });
+  }
 }
 
 //Used by audio question request to get string version of text
@@ -356,7 +358,7 @@ export function questionanswering(namedGraph, components, lang, dispatch){
 //         //check whether if the results are wikidata and then whether or not to rank the answers
 //         if(result.results.bindings[0].sparql.value.indexOf("wikidata") > -1){
 //           console.log('This is the json result (not ranked due to wikidata result): ', jresult);
-//           configureResult(query, jresult, lang, dispatch, namedGraph);
+//           configureResult(query, jresult, lang, namedGraph);
 //         }
 //         else {
 //
@@ -375,7 +377,7 @@ export function questionanswering(namedGraph, components, lang, dispatch){
 //             function (rankedresult) {
 //
 //               console.log('This is the json result (ranked): ', rankedresult);
-//               configureResult(query, rankedresult, lang, dispatch, namedGraph);
+//               configureResult(query, rankedresult, lang, namedGraph);
 //
 //             }.bind(this));
 //         }
@@ -384,7 +386,8 @@ export function questionanswering(namedGraph, components, lang, dispatch){
 //   });
 // }
 
-function configureResult(query, jresult, lang, dispatch, namedGraph){
+function configureResult(query, jresult, lang, namedGraph){
+  return function (dispatch){
 
   var count = 0;
 
@@ -603,7 +606,7 @@ function configureResult(query, jresult, lang, dispatch, namedGraph){
         answertype: "simple"
       });
     }
- // }
+  }
 }
 
 

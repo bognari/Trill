@@ -90,7 +90,7 @@ class SparqlList extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"],this.props.lang, this.props.dispatch));
+        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"],this.props.lang));
       }.bind(this)
     })
   }

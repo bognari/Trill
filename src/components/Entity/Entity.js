@@ -143,7 +143,7 @@ class Entity extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"], this.props.language, this.props.dispatch));
+        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"], this.props.language));
       }.bind(this)
     })
   }
