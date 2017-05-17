@@ -20,7 +20,7 @@ export function sparqlToUser(sparql, lang, knowledgebase){
       data: {sparql: sparql, lang: lang, kb: knowledgebase},
       success: function (result) {
         console.log("RESULTTTTT",result);
-        dispatch({type: SPARQL_TO_USER_SUCCESS, interpretation: result.s});
+        dispatch({type: SPARQL_TO_USER_SUCCESS, interpretation: result.interpretation});
       },
       error: function (e) {
         dispatch({type: SPARQL_TO_USER_FAILURE, error: e});
