@@ -13,7 +13,7 @@ import { Field } from 'react-redux-form';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
 import Location from '../../core/Location';
-import {startQuestionAnsweringWithTextQuestion, startQuestionAnsweringWithAudioQuestion ,questionansweringfull} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/queryBackend';
 import {setQuestion} from '../../actions/language';
 
 @connect((store) => {
@@ -153,7 +153,7 @@ class QueryBox extends Component {
         //from here is a test to understand the audio service
 
         var mpfile = new File([mpblob], "recording.mp3");
-        that.props.dispatch(startQuestionAnsweringWithAudioQuestion(mpfile));
+        that.props.dispatch(questionansweringfull(mpfile, "en", that.props.knowledgebase));
         Location.push("/question");
       }
       fileReader.readAsArrayBuffer(blob);

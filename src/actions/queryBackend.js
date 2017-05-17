@@ -79,15 +79,30 @@ export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
 export function questionansweringfull(question, lang, knowledgebase){
   return function (dispatch) {
-    dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
     var form  = new FormData();
-    form.append("textquestion", question);
-    if (knowledgebase=="wikidata"){
-      form.append("componentlist[]", ["wdaqua-core0-wikidata, QueryExecuter"]);
+
+    //check whether the question input is a string or mp3file
+    if(typeof question === 'string') {
+      dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
+
+      form.append("textquestion", question);
+      if (knowledgebase=="wikidata"){
+        form.append("componentlist[]", ["wdaqua-core0-wikidata, QueryExecuter"]);
       } else {
-      form.append("componentlist[]", ["wdaqua-core0, QueryExecuter"]);
+        form.append("componentlist[]", ["wdaqua-core0, QueryExecuter"]);
+      }
     }
-    form.append("lang", lang);
+    else {
+      dispatch({type: QUESTION_ANSWERING_REQUEST, question: ""});
+
+      form.append("audioquestion", question, "recording.mp3");
+      if (knowledgebase=="wikidata"){
+        form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0-wikidata, QueryExecuter"]);
+      } else {
+        form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0, QueryExecuter"]);
+      }
+    }
+    form.append("language", lang);
 
     var questionresult = $.ajax({
       url: qanary_services+"/questionansweringfull",
@@ -97,6 +112,10 @@ export function questionansweringfull(question, lang, knowledgebase){
       contentType: false,
       success: function (data) {
         console.log("This is what we are receiving: ", data);
+
+        if(typeof question != 'string') {
+          dispatch({type: 'SET_QUESTION', question: data.textrepresentation});
+        }
 
           var query = [];
           for(var i=0; i<data.sparql.length; i++) {
@@ -149,9 +168,6 @@ export function questionansweringfull(question, lang, knowledgebase){
                 }.bind(this));
             }
           }
-
-
-
       },
       error: function(e){
         var information = [];
@@ -165,35 +181,36 @@ export function questionansweringfull(question, lang, knowledgebase){
   }
 }
 
-export function startQuestionAnsweringWithAudioQuestion(mp3file){
-  return function (dispatch) {
-    dispatch({type: QUESTION_ANSWERING_REQUEST, question: ''});
-    var form  = new FormData();
-    //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
-    form.append("question", mp3file, "recording.mp3");
-    form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0-wikidata, QueryExecuter"]);
+// export function startQuestionAnsweringWithAudioQuestion(mp3file){
+//   return function (dispatch) {
+//     dispatch({type: QUESTION_ANSWERING_REQUEST, question: ''});
+//     var form  = new FormData();
+//     //form.append("question", mpblob); //this also works, but need to test if there is a difference to the service if we give blob or file
+//     form.append("question", mp3file, "recording.mp3");
+//     form.append("componentlist[]", ["SpeechRecognitionKaldi, wdaqua-core0-wikidata, QueryExecuter"]);
+//
+//     var questionresult = $.ajax({
+//       url: qanary_services+"/startquestionansweringwithaudioquestion",
+//       data: form,
+//       processData: false,
+//       type: "POST",
+//       contentType: false,
+//       success: function (data) {
+//         retriveQuestion(data, dispatch);
+//         sendQueryToEndpoint(data, "en", dispatch);
+//       },
+//       error: function(e){
+//         var information = [];
+//         information.push({
+//           message: e.statusCode + " " + e.statusText,
+//         });
+//         dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
+//       }
+//     });
+//   }
+// }
 
-    var questionresult = $.ajax({
-      url: qanary_services+"/startquestionansweringwithaudioquestion",
-      data: form,
-      processData: false,
-      type: "POST",
-      contentType: false,
-      success: function (data) {
-        retriveQuestion(data, dispatch);
-        sendQueryToEndpoint(data, "en", dispatch);
-      },
-      error: function(e){
-        var information = [];
-        information.push({
-          message: e.statusCode + " " + e.statusText,
-        });
-        dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
-      }
-    });
-  }
-}
-
+//for question answering using specific namedgraph that exists (used by SPARQLList component)
 export function questionanswering(namedGraph, components, lang, dispatch){
     //dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
 
@@ -229,142 +246,142 @@ export function questionanswering(namedGraph, components, lang, dispatch){
 }
 
 //Used by audio question request to get string version of text
-function retriveQuestion(data, dispatch){
+// function retriveQuestion(data, dispatch){
+//
+//   var namedGraph = data.inGraph.toString();
+//   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
+//     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
+//     + "SELECT ?uriText "
+//     + "FROM <"+  namedGraph + "> "
+//     + "WHERE { "
+//     + "  ?c a qa:AnnotationOfTextRepresentation . "
+//     + "  ?c oa:hasBody ?uriText . "
+//     + "}";
+//   $.ajax({
+//     url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
+//     type: "GET",
+//     beforeSend: function(xhr){
+//       //xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+//       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+//     },
+//     success: function(result) {
+//
+//       var uriText = result.results.bindings[0].uriText.value;
+//       uriText=uriText.replace("http://qanaryhost:8080/question/",qanary_services+"/question/")+"/raw";
+//       //Dereference the uri and retrieve the text
+//       $.ajax({
+//           url: uriText,
+//           type: "GET",
+//         success: function(result) {
+//             dispatch({type: 'SET_QUESTION', question: result});
+//             //dispatch({type: SET_AUDIO, audiofile: null});
+//             //Location.push("/question?query="+result);
+//         },
+//         error: function (err){
+//           dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
+//             return err;
+//           }})
+//     },
+//     error: function (err){
+//       dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
+//       return err;
+//     }
+//   })
+// }
 
-  var namedGraph = data.inGraph.toString();
-  var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
-    + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-    + "SELECT ?uriText "
-    + "FROM <"+  namedGraph + "> "
-    + "WHERE { "
-    + "  ?c a qa:AnnotationOfTextRepresentation . "
-    + "  ?c oa:hasBody ?uriText . "
-    + "}";
-  $.ajax({
-    url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
-    type: "GET",
-    beforeSend: function(xhr){
-      //xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
-      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-    },
-    success: function(result) {
-
-      var uriText = result.results.bindings[0].uriText.value;
-      uriText=uriText.replace("http://qanaryhost:8080/question/",qanary_services+"/question/")+"/raw";
-      //Dereference the uri and retrieve the text
-      $.ajax({
-          url: uriText,
-          type: "GET",
-        success: function(result) {
-            dispatch({type: 'SET_QUESTION', question: result});
-            //dispatch({type: SET_AUDIO, audiofile: null});
-            //Location.push("/question?query="+result);
-        },
-        error: function (err){
-          dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
-            return err;
-          }})
-    },
-    error: function (err){
-      dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
-      return err;
-    }
-  })
-}
-
-function sendQueryToEndpoint(data, lang, dispatch){
-  var namedGraph = data.inGraph.toString();
-  var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
-    + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-    + "SELECT ?sparql ?json ?score "
-    + "FROM <"+  namedGraph + "> "
-    + "WHERE { "
-    + "  ?a a qa:AnnotationOfAnswerSPARQL . "
-    + "  OPTIONAL {?a oa:hasBody ?sparql . } "
-    + "  ?a qa:hasScore ?score . "
-    + "  ?a oa:annotatedAt ?time1 . "
-    + "  ?b a qa:AnnotationOfAnswerJSON . "
-    + "  OPTIONAL {?b oa:hasBody ?json . } "
-    + "  ?b oa:annotatedAt ?time2 . "
-    + "  { "
-    + "   select ?time1 { "
-    + "    ?a a qa:AnnotationOfAnswerSPARQL . "
-    + "    ?a oa:annotatedAt ?time1 "
-    + "    } order by DESC(?time1) limit 1 "
-    + "  } "
-    + "  { "
-    + "   select ?time2 { "
-    + "    ?a a qa:AnnotationOfAnswerJSON . "
-    + "    ?a oa:annotatedAt ?time2 "
-    + "    } order by DESC(?time2) limit 1 "
-    + "  } "
-    + "} "
-    + "ORDER BY DESC(?score)";
-
-  $.ajax({
-    url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
-    type: "GET",
-    beforeSend: function(xhr){
-      //xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
-      xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-    },
-    success: function(result) {
-
-      console.log("RESULT :", result);
-
-      var query = [];
-      for(var i=0; i<result.results.bindings.length; i++) {
-        query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
-        //Here we receive the question converted to a query (first one in an array of ranked possible queries)
-      }
-
-      var jresult = JSON.parse(result.results.bindings[0].json.value);
-      if (jresult.hasOwnProperty("boolean")) {
-        var information = [];
-        information.push({
-          label: (jresult.boolean == true) ? "True" : "False",
-          answertype: "simple",
-        })
-        dispatch({
-          type: QUESTION_ANSWERING_SUCCESS,
-          namedGraph: namedGraph,
-          SPARQLquery: query,
-          information: information,
-          loaded: true,
-        });
-      } else {
-        var variable=jresult.head.vars[0];
-
-        //check whether if the results are wikidata and then whether or not to rank the answers
-        if(result.results.bindings[0].sparql.value.indexOf("wikidata") > -1){
-          console.log('This is the json result (not ranked due to wikidata result): ', jresult);
-          configureResult(query, jresult, lang, dispatch, namedGraph);
-        }
-        else {
-
-          var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-            "SELECT ?"+ variable + " " +
-            "FROM <http://dbpedia.org>" +
-            "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-            "WHERE {" +
-            "{"+ query[0].query +"} " +
-            "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
-            "}" +
-            "ORDER BY DESC(?v) LIMIT 1000";
-
-          var rankedrequest = $.get(
-            dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-            function (rankedresult) {
-
-              console.log('This is the json result (ranked): ', rankedresult);
-              configureResult(query, rankedresult, lang, dispatch, namedGraph);
-
-            }.bind(this));
-        }
-      }
-    }
-  });
-}
+// function sendQueryToEndpoint(data, lang, dispatch){
+//   var namedGraph = data.inGraph.toString();
+//   var sparqlQuery =  "PREFIX qa: <http://www.wdaqua.eu/qa#> "
+//     + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
+//     + "SELECT ?sparql ?json ?score "
+//     + "FROM <"+  namedGraph + "> "
+//     + "WHERE { "
+//     + "  ?a a qa:AnnotationOfAnswerSPARQL . "
+//     + "  OPTIONAL {?a oa:hasBody ?sparql . } "
+//     + "  ?a qa:hasScore ?score . "
+//     + "  ?a oa:annotatedAt ?time1 . "
+//     + "  ?b a qa:AnnotationOfAnswerJSON . "
+//     + "  OPTIONAL {?b oa:hasBody ?json . } "
+//     + "  ?b oa:annotatedAt ?time2 . "
+//     + "  { "
+//     + "   select ?time1 { "
+//     + "    ?a a qa:AnnotationOfAnswerSPARQL . "
+//     + "    ?a oa:annotatedAt ?time1 "
+//     + "    } order by DESC(?time1) limit 1 "
+//     + "  } "
+//     + "  { "
+//     + "   select ?time2 { "
+//     + "    ?a a qa:AnnotationOfAnswerJSON . "
+//     + "    ?a oa:annotatedAt ?time2 "
+//     + "    } order by DESC(?time2) limit 1 "
+//     + "  } "
+//     + "} "
+//     + "ORDER BY DESC(?score)";
+//
+//   $.ajax({
+//     url: qanary_endpoint+"?query=" + encodeURIComponent(sparqlQuery),
+//     type: "GET",
+//     beforeSend: function(xhr){
+//       //xhr.setRequestHeader ("Authorization", "Basic " + btoa("admin:admin"));
+//       xhr.setRequestHeader('Accept', 'application/sparql-results+json');
+//     },
+//     success: function(result) {
+//
+//       console.log("RESULT :", result);
+//
+//       var query = [];
+//       for(var i=0; i<result.results.bindings.length; i++) {
+//         query[i] = {query:result.results.bindings[i].sparql.value , score: parseInt(result.results.bindings[i].score.value)};
+//         //Here we receive the question converted to a query (first one in an array of ranked possible queries)
+//       }
+//
+//       var jresult = JSON.parse(result.results.bindings[0].json.value);
+//       if (jresult.hasOwnProperty("boolean")) {
+//         var information = [];
+//         information.push({
+//           label: (jresult.boolean == true) ? "True" : "False",
+//           answertype: "simple",
+//         })
+//         dispatch({
+//           type: QUESTION_ANSWERING_SUCCESS,
+//           namedGraph: namedGraph,
+//           SPARQLquery: query,
+//           information: information,
+//           loaded: true,
+//         });
+//       } else {
+//         var variable=jresult.head.vars[0];
+//
+//         //check whether if the results are wikidata and then whether or not to rank the answers
+//         if(result.results.bindings[0].sparql.value.indexOf("wikidata") > -1){
+//           console.log('This is the json result (not ranked due to wikidata result): ', jresult);
+//           configureResult(query, jresult, lang, dispatch, namedGraph);
+//         }
+//         else {
+//
+//           var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
+//             "SELECT ?"+ variable + " " +
+//             "FROM <http://dbpedia.org>" +
+//             "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
+//             "WHERE {" +
+//             "{"+ query[0].query +"} " +
+//             "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
+//             "}" +
+//             "ORDER BY DESC(?v) LIMIT 1000";
+//
+//           var rankedrequest = $.get(
+//             dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
+//             function (rankedresult) {
+//
+//               console.log('This is the json result (ranked): ', rankedresult);
+//               configureResult(query, rankedresult, lang, dispatch, namedGraph);
+//
+//             }.bind(this));
+//         }
+//       }
+//     }
+//   });
+// }
 
 function configureResult(query, jresult, lang, dispatch, namedGraph){
 

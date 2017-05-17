@@ -24,7 +24,7 @@ import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../Entity';
 import LinksBar from '../LinksBar';
-import {startQuestionAnsweringWithTextQuestion, questionansweringfull} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
