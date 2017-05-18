@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Entity.scss';
-import {questionanswering, qanary_endpoint, dbpedia_endpoint} from '../../actions/queryBackend';
+import {questionansweringfull, qanary_endpoint, dbpedia_endpoint} from '../../actions/queryBackend';
 
 var getFromBetween = {
   results:[],
@@ -49,6 +49,7 @@ var getFromBetween = {
 @connect((store) => {
   return {
     language: store.lang.language,
+    knowledgebase: store.knowledgebase.knowledgebase,
   }
 })
 
@@ -143,7 +144,7 @@ class Entity extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"], this.props.language));
+        this.props.dispatch(questionansweringfull(100, this.props.lang, this.props.knowledgebase, this.props.namedGraph));
       }.bind(this)
     })
   }
