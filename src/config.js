@@ -13,6 +13,9 @@
 export const port = process.env.PORT || 3000;
 export const host = process.env.WEBSITE_HOSTNAME || `localhost:${port}`;
 export const sparqlToUserEndpoint =  "https://wdaqua-sparqltouser.univ-st-etienne.fr/sparqltouser";
+export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
+export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
+export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
 //export const databaseUrl = process.env.DATABASE_URL || 'postgresql://demo:Lqk62xg6TBm5UhfR@demo.ctbl5itzitm4.us-east-1.rds.amazonaws.com:5432/membership01';
 
