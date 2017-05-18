@@ -11,10 +11,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SparqlList.scss';
-import {questionanswering} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/queryBackend';
 
 @connect((store) => {
   return {
+    question: store.qa.question,
     SPARQLquery: store.qa.SPARQLquery,
     namedGraph: store.qa.namedGraph,
     language: store.lang.language,
@@ -48,9 +49,9 @@ class SparqlList extends Component {
   handleClick2(selectedquery, index, e){
 
     var replacedsparql = this.props.sparqlquery ;
-    replacedsparql[0].query = selectedquery;
-    replacedsparql[0].score = replacedsparql[0].score+100;
-    replacedsparql.splice(index, 1);
+    replacedsparql[0].query = selectedquery; //replace the first query with the selected query
+    replacedsparql[0].score = replacedsparql[0].score+100; //increase its score
+    replacedsparql.splice(index, 1); //remove the selected query from where it was in the list before
     console.log("This is the updated sparql queries list: ",replacedsparql);
 
     var sparqlPart1 = "";
@@ -78,7 +79,6 @@ class SparqlList extends Component {
       + "BIND (IRI(str(RAND())) AS ?b) . "
       + "BIND (now() as ?time) . "
       + "}";
-    console.log("Here");
 
     this.serverRequest = $.ajax({
       url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
@@ -90,7 +90,7 @@ class SparqlList extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        this.props.dispatch(questionanswering(this.props.namedGraph, ["QueryExecuter"],this.props.lang, this.props.dispatch));
+        this.props.dispatch(questionansweringfull(100, this.props.lang, this.props.knowledgebase, this.props.namedGraph));
       }.bind(this)
     })
   }
