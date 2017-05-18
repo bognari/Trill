@@ -6,31 +6,21 @@
 .container {
   float: left;
   max-width: 1000px;
-}
-
-.qbox {
-  border: 0px solid #fbfdff;
-  padding: 2px 20px 2px 20px;
-  //height: 200px;
-  //overflow-y: scroll;
-  margin-bottom: 10px;
-}
-
-.qbox p {
   color: #0083b6;
   font-family: Verdana;
   font-size: large;
   font-style: oblique;
 }
 
+//.qbox {
+//  border: 0px solid #fbfdff;
+//  padding: 2px 20px 2px 20px;
+  //height: 200px;
+  //overflow-y: scroll;
+//  margin-bottom: 10px;
+//}
 
 
-.sparql:hover,
-.sparqlpressed:hover{
-  cursor: pointer;
-  background-color: $background-gray;
-}
-
-.wrapfloat{
-  overflow: hidden;
-}
+//.wrapfloat{
+//  overflow: hidden;
+//}

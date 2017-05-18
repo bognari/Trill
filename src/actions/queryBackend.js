@@ -2,8 +2,10 @@
  * Created by Dennis on 11/11/16.
  */
 
-import Location from '../core/Location';
 import iri from 'iri';
+
+import {sparqlToUser} from '../actions/sparqlToUser';
+
 
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
@@ -17,6 +19,7 @@ export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 
 export function questionansweringfull(question, lang, knowledgebase, namedGraph){
+
   return function (dispatch) {
     var form  = new FormData();
     var components = "";
@@ -164,7 +167,6 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
 
 function configureResult(query, jresult, lang, namedGraph){
   return function (dispatch){
-
   var count = 0;
 
     var variable=jresult.head.vars[0];

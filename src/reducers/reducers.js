@@ -3,10 +3,11 @@
  */
 
 import { combineReducers } from 'redux'
-import { LANGUAGE_CHANGE} from '../actions/language'
 import { KNOWLEDGEBASE_CHANGE} from '../actions/knowledgebase'
 import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, SET_QUESTION} from '../actions/queryBackend'
 import { ROUTE_CHANGE} from '../actions/route'
+import sparqlToUserReducer from '../reducers/sparqlToUser'
+import languageReducer from '../reducers/languageReducer'
 
 
 const initialState = {
@@ -64,32 +65,6 @@ const qaReducer = (state = initialState, action) => {
   return state;
 }
 
-const initialStateLanguage = {
-  language: "en", //initial language of the website set to english
-}
-
-const languageReducer = (state = initialStateLanguage, action) => {
-  switch (action.type) {
-    case LANGUAGE_CHANGE: {
-      return {
-        ...state,
-        language: action.language,
-      }
-      break;
-    }
-    case ROUTE_CHANGE: {
-        if (action.language!=undefined){
-          return {
-            ...state,
-            language: action.language,
-          }
-        }
-      break;
-    }
-  }
-  return state;
-}
-
 const initialStateKnowledgebase = {
   knowledgebase: "wikidata", //initial language of the website set to english
 }
@@ -127,9 +102,11 @@ const routeReducer = (state = initialStateRoute, action) => {
 }
 
 
+
 export default combineReducers({
   qa: qaReducer,
   lang: languageReducer,
   route: routeReducer,
   knowledgebase: knowledgebaseReducer,
+  sparqlToUser: sparqlToUserReducer,
 })

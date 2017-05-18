@@ -25,9 +25,6 @@ class LinksBar extends Component {
     super(props);
   }
 
-  componentDidMount() {
-  }
-
   render() {
     return (
       <div className={s.container}>

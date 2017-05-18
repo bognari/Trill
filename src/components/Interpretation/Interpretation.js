@@ -11,69 +11,31 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Interpretation.scss';
-import {questionanswering} from '../../actions/queryBackend';
+
 
 @connect((store) => {
+  console.log(store);
   return {
-    SPARQLquery: store.qa.SPARQLquery,
-    namedGraph: store.qa.namedGraph,
-    language: store.lang.language,
-    kbknowledgebase: store.knowledgebase.knowledgebase,
+    interpretation: store.sparqlToUser.interpretation,
+    loaded: store.sparqlToUser.loaded,
   }
 })
 class Sparql extends Component {
 
-  static propTypes = {
-
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-    retrived: false,
-    sparql: "",
-    lang: "",
-    kb: "",
-    };
-  }
-
-  componentDidMount(selectedquery, index, e){
-    this.serverRequest = $.ajax({
-      url: "http://localhost:1920/sparqltouser",
-      type: "POST",
-      contentType: 'application/x-www-form-urlencoded',
-      data: {sparql: this.props.sparqlquery[0].query, lang: this.props.language , kb: this.props.knowledgebase },
-      success: function (result) {
-            var res = result.s;
-            var lan = result.lang;
-            var knbs=result.kb;
-            //alert(knbs);
-           // console.log(result);
-           // console.log(result);
-            this.setState({retrived: true, sparql: res, lang: lan, kb: knbs});
-      }.bind(this),
-      error: function(err){
-      console.log(err)
-    }
-    })
-  }
-
+  static propTypes = {};
 
   render() {
     return (
       <div className={s.container}>
-        <div className={s.wrapfloat}>
-        </div>
-              {(this.state.retrived) ?
-                <div id="FiringSparql" className={s.qbox}>
-                 <p id="q">
-                    {this.state.sparql}
-                  </p>
-                </div>: null
-              }
+        {(this.props.loaded) ?
+           <p>
+              {this.props.interpretation}
+            </p> : null
+        }
       </div>
     );
   }
 
 }
+
 export default withStyles(Sparql, s);

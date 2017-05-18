@@ -22,7 +22,7 @@ import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
-import Entity from '../Entity';
+import Entity from '../DidYouMean';
 import LinksBar from '../LinksBar';
 import {questionansweringfull} from '../../actions/queryBackend';
 
