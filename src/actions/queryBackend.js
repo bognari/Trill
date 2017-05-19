@@ -83,6 +83,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
               type: QUESTION_ANSWERING_SUCCESS,
               namedGraph: namedGraph,
               SPARQLquery: query,
+              json: jresult,
               information: information,
               loaded: true,
             });
@@ -252,9 +253,9 @@ function configureResult(query, jresult, lang, namedGraph){
                           if(data.query.pages.hasOwnProperty(key)){
                             wikiabstract = data.query.pages[key].extract;
                             if (wikiabstract!=undefined){
-                              setinformation(binding,result,wikiabstract);
+                              setinformation(binding,result,wikiabstract, jresult);
                             } else {
-                              setinformation(binding,result,"");
+                              setinformation(binding,result,"", jresult);
                             }
                           }
                         }
@@ -281,10 +282,10 @@ function configureResult(query, jresult, lang, namedGraph){
                 }
 
                 else {
-                  setinformation(binding, result, "");
+                  setinformation(binding, result, "", jresult);
                 }
 
-                function setinformation(binding, result, wikiabstract){
+                function setinformation(binding, result, wikiabstract, jresult){
                   //to refactor the following if statements to one switch statement? I.e. do a checks on the result to
                   //determine and set answertype
                   if (Object.keys(result.results.bindings[0]).length == 0) { //Case when there is no information... is it a possible scenario?
@@ -299,6 +300,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       type: QUESTION_ANSWERING_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
+                      json: jresult,
                       information: information,
                       loaded: true,
                     });
@@ -325,6 +327,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       type: QUESTION_ANSWERING_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
+                      json: jresult,
                       information: information,
                       loaded: true,
                     });
@@ -345,6 +348,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       type: QUESTION_ANSWERING_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
+                      json: jresult,
                       information: information,
                       loaded: true,
                     });
@@ -362,6 +366,7 @@ function configureResult(query, jresult, lang, namedGraph){
               type: QUESTION_ANSWERING_SUCCESS,
               namedGraph: namedGraph,
               SPARQLquery: query,
+              json: jresult,
               information: information,
               loaded: true,
             });
@@ -379,6 +384,7 @@ function configureResult(query, jresult, lang, namedGraph){
         type: QUESTION_ANSWERING_SUCCESS,
         namedGraph: namedGraph,
         SPARQLquery: query,
+        json: jresult,
         information: information,
         loaded: true,
         answertype: "simple"

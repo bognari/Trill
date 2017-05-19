@@ -16,6 +16,7 @@ const initialState = {
   question: "", //text question
   information: [],
   SPARQLquery: "", //containes the generated sparql query
+  json: "",
   query: false, //indicates if the answer or the query is displayed
   loaded: false, //indicates if the backend already gave back the answer
   error: false,
@@ -40,6 +41,7 @@ const qaReducer = (state = initialState, action) => {
         namedGraph: action.namedGraph,
         information: action.information.concat(),
         SPARQLquery: action.SPARQLquery,
+        json: action.json,
         loaded: true,
         error: false,
       }

@@ -17,6 +17,7 @@ import {qanary_services} from '../../actions/queryBackend';
 @connect((store) => {
   return {
     SPARQLquery: store.qa.SPARQLquery,
+    json: store.qa.json,
     question: store.qa.question,
     language: store.lang.language,
     knowledgebase: store.knowledgebase.knowledgebase,
@@ -94,6 +95,7 @@ class Feedback extends Component {
             <form id="form" className={s.form} action="" method="POST">
               <input type="hidden" id="question" name="question" value={this.props.question}/>
               <input type="hidden" id="sparql" name="sparql" value={this.props.SPARQLquery[0].query}/>
+              <input type="hidden" id="answer" name="answer" value={this.props.json}/>
               <input type="hidden" id="language" name="language" value={this.props.language}/>
               <input type="hidden" id="knowledgebase" name="knowledgebase" value={this.props.knowledgebase}/>
               <p>{right[this.props.language]} &nbsp;&nbsp;
