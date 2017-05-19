@@ -2,31 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d1b7d3e-696c-49a2-a067-2fd8395df3d7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/actions/sparqlToUser.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/components/DidYouMean/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/reducers/languageReducer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/reducers/sparqlToUser.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LICENSE.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Entity/Entity.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/Entity/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/FeedbackLoop/Label.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/FeedbackLoop/Label.scss" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/FeedbackLoop/package.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/FeedbackOld/Feedback.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/FeedbackOld/Feedback.scss" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/components/FeedbackOld/package.json" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/components/Entity/Entity.scss" afterPath="$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/actions/queryBackend.js" afterPath="$PROJECT_DIR$/src/actions/queryBackend.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js" afterPath="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.js" afterPath="$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Footer/Footer.js" afterPath="$PROJECT_DIR$/src/components/Footer/Footer.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Interpretation/Interpretation.js" afterPath="$PROJECT_DIR$/src/components/Interpretation/Interpretation.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Interpretation/Interpretation.scss" afterPath="$PROJECT_DIR$/src/components/Interpretation/Interpretation.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/LinksBar/LinksBar.js" afterPath="$PROJECT_DIR$/src/components/LinksBar/LinksBar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config.js" afterPath="$PROJECT_DIR$/src/config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/reducers/reducers.js" afterPath="$PROJECT_DIR$/src/reducers/reducers.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.scss" afterPath="$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.scss" />
     </list>
     <ignored path="wd-aqua.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,25 +32,10 @@
       <file leaf-file-name="AnswerPage.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-18">
-              <caret line="56" column="5" lean-forward="false" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+            <state relative-caret-position="50">
+              <caret line="68" column="19" lean-forward="false" selection-start-line="68" selection-start-column="19" selection-end-line="68" selection-end-column="19" />
               <folding>
                 <element signature="e#262#314#0" expanded="true" />
-                <marker date="1495118798683" expanded="true" signature="1945:2076" ph="{...}" />
-                <marker date="1495118798683" expanded="true" signature="1945:2080" ph="{...}" />
-                <marker date="1495118798683" expanded="true" signature="1945:4519" ph="{...}" />
-                <marker date="1495118798683" expanded="true" signature="2093:4515" ph="{...}" />
-                <marker date="1495118798683" expanded="true" signature="2114:4504" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="2153:4491" ph="&lt;Loader/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="2262:2794" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="2301:2656" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="2858:4460" ph="{...}" />
-                <marker date="1495118798683" expanded="true" signature="2895:4434" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="3254:3536" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="3305:3427" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="3609:3986" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="3660:3782" ph="&lt;div/&gt;" />
-                <marker date="1495118798683" expanded="true" signature="4091:4404" ph="&lt;div/&gt;" />
               </folding>
             </state>
           </provider>
@@ -79,11 +44,11 @@
       <file leaf-file-name="queryBackend.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/actions/queryBackend.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="278" column="21" lean-forward="true" selection-start-line="278" selection-start-column="21" selection-end-line="278" selection-end-column="21" />
+            <state relative-caret-position="145">
+              <caret line="229" column="113" lean-forward="false" selection-start-line="229" selection-start-column="99" selection-end-line="229" selection-end-column="113" />
               <folding>
                 <element signature="n#!!block;n#questionansweringfull#0" expanded="false" />
-                <element signature="e#4672#4765#0" expanded="false" />
+                <element signature="e#4742#4835#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -92,11 +57,24 @@
       <file leaf-file-name="DidYouMean.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3294">
-              <caret line="183" column="11" lean-forward="true" selection-start-line="183" selection-start-column="11" selection-end-line="183" selection-end-column="11" />
+            <state relative-caret-position="120">
+              <caret line="251" column="35" lean-forward="false" selection-start-line="251" selection-start-column="35" selection-end-line="251" selection-end-column="35" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
+                <element signature="e#357#1728#0" expanded="false" />
+                <element signature="n#!!block;n#handleClick#0;n#DidYouMean#0" expanded="false" />
+                <element signature="n#!!block;n#handleClick3#0;n#DidYouMean#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DidYouMean.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="60" column="1" lean-forward="true" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -104,16 +82,9 @@
       <file leaf-file-name="SparqlList.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/SparqlList/SparqlList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="21" column="4" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-              <folding>
-                <marker date="1495118667540" expanded="true" signature="3279:3313" ph="{...}" />
-                <marker date="1495118667540" expanded="true" signature="3279:4298" ph="{...}" />
-                <marker date="1495118667540" expanded="true" signature="3326:4295" ph="{...}" />
-                <marker date="1495118667540" expanded="true" signature="3347:4284" ph="&lt;div/&gt;" />
-                <marker date="1495118667540" expanded="true" signature="3617:4249" ph="&lt;div/&gt;" />
-                <marker date="1495118667540" expanded="true" signature="4139:4226" ph="&lt;p/&gt;" />
-              </folding>
+            <state relative-caret-position="378">
+              <caret line="83" column="44" lean-forward="false" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -159,6 +130,9 @@
       <find>entity</find>
       <find>question</find>
       <find>full</find>
+      <find>single</find>
+      <find>sparqlq</find>
+      <find>db</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -167,7 +141,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/Map/package.json" />
         <option value="$PROJECT_DIR$/src/components/Map/Map.scss" />
         <option value="$PROJECT_DIR$/node_modules/leaflet/dist/leaflet.css" />
         <option value="$PROJECT_DIR$/src/components/Map/leaflet.scss" />
@@ -215,8 +188,9 @@
         <option value="$PROJECT_DIR$/src/components/QueryBox/QueryBox.js" />
         <option value="$PROJECT_DIR$/src/components/SparqlList/SparqlList.js" />
         <option value="$PROJECT_DIR$/src/components/Entity/Entity.js" />
-        <option value="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js" />
         <option value="$PROJECT_DIR$/src/actions/queryBackend.js" />
+        <option value="$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js" />
+        <option value="$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.scss" />
         <option value="$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.js" />
       </list>
     </option>
@@ -275,7 +249,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -344,6 +317,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -526,11 +500,12 @@
       <workItem from="1495013715324" duration="27686000" />
       <workItem from="1495116405488" duration="370000" />
       <workItem from="1495116795552" duration="1540000" />
+      <workItem from="1495182140969" duration="17557000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="797459000" />
+    <option name="totallyTimeSpent" value="815016000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1217" height="1036" extended-state="6" />
@@ -538,30 +513,20 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24773663" sideWeight="0.48324022" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45621622" sideWeight="0.52098763" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3408" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25744048" sideWeight="0.51675975" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3408" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.44" sideWeight="0.47901234" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43351352" sideWeight="0.47901234" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41503268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45621622" sideWeight="0.52098763" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="npm" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25744048" sideWeight="0.51675975" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3408" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.44" sideWeight="0.47901234" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24773663" sideWeight="0.48324022" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32843137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41503268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -585,7 +550,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build/public/libmp3lame.js" />
     <entry file="file://$PROJECT_DIR$/src/public/lame.all.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105336">
@@ -746,13 +710,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Entity/Entity.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Entity/Entity.scss" />
     <entry file="file://$PROJECT_DIR$/src/components/Navigation/Navigation.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -851,20 +809,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/FeedbackOld/Feedback.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/FeedbackLoop/Label.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-401">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/FeedbackOld/Feedback.js" />
+    <entry file="file://$PROJECT_DIR$/src/components/FeedbackLoop/Label.js" />
     <entry file="file://$PROJECT_DIR$/src/components/HeaderSearch/HeaderSearch.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -889,51 +835,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Entity/Entity.js">
+    <entry file="file://$PROJECT_DIR$/src/components/Entity/Entity.js" />
+    <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3810">
-          <caret line="11" column="46" lean-forward="false" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
-          <folding />
+        <state relative-caret-position="50">
+          <caret line="68" column="19" lean-forward="false" selection-start-line="68" selection-start-column="19" selection-end-line="68" selection-end-column="19" />
+          <folding>
+            <element signature="e#262#314#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/SparqlList/SparqlList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="21" column="4" lean-forward="false" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-          <folding>
-            <marker date="1495118667540" expanded="true" signature="3279:3313" ph="{...}" />
-            <marker date="1495118667540" expanded="true" signature="3279:4298" ph="{...}" />
-            <marker date="1495118667540" expanded="true" signature="3326:4295" ph="{...}" />
-            <marker date="1495118667540" expanded="true" signature="3347:4284" ph="&lt;div/&gt;" />
-            <marker date="1495118667540" expanded="true" signature="3617:4249" ph="&lt;div/&gt;" />
-            <marker date="1495118667540" expanded="true" signature="4139:4226" ph="&lt;p/&gt;" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/AnswerPage/AnswerPage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-18">
-          <caret line="56" column="5" lean-forward="false" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
-          <folding>
-            <element signature="e#262#314#0" expanded="true" />
-            <marker date="1495118798683" expanded="true" signature="1945:2076" ph="{...}" />
-            <marker date="1495118798683" expanded="true" signature="1945:2080" ph="{...}" />
-            <marker date="1495118798683" expanded="true" signature="1945:4519" ph="{...}" />
-            <marker date="1495118798683" expanded="true" signature="2093:4515" ph="{...}" />
-            <marker date="1495118798683" expanded="true" signature="2114:4504" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="2153:4491" ph="&lt;Loader/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="2262:2794" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="2301:2656" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="2858:4460" ph="{...}" />
-            <marker date="1495118798683" expanded="true" signature="2895:4434" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="3254:3536" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="3305:3427" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="3609:3986" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="3660:3782" ph="&lt;div/&gt;" />
-            <marker date="1495118798683" expanded="true" signature="4091:4404" ph="&lt;div/&gt;" />
-          </folding>
+        <state relative-caret-position="378">
+          <caret line="83" column="44" lean-forward="false" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -947,21 +864,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/actions/queryBackend.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="278" column="21" lean-forward="true" selection-start-line="278" selection-start-column="21" selection-end-line="278" selection-end-column="21" />
+        <state relative-caret-position="145">
+          <caret line="229" column="113" lean-forward="false" selection-start-line="229" selection-start-column="99" selection-end-line="229" selection-end-column="113" />
           <folding>
             <element signature="n#!!block;n#questionansweringfull#0" expanded="false" />
-            <element signature="e#4672#4765#0" expanded="false" />
+            <element signature="e#4742#4835#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="60" column="1" lean-forward="true" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/DidYouMean/DidYouMean.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3294">
-          <caret line="183" column="11" lean-forward="true" selection-start-line="183" selection-start-column="11" selection-end-line="183" selection-end-column="11" />
+        <state relative-caret-position="120">
+          <caret line="251" column="35" lean-forward="false" selection-start-line="251" selection-start-column="35" selection-end-line="251" selection-end-column="35" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
+            <element signature="e#357#1728#0" expanded="false" />
+            <element signature="n#!!block;n#handleClick#0;n#DidYouMean#0" expanded="false" />
+            <element signature="n#!!block;n#handleClick3#0;n#DidYouMean#0" expanded="false" />
           </folding>
         </state>
       </provider>

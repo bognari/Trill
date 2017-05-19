@@ -17,6 +17,7 @@ export const URI_INPUT = "URI_INPUT";
 export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
 export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 export const dbpedia_endpoint = "https://dbpedia.org/sparql";
+export const wikidata_endpoint = "https://query.wikidata.org/sparql";
 
 export function questionansweringfull(question, lang, knowledgebase, namedGraph){
 
@@ -226,7 +227,7 @@ function configureResult(query, jresult, lang, namedGraph){
               "} order by ?lang_ ";
 
             var dbpediaQueryUrl = dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
-            var wikiQueryUrl = "https://query.wikidata.org/sparql?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
+            var wikiQueryUrl = wikidata_endpoint+"?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
 
 
             var getpropertiesrequest = $.get((value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl);

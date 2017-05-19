@@ -67,8 +67,7 @@ class AnswerPage extends Component {
         <div className={s.feedback}>
           <div className={s.buttonmenu}>
             <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-                      {(this.props.SPARQLquery != "") ? (this.props.SPARQLquery[0].query.indexOf("dbpedia") > -1) ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null : null}
-
+            {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
           </div>
           <Feedback/>
           <Interpretation sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>

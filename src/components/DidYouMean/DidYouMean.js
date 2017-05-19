@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './DidYouMean.scss';
-import {questionansweringfull, qanary_endpoint, dbpedia_endpoint} from '../../actions/queryBackend';
+import $ from 'jquery';
+import {questionansweringfull, qanary_endpoint, dbpedia_endpoint, wikidata_endpoint} from '../../actions/queryBackend';
 
 var getFromBetween = {
   results:[],
@@ -150,43 +151,46 @@ class DidYouMean extends Component {
   }
 
   componentDidMount() {
-    //get image for each entity
   }
 
   render() {
-    var entities = [];
-    var desiredString="";
-    var entitylink="";
+    var entities = []; //Array that holds the list of entities extracted from the SPARQL list.
+    //Properties of each entity: value (name), entity (uri) and sparqlno (the indexes of the queries that hold this entity)
+
+    var desiredString=""; //This is the entity name extracted from the uri
+    var entitylink=""; //This is the uri of the entity
 
     {this.props.sparqlquery.map(function(sparqlquery, qindex) {
-      desiredString = (getFromBetween.get(sparqlquery.query,"<http://dbpedia.org/resource/",">"));
-      //wikidesiredString = (getFromBetween.get(sparqlquery.query,"<http://www.wikidata.org/entity/",">"));
+      desiredString = (getFromBetween.get(sparqlquery.query,(this.props.knowledgebase == "wikidata") ? "<http://www.wikidata.org/entity/" : "<http://dbpedia.org/resource/",">"));
 
-      //Here we take the entities from the queries and construct the entities array to hold these entities
-      //alongside the index of the query from which it was retrieved
-      desiredString.map(function(singlestring){
-        entitylink = "<http://dbpedia.org/resource/"+singlestring+">";
-        singlestring = singlestring.replace(/_/g, " ");
+      //Here we extract the entities from the queries list and construct the entities array to hold these entities
+      //alongside the index of the query from which it was retrieved.
+      desiredString.map(function(entityname){ //This is a .map function because more than one entity may be pulled from a SPARQL query
+        if(this.props.knowledgebase == "wikidata"){
+          entitylink = "<http://www.wikidata.org/entity/"+entityname+">";
+        }
+        else {
+          entitylink = "<http://dbpedia.org/resource/" + entityname + ">";
+          entityname = entityname.replace(/_/g, " ");
+        }
+
+        //Here we perform a check to see if the current entity has already been stored in the entity array
         var indexofentity = -1;
-
         for(var i=0; i< entities.length; i++){
-          if(singlestring==entities[i].value){
+          if(entityname==entities[i].value){
             indexofentity = i;
+            var spno = entities[i].sparqlno;
+            if(spno.indexOf(qindex) == -1){//check if there isn't already a reference to this query in the sparqlno list, since an entity can be in a query more than once
+              spno[spno.length] = qindex;//add the index of the current query to the list
+              entities[i].sparqlno = spno;
+            }
             break;
           }
         }
-
-        if(indexofentity > -1){
-          var spno = entities[indexofentity].sparqlno;
-          if(spno.indexOf(qindex) == -1){//if there isn't already a reference to this query
-            spno[spno.length] = qindex;
-            entities[indexofentity].sparqlno = spno;
-          }
-        }
-        else{
+        if(indexofentity == -1){//If the above check proved the entity wasn't already stored, add it to the entities array
           var spno = [];
           spno[0] = qindex;
-          entities[entities.length] = {value: singlestring, entity: entitylink, sparqlno:spno};
+          entities[entities.length] = {value: entityname, entity: entitylink, sparqlno:spno};
         }
       }.bind(this));
 
@@ -207,9 +211,33 @@ class DidYouMean extends Component {
             {entities.map(function (entityitem, index) {
               //get image for each entity
               var sparqlQuery = "select ?image where { OPTIONAL{ " + entityitem.entity + " dbo:thumbnail ?image . } } ";
+
+              var wikiQuery = "PREFIX dbo: <urn:dbo> " +
+              "select ?label ?desc ?image where { " +
+                "OPTIONAL{ " +
+                  "wd:"+ entityitem.value +" rdfs:label ?label . FILTER (lang(?label)=\"" + this.props.language + "\") . " +
+                "} " +
+                "OPTIONAL{ " +
+                  "wd:"+ entityitem.value +" wdt:P18 ?image . " +
+                "} " +
+                "OPTIONAL{ " +
+                  "wd:"+ entityitem.value +" schema:description ?desc. FILTER (lang(?desc)=\"" + this.props.language + "\") . " +
+                "} " +
+              "}";
+
               $.get(
+                (this.props.knowledgebase == "wikidata") ? wikidata_endpoint+"?query=" + encodeURIComponent(wikiQuery) + "&format=json" :
                 dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                 function (result) {
+
+                  var label = document.querySelector("#entity" + index);
+                  if(result.results.bindings[0].label != undefined){
+                    label.innerHTML = result.results.bindings[0].label.value;
+                  }
+                  if(result.results.bindings[0].desc != undefined){
+                    label.insertAdjacentHTML("afterend", "<p id='desc"+ index +"' class='desc'>("+result.results.bindings[0].desc.value+")</p>");
+                  }
+
                   var image = document.querySelector("#entityimage" + index);
                   if(result.results.bindings[0].image != undefined){
                     image.src = result.results.bindings[0].image.value;
@@ -218,16 +246,25 @@ class DidYouMean extends Component {
                     image.style = "display: none";
                     document.querySelector("#entity" + index).className = s.entitynoimage;
                   }
+
+                  //FIX THE CHECK HERE ON MONDAY
+                  var desc = document.querySelector("#desc" + index);
+                  if($("#entitydesc" + index).height() > 24){
+                    image.style = "max-height: 70%";
+                    desc.style = "font-size: small";
+                  }
                 }.bind(this));
 
               return (
                 <div id={"entitybox"+index} className={s.entitybox} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}>
 
                   <image id={"entityimage"+index} src="" height="100" alt={entityitem.value} className={s.eimage}/>
-                  <p id={"entity"+index} className={s.entityname}>
-                    {/*<input type="radio" name="selectentity" value={entityitem.value} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}/> &nbsp; */}
-                    {entityitem.value}
-                  </p>
+
+                  <div id={"entitydesc"+index}>
+                    <p id={"entity"+index} className={s.entityname}>
+                      {/*entityitem.value*/}
+                    </p>
+                  </div>
                 </div>)
             }.bind(this))
             }
