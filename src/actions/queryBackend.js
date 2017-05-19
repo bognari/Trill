@@ -69,7 +69,9 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
             query[i] = {query:data.sparql[i] , score: data.sparql.length-i};
             //Here we receive the question converted to a query (first one in an array of ranked possible queries)
           }
-
+          if (query.length>0){
+            dispatch(sparqlToUser(query[0].query, lang, knowledgebase));
+          }
           var namedGraph = data.namedgraph;
           var jresult = JSON.parse(data.json);
 
