@@ -43,13 +43,19 @@
   border-color: #e8e8e8;
 }
 
-.entityname,
-.entitynoimage{
+.entitylabel,
+.entitynoimage,
+.entitylabeldesc {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 5px;
   margin-bottom: 0;
   font-size: large;
   font-weight: normal;
+}
+
+.entitylabeldesc {
+  margin-top: 5px;
+  margin-bottom: -4px
 }
 
 .entitynoimage {
@@ -60,14 +66,21 @@
   margin: calc(55px - 0.5em) 20px 0 20px;
 }
 
-.eimage {
+.eimage,
+.eimagesmall{
   display: block;
   margin: auto;
   max-width: 200px;
 }
 
-.desc {
+.eimagesmall{
+  max-height: 70%;
+}
+
+.edesc {
+  margin: 0;
   font-size: small;
+  text-align: center;
 }
 
 .sparql,

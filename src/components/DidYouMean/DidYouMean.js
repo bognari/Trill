@@ -229,29 +229,36 @@ class DidYouMean extends Component {
                 (this.props.knowledgebase == "wikidata") ? wikidata_endpoint+"?query=" + encodeURIComponent(wikiQuery) + "&format=json" :
                 dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                 function (result) {
+                  console.log("RESULTS: ", result);
 
                   var label = document.querySelector("#entity" + index);
                   if(result.results.bindings[0].label != undefined){
                     label.innerHTML = result.results.bindings[0].label.value;
                   }
+                  var desc = document.querySelector("#desc" + index);
                   if(result.results.bindings[0].desc != undefined){
-                    label.insertAdjacentHTML("afterend", "<p id='desc"+ index +"' class='desc'>("+result.results.bindings[0].desc.value+")</p>");
+                    var words = result.results.bindings[0].desc.value.split(" ");
+                    if(words.length > 5){
+                      //to reimplement
+                      desc.innerHTML = "("+words[0]+" "+words[1]+" "+words[2]+" "+words[3]+" "+words[4]+"...)";
+                    }
+                    else{
+                      desc.innerHTML = "("+result.results.bindings[0].desc.value+")";
+                    }
                   }
 
                   var image = document.querySelector("#entityimage" + index);
+                  if($("#entitydesc" + index).height() > 24){
+                    image.className = s.eimagesmall;
+                    label.className = s.entitylabeldesc;
+                  }
+
                   if(result.results.bindings[0].image != undefined){
                     image.src = result.results.bindings[0].image.value;
                   }
                   else {
                     image.style = "display: none";
-                    document.querySelector("#entity" + index).className = s.entitynoimage;
-                  }
-
-                  //FIX THE CHECK HERE ON MONDAY
-                  var desc = document.querySelector("#desc" + index);
-                  if($("#entitydesc" + index).height() > 24){
-                    image.style = "max-height: 70%";
-                    desc.style = "font-size: small";
+                    document.querySelector("#entitydesc" + index).className = s.entitynoimage;
                   }
                 }.bind(this));
 
@@ -261,9 +268,10 @@ class DidYouMean extends Component {
                   <image id={"entityimage"+index} src="" height="100" alt={entityitem.value} className={s.eimage}/>
 
                   <div id={"entitydesc"+index}>
-                    <p id={"entity"+index} className={s.entityname}>
-                      {/*entityitem.value*/}
+                    <p id={"entity"+index} className={s.entitylabel}>
+                      {entityitem.value}
                     </p>
+                    <p id={"desc"+index} className={s.edesc}></p>
                   </div>
                 </div>)
             }.bind(this))
