@@ -4,7 +4,7 @@
 
 import { combineReducers } from 'redux'
 import { KNOWLEDGEBASE_CHANGE} from '../actions/knowledgebase'
-import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, SET_QUESTION} from '../actions/queryBackend'
+import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, SET_QUESTION, SET_MENU} from '../actions/queryBackend'
 import { ROUTE_CHANGE} from '../actions/route'
 import sparqlToUserReducer from '../reducers/sparqlToUser'
 import languageReducer from '../reducers/languageReducer'
@@ -20,6 +20,8 @@ const initialState = {
   loaded: false, //indicates if the backend already gave back the answer
   error: false,
   uriInput: true,
+
+  menu: {displayentity: false, displayquery: false}, //indicates what is displayed from the menu
   }
 
 const qaReducer = (state = initialState, action) => {
@@ -59,6 +61,13 @@ const qaReducer = (state = initialState, action) => {
         ...state,
         question: action.question,
     }
+      break;
+    }
+    case SET_MENU: {
+      return {
+        ...state,
+        menu: action.menu,
+      }
       break;
     }
   }

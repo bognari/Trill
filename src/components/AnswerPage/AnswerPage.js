@@ -40,6 +40,7 @@ import {questionansweringfull} from '../../actions/queryBackend';
     language: store.lang.language,
     uriInput: store.qa.uriInput,
     knowledgebase: store.knowledgebase.knowledgebase,
+    menu: store.qa.menu,
   }
 })
 
@@ -47,17 +48,27 @@ class AnswerPage extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+    };
+    this.handleMenuClick = this.handleMenuClick.bind(this);
+  }
+
+  handleMenuClick() {
+    var menu = this.props.menu;
+    menu.displayentity = !menu.displayentity;
+    this.props.dispatch({type: 'SET_MENU', menu: menu});
+    //this.setState({displayentity: !this.state.displayentity}); //on click switch from query to answer
   }
 
   componentDidMount() {
     if (this.props.uriInput == true) {
       this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
       this.props.dispatch(questionansweringfull(this.props.query, this.props.language, this.props.knowledgebase));
-      //this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.query, this.props.language, this.props.knowledgebase));
     }
   }
 
   render() {
+    console.log("Is this printing right2: ", this.props.menu.displayentity)
     return (
       <div className={s.container}>
 
@@ -67,7 +78,17 @@ class AnswerPage extends Component {
         <div className={s.feedback}>
           <div className={s.buttonmenu}>
             <SparqlList sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-            {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
+
+            <div className={s.wrapfloat}>
+              {/*<div id="q" onClick={this.handleClick} className={(this.props.menu.displayentity) ? s.sparqlpressed : s.sparql}>*/}
+                {/*Q*/}
+              {/*</div>*/}
+              {console.log("Is this printing right: ", this.props.menu.displayentity)}
+              <div id="e" onClick={this.handleMenuClick} className={(this.props.menu.displayentity) ? s.didyoumeanpressed : s.didyoumean}>
+                &nbsp;Did you mean...&nbsp;
+              </div>
+            </div>
+            {(this.props.SPARQLquery != "" && this.props.menu.displayentity) ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
           </div>
           <Feedback/>
           <Interpretation sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>

@@ -64,3 +64,59 @@
   font-weight: bold;
   margin-bottom: 0;
 }
+
+.wrapfloat{
+  overflow: hidden;
+}
+
+
+.didyoumean,
+.didyoumeanpressed,
+.sparql,
+.sparqlpressed{
+  color: $foreground-gray;
+  font-size: large;
+  padding: 7px;
+  border: 2px solid $background-gray;
+  display: block;
+  text-align: center;
+  font-weight: 400;
+  float: right;
+  margin: 0 0 10px 10px;
+}
+
+.didyoumean,
+.didyoumeanpressed{
+  border-radius: 25px;
+  height: 25px;
+}
+
+.didyoumean,
+.sparql{
+  background-color: transparent;
+}
+
+.didyoumeanpressed,
+.sparqlpressed{
+  background-color: $background-gray;
+}
+
+.didyoumean:hover,
+.didyoumeanpressed:hover,
+.sparql:hover,
+.sparqlpressed:hover{
+  cursor: pointer;
+  background-color: $background-gray;
+}
+
+.sparql,
+.sparqlpressed{
+  border-radius: 100%;
+  width: 25px;
+  height: 25px;
+
+}
+
+.sparqlpressed{
+  top: -30px;
+}

@@ -65,20 +65,13 @@ class DidYouMean extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: false, //indicates if the answer or the query is displayed
       selectedQuery: false,
       //entities: [],
     };
-    this.handleClick = this.handleClick.bind(this);
   }
 
   static contextTypes = {
     owner: PropTypes.element,
-  }
-
-  handleClick() {
-    this.setState({query: !this.state.query}); //on click switch from query to answer
-    document.querySelector("#q0").style="background-color: #f5f5f5";
   }
 
   handleClick3(spqno, e){
@@ -201,12 +194,6 @@ class DidYouMean extends Component {
 
     return (
       <div className={s.container}>
-        <div className={s.wrapfloat}>
-          <div id="q" onClick={this.handleClick} className={(this.state.query) ? s.sparqlpressed : s.sparql}>
-            &nbsp;Did you mean...&nbsp;
-          </div>
-        </div>
-        {(this.state.query) ?
           <div id="FiringEntity" className={s.qbox}>
             {entities.map(function (entityitem, index) {
               //get image for each entity
@@ -276,8 +263,7 @@ class DidYouMean extends Component {
                 </div>)
             }.bind(this))
             }
-          </div>: null
-        }
+          </div>
       </div>
     );
   }

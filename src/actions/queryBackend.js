@@ -11,6 +11,7 @@ export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
 export const SET_QUESTION = 'SET_QUESTION';
+export const SET_MENU = 'SET_MENU';
 
 export const URI_INPUT = "URI_INPUT";
 
@@ -166,6 +167,11 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
 //   }
 // }
 
+//This method receives the result and from the backend and makes a call to the knowledge base
+//to get properties related to the result (label, image...). It then updates the store with
+//this information, which causes a re-render in the answer page, and the result is displayed.
+//**To do: establish a way that makes it independent from the knowledge base, i.e. a method that
+//will take a knowledge base and know how to perform this retrieval.
 function configureResult(query, jresult, lang, namedGraph){
   return function (dispatch){
   var count = 0;
@@ -228,7 +234,6 @@ function configureResult(query, jresult, lang, namedGraph){
 
             var dbpediaQueryUrl = dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
             var wikiQueryUrl = wikidata_endpoint+"?query=" + encodeURIComponent(wikiSparqlQuery) + "&format=json";
-
 
             var getpropertiesrequest = $.get((value.indexOf("wikidata") > -1) ? wikiQueryUrl : dbpediaQueryUrl);
 

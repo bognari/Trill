@@ -12,11 +12,11 @@
 .qbox {
   border: 2px solid #f5f5f5;
   padding: 10px;
-  height: 150px;
-  height: -moz-calc(150px + 1em);
-  height: -webkit-calc(150px + 1em);
-  height: -o-calc(150px + 1em);
-  height: calc(150px + 1em);
+  height: 200px;
+  height: -moz-calc(200px + 1em);
+  height: -webkit-calc(200px + 1em);
+  height: -o-calc(200px + 1em);
+  height: calc(200px + 1em);
   overflow-x: scroll;
   margin-bottom: 10px;
   background-color: $background-gray;
@@ -112,6 +112,3 @@
   background-color: $background-gray;
 }
 
-.wrapfloat{
-  overflow: hidden;
-}
