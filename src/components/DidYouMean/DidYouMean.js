@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './DidYouMean.scss';
 import $ from 'jquery';
-import {questionansweringfull, qanary_endpoint, dbpedia_endpoint, wikidata_endpoint} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/queryBackend';
+import {qanary_endpoint, dbpedia_endpoint, wikidata_endpoint} from '../../config';
 
 var getFromBetween = {
   results:[],
@@ -78,7 +79,6 @@ class DidYouMean extends Component {
 
   handleClick() {
     this.setState({query: !this.state.query}); //on click switch from query to answer
-    document.querySelector("#q0").style="background-color: #f5f5f5";
   }
 
   handleClick3(spqno, e){
@@ -229,7 +229,6 @@ class DidYouMean extends Component {
                 (this.props.knowledgebase == "wikidata") ? wikidata_endpoint+"?query=" + encodeURIComponent(wikiQuery) + "&format=json" :
                 dbpedia_endpoint+"?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
                 function (result) {
-                  console.log("RESULTS: ", result);
 
                   var label = document.querySelector("#entity" + index);
                   if(result.results.bindings[0].label != undefined){
@@ -257,13 +256,13 @@ class DidYouMean extends Component {
                     image.src = result.results.bindings[0].image.value;
                   }
                   else {
-                    image.style = "display: none";
+                    image.className = s.displayNone;
                     document.querySelector("#entitydesc" + index).className = s.entitynoimage;
                   }
                 }.bind(this));
 
               return (
-                <div id={"entitybox"+index} className={s.entitybox} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}>
+                <div id={"entitybox"+index} key={index} className={s.entitybox} onClick={this.handleClick3.bind(this, entityitem.sparqlno)}>
 
                   <image id={"entityimage"+index} src="" height="100" alt={entityitem.value} className={s.eimage}/>
 
