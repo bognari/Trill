@@ -1,10 +1,8 @@
 /**
- * React Starter Kit (https://www.reactstarterkit.com/)
+ * Trill (http://www.wdaqua.eu/)
  *
- * Copyright © 2014-2016 Kriasoft, LLC. All rights reserved.
+ * Copyright © 2014-2017 University Jean Monet, All rights reserved.
  *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
  */
 
 import React, { Component, PropTypes } from 'react';
@@ -66,7 +64,7 @@ class AnswerPage extends Component {
       {(this.props.error) ? <Error>Error</Error> :
         <div className={s.feedback}>
           <div className={s.buttonmenu}>
-            <SparqlList sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+            <Sparql sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
             {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
           </div>
           <Feedback/>
@@ -76,7 +74,7 @@ class AnswerPage extends Component {
 
           {this.props.information.map(function (info, index) {
             return (
-              <div className={s.contentholder}>
+              <div className={s.contentholder} key={index}>
                 {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
 
                {(info.answertype == "noinfo") ?

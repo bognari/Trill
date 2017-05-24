@@ -5,19 +5,12 @@
 import iri from 'iri';
 
 import {sparqlToUser} from '../actions/sparqlToUser';
-
+import {qanary_services, dbpedia_endpoint, wikidata_endpoint} from '../config';
 
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
 export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
 export const SET_QUESTION = 'SET_QUESTION';
-
-export const URI_INPUT = "URI_INPUT";
-
-export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
-export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
-export const dbpedia_endpoint = "https://dbpedia.org/sparql";
-export const wikidata_endpoint = "https://query.wikidata.org/sparql";
 
 export function questionansweringfull(question, lang, knowledgebase, namedGraph){
 
@@ -59,7 +52,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       type: "POST",
       contentType: false,
       success: function (data) {
-        console.log("This is what we are receiving: ", data);
+        //console.log("This is what we are receiving: ", data);
 
         if(typeof question != 'string') {
           dispatch({type: 'SET_QUESTION', question: data.textrepresentation});
@@ -131,43 +124,6 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     });
   }
 }
-
-//for question answering using specific namedgraph that exists (used by SPARQLList component)
-// export function questionanswering(namedGraph, components, lang){
-//   return function (dispatch){
-//     //dispatch({type: QUESTION_ANSWERING_ENTITY_CHANGE});
-//
-//     var form = new FormData();
-//     form.append("componentlist[]", components);
-//     form.append("graph", namedGraph);
-//     form.append("language", lang);
-//     //form.append("qanaryMessage", JSON.stringify({
-//     //  "values": {
-//     //    "http://qanary/#endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
-//     //    "http://qanary/#inGraph": namedGraph,
-//     //    "http://qanary/#outGraph": namedGraph
-//     //  },
-//     //  "endpoint": "http://admin:admin@wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
-//     //  "outGraph": namedGraph,
-//     //  "inGraph": namedGraph
-//     //}));
-//
-//     var executeQuery = $.ajax({
-//       url: qanary_services+"/questionanswering",
-//       type: "POST",
-//       data: form,
-//       processData: false,
-//       contentType: false,
-//       success: function (data) {
-//         retriveQuestion(data, dispatch);
-//         sendQueryToEndpoint(data, lang, dispatch);
-//       },
-//       error: function (err){
-//         dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, loaded: true});
-//       }
-//     });
-//   }
-// }
 
 function configureResult(query, jresult, lang, namedGraph){
   return function (dispatch){
@@ -264,24 +220,6 @@ function configureResult(query, jresult, lang, namedGraph){
                         }
                       }
                     });
-
-
-                  //Retriveing the abstract from dbpedia
-                  /*
-                    var getdbpediaabstract = "select ?v ?abstract where { "
-                      + "OPTIONAL { "
-                      + "<"+iri.toIRIString(result.results.bindings[0].wikilink.value.replace("s","").replace(lang,"en")).replace("%20","_")+"> foaf:primaryTopic ?v . "
-                      + " ?v dbo:abstract ?abstract . FILTER (lang(?abstract)=\""+lang+"\"). "
-                      + " } "
-                      + " }"*/
-/*
-                    var getabstract = $.get("http://dbpedia.org/sparql?query=" + encodeURIComponent(getdbpediaabstract) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on")
-                    getabstract.success(
-                    function (data) {
-                      wikiabstract = (data.results.bindings[0].abstract != null) ? data.results.bindings[0].abstract.value : "";
-                      setinformation(binding,result,wikiabstract);
-                    }
-                  );*/
                 }
 
                 else {

@@ -11,9 +11,8 @@ import React from 'react';
 import Router from 'react-routing/src/Router';
 import fetch from './core/fetch';
 import App from './components/App';
-import ContentPage from './components/ContentPage';
-import ContactPage from './components/ContactPage';
 import LoginPage from './components/LoginPage';
+import ContentPage from './components/ContentPage';
 import RegisterPage from './components/RegisterPage';
 import NotFoundPage from './components/NotFoundPage';
 import ErrorPage from './components/ErrorPage';
@@ -25,8 +24,6 @@ import {routechange} from './actions/route';
 import { Provider } from 'react-redux';
 import store from './stores';
 
-// export const ROUTE_CHANGE = 'ROUTE_CHANGE';
-
 const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
@@ -35,8 +32,6 @@ const router = new Router(on => {
   });
 
   on('', async () => <HomePage/>);
-
-  //on('/contact', async () => <ContactPage />);
 
   on('/login', async () => <LoginPage />);
 
