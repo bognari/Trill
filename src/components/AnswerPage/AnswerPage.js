@@ -51,7 +51,6 @@ class AnswerPage extends Component {
     if (this.props.uriInput == true) {
       this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
       this.props.dispatch(questionansweringfull(this.props.query, this.props.language, this.props.knowledgebase));
-      //this.props.dispatch(startQuestionAnsweringWithTextQuestion(this.props.query, this.props.language, this.props.knowledgebase));
     }
   }
 
@@ -68,7 +67,7 @@ class AnswerPage extends Component {
             {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
           </div>
           <Feedback/>
-          <Interpretation sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+          <Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
 
         </div>}
 
