@@ -12,13 +12,14 @@ p
     | 'Who was a student of Alonzo Church?'.
 
   h4 What data are you using?
-  p In this version we are using as an underlying dataset <a href="http://dbpedia.org/">DBpedia</a>. This dataset contains
-  | facts extracted from the infoboxes of wikipedia. Consider for example the wikipedia infobox of the
-  | <a href="https://en.wikipedia.org/wiki/European_Union">European Union</a>. It contains for example the information that
-  | the capital is Brussel. This information is converted in the triple
-  pre "European Union" "capital" "Brussel"
-  | allowing us to answer a question like 'What is the capital of the EU?'. All information about the European Union
-  | contained in Dbpedia can be found <a href="http://dbpedia.org/page/European_Union">here</a>.
+  p In this version we are using as an underlying dataset <a href="http://dbpedia.org/">DBpedia</a> and
+    |  <a href="http://wikidata.org/">Wikidata</a>. DBpedia contains
+    | facts extracted from the infoboxes of wikipedia. Consider for example the wikipedia infobox of the
+    | <a href="https://en.wikipedia.org/wiki/European_Union">European Union</a>. It contains for example the information that
+    | the capital is Brussel. This information is converted in the triple
+    pre "European Union" "capital" "Brussel"
+    | allowing us to answer a question like 'What is the capital of the EU?'. All information about the European Union
+    | contained in Dbpedia can be found <a href="http://dbpedia.org/page/European_Union">here</a>.
 
   h4 Why does the QA wrongly answer my question?
   p There are mainly to reasons for that. The first is that we simply do not have the data to answer it. We generally
