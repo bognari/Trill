@@ -5,7 +5,7 @@
 import iri from 'iri';
 
 import {sparqlToUser} from '../actions/sparqlToUser';
-import {qanary_services, dbpedia_endpoint, wikidata_endpoint} from '../config';
+import {qanary_services, dbpedia_endpoint, wikidata_endpoint, text_pipeline, audio_pipeline} from '../config';
 
 export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
 export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
@@ -25,7 +25,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       components = "wdaqua-core0-wikidata, QueryExecuter";
     }
     else{
-      components = "wdaqua-core0, QueryExecuter";
+      components = text_pipeline;
     }
 
     //check whether the question input is a string or mp3file
@@ -40,7 +40,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     else {
       dispatch({type: QUESTION_ANSWERING_REQUEST, question: ""});
       form.append("audioquestion", question, "recording.mp3");
-      components = "SpeechRecognitionKaldi, " + components;
+      components = audio_pipeline+", " + components;
     }
     form.append("componentlist[]", [components]);
     form.append("language", lang);
