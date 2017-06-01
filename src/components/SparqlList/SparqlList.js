@@ -11,6 +11,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SparqlList.scss';
+import Interpretation from '../Interpretation';
 import {questionansweringfull} from '../../actions/queryBackend';
 
 @connect((store) => {
@@ -43,8 +44,7 @@ class SparqlList extends Component {
 
   handleClick() {
     this.setState({query: !this.state.query}); //on click switch from query to answer
-    document.querySelector("#q0").style="background-color: #f5f5f5";
-    }
+  }
 
   handleClick2(selectedquery, index, e){
 
@@ -107,15 +107,18 @@ class SparqlList extends Component {
                 <div id="FiringSparql" className={s.qbox}>
                   {this.props.sparqlquery.map(function (newitems, index) {
                     return (
-                      <p id={"q"+index}>
-                      <input type="radio" checked="false" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
-                      </p>)
+                      <div key={index}>
+                        <p id={"q"+index}>
+                          <input type="radio" checked="false" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
+                        </p>
+                        <p>
+                          <Interpretation sparqlquery={newitems.query} namedGraph={this.props.namedGraph}/>
+                        </p>
+                      </div>
+                    )
                         }.bind(this))
                   }
-                  <p id="q">
-                    {this.props.sparqlquery[0].query}
-                  </p>
-                </div>: null
+                </div> : null
               }
       </div>
     );

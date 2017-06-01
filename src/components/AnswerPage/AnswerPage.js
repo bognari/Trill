@@ -67,8 +67,7 @@ class AnswerPage extends Component {
             {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
           </div>
           <Feedback/>
-          <Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
-
+          {(this.props.SPARQLquery != "") ? <Interpretation sparqlquery={this.props.SPARQLquery[0].query} namedGraph={this.props.namedGraph}/> : null }
         </div>}
 
           {this.props.information.map(function (info, index) {
