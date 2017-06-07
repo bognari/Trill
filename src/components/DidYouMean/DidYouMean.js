@@ -145,7 +145,7 @@ class DidYouMean extends Component {
         xhr.setRequestHeader('Accept', 'application/sparql-results+json');
       },
       success: function (result) {
-        this.props.dispatch(questionansweringfull(100, this.props.lang, this.props.knowledgebase, this.props.namedGraph));
+        this.props.dispatch(questionansweringfull(100, this.props.language, this.props.knowledgebase, this.props.namedGraph));
       }.bind(this)
     })
   }
