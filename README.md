@@ -27,4 +27,4 @@ license found in the [LICENSE.txt](https://github.com/kriasoft/react-starter-kit
 file.
 
 ---
-Made with ♥ by Dennis Diefenbach, Shanzay Amjad, Youseff Dirdi (www.wdaqua.eu) and [contributors](https://github.com/WDAqua/Trill/graphs/contributors)
+Made with ♥ by Dennis Diefenbach, Shanzay Amjad, Youssef Dridi (www.wdaqua.eu) and [contributors](https://github.com/WDAqua/Trill/graphs/contributors)

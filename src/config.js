@@ -19,6 +19,8 @@ export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 export const wikidata_endpoint = "https://query.wikidata.org/sparql";
 //export const sparqlToUserEndpoint =  "http://localhost:1920/sparqltouser";
 export const sparqlToUserEndpoint =  "https://wdaqua-sparqltouser.univ-st-etienne.fr/sparqltouser";
+export const audio_pipeline = "SpeechRecognitionKaldi";
+export const text_pipeline = "wdaqua-core0, QueryExecuter";
 //export const databaseUrl = process.env.DATABASE_URL || 'postgresql://demo:Lqk62xg6TBm5UhfR@demo.ctbl5itzitm4.us-east-1.rds.amazonaws.com:5432/membership01';
 
 export const analytics = {

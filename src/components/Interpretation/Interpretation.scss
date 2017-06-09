@@ -4,11 +4,14 @@
 }
 
 .container {
-npm start  max-width: 1000px;
+
+  //float: left;
+  max-width: 1000px;
   color: #0083b6;
   font-family: Verdana;
   font-size: large;
   font-style: oblique;
+  white-space: pre;
 }
 
 //.qbox {
