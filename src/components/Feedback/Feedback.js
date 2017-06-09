@@ -12,7 +12,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Feedback.scss';
 import $ from 'jquery';
 import { connect } from 'react-redux';
-import {qanary_services} from '../../actions/queryBackend';
+import {qanary_services} from '../../config';
 
 @connect((store) => {
   return {
@@ -106,10 +106,12 @@ class Feedback extends Component {
           }
           {(this.state.error) ? <p>Sorry, there was an error.</p> : null}
 
-          </div>
+        </div>
       </div>
     );
   }
 
 }
 export default withStyles(Feedback, s);
+
+

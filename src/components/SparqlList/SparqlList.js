@@ -12,6 +12,8 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SparqlList.scss';
 import {questionansweringfull} from '../../actions/queryBackend';
+import Interpretation from '../Interpretation';
+
 
 @connect((store) => {
   return {
@@ -109,6 +111,8 @@ class SparqlList extends Component {
                     return (
                       <p id={"q"+index}>
                       <input type="radio" checked="false" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
+                        <Interpretation sparqlquery={newitems} namedGraph={this.props.namedGraph}/>
+
                       </p>)
                         }.bind(this))
                   }
