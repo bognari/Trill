@@ -253,7 +253,7 @@ class DidYouMean extends Component {
                   }
 
                   if(result.results.bindings[0].image != undefined){
-                    image.src = result.results.bindings[0].image.value;
+                    image.src = result.results.bindings[0].image.value+="?width=100";
                   }
                   else {
                     image.className = s.displayNone;

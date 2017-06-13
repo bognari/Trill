@@ -29,6 +29,7 @@ const qaReducer = (state = initialState, action) => {
       return {
         ...state,
         question: action.question,
+        information: [],
         loaded: false,
         qinitiated: true,
         uriInput: false,
