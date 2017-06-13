@@ -53,12 +53,15 @@ class Sparql extends Component {
     })
   }
   componentDidMount() {
-    this.call(this.props.sparqlquery);
+
+    this.call(this.props.sparqlquery.query);
+
   }
 
 
   componentWillReceiveProps(nextProps) {
-    this.call(nextProps.sparqlquery);
+
+    this.call(nextProps.sparqlquery.query);
   }
 
 

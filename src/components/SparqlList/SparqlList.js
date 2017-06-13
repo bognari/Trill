@@ -14,6 +14,7 @@ import s from './SparqlList.scss';
 import Interpretation from '../Interpretation';
 import {questionansweringfull} from '../../actions/queryBackend';
 
+
 @connect((store) => {
   return {
     question: store.qa.question,
@@ -107,15 +108,13 @@ class SparqlList extends Component {
                 <div id="FiringSparql" className={s.qbox}>
                   {this.props.sparqlquery.map(function (newitems, index) {
                     return (
-                      <div key={index}>
-                        <p id={"q"+index}>
-                          <input type="radio" checked="false" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
-                        </p>
-                        <p>
-                          <Interpretation sparqlquery={newitems.query} namedGraph={this.props.namedGraph}/>
-                        </p>
-                      </div>
-                    )
+
+                      <p id={"q"+index}>
+                      <input type="radio" checked="false" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
+                        <Interpretation sparqlquery={newitems} namedGraph={this.props.namedGraph}/>
+
+                      </p>)
+
                         }.bind(this))
                   }
                 </div> : null

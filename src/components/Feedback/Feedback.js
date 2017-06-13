@@ -106,10 +106,12 @@ class Feedback extends Component {
           }
           {(this.state.error) ? <p>Sorry, there was an error.</p> : null}
 
-          </div>
+        </div>
       </div>
     );
   }
 
 }
 export default withStyles(Feedback, s);
+
+
