@@ -13,6 +13,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SparqlList.scss';
 import Interpretation from '../Interpretation';
 import {questionansweringfull} from '../../actions/queryBackend';
+import {qanary_endpoint} from '../../config';
 
 
 @connect((store) => {
@@ -82,7 +83,7 @@ class SparqlList extends Component {
       + "}";
 
     this.serverRequest = $.ajax({
-      url: "http://wdaqua-endpoint.univ-st-etienne.fr/qanary/query",
+      url: qanary_endpoint,
       type: "POST",
       contentType: 'application/x-www-form-urlencoded',
       data: {query: sparql},
