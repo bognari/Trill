@@ -18,7 +18,6 @@ import NotFoundPage from './components/NotFoundPage';
 import ErrorPage from './components/ErrorPage';
 import AnswerPage from './components/AnswerPage';
 import HomePage from './components/HomePage';
-import {startQuestionAnsweringWithTextQuestion} from './actions/queryBackend';
 import {routechange} from './actions/route';
 
 import { Provider } from 'react-redux';

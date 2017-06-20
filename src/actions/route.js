@@ -2,8 +2,6 @@
  * Created by Dennis on 08/11/16.
  */
 
-import {startQuestionAnsweringWithTextQuestion} from './queryBackend';
-
 /*
  * action types
  */

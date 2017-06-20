@@ -7,9 +7,9 @@ import iri from 'iri';
 import {sparqlToUser} from '../actions/sparqlToUser';
 import {qanary_services, dbpedia_endpoint, wikidata_endpoint, text_pipeline, audio_pipeline} from '../config';
 
-export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
-export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
-export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
+export const QANARY_REQUEST = 'QANARY_REQUEST';
+export const QANARY_SUCCESS = 'QANARY_SUCCESS';
+export const QANARY_FAILURE = 'QANARY_FAILURE';
 export const SET_QUESTION = 'SET_QUESTION';
 
 export function questionansweringfull(question, lang, knowledgebase, namedGraph){
@@ -30,7 +30,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
 
     //check whether the question input is a string or mp3file
     if(typeof question === 'string') {
-      dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
+      dispatch({type: QANARY_REQUEST, question: question});
       form.append("textquestion", question);
     }
     else if(question == 100){
@@ -38,7 +38,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       //the API
     }
     else {
-      dispatch({type: QUESTION_ANSWERING_REQUEST, question: ""});
+      dispatch({type: QANARY_REQUEST, question: ""});
       form.append("audioquestion", question, "recording.mp3");
       components = audio_pipeline+", " + components;
     }
@@ -76,7 +76,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
               answertype: "simple",
             })
             dispatch({
-              type: QUESTION_ANSWERING_SUCCESS,
+              type: QANARY_SUCCESS,
               namedGraph: namedGraph,
               SPARQLquery: query,
               json: jresult,
@@ -119,7 +119,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
         information.push({
           message: e.statusCode + " " + e.statusText,
         });
-        dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
+        dispatch({type: QANARY_FAILURE, error: true, information: information, loaded: true});
       }
     });
   }
@@ -238,7 +238,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       key: k,
                     })
                     dispatch({
-                      type: QUESTION_ANSWERING_SUCCESS,
+                      type: QANARY_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
                       json: jresult,
@@ -265,7 +265,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       long: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[0]) : parseFloat(result.results.bindings[0].long.value),
                     })
                     dispatch({
-                      type: QUESTION_ANSWERING_SUCCESS,
+                      type: QANARY_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
                       json: jresult,
@@ -286,7 +286,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       key: k,
                     })
                     dispatch({
-                      type: QUESTION_ANSWERING_SUCCESS,
+                      type: QANARY_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
                       json: jresult,
@@ -304,7 +304,7 @@ function configureResult(query, jresult, lang, namedGraph){
               key: k,
             })
             dispatch({
-              type: QUESTION_ANSWERING_SUCCESS,
+              type: QANARY_SUCCESS,
               namedGraph: namedGraph,
               SPARQLquery: query,
               json: jresult,
@@ -322,7 +322,7 @@ function configureResult(query, jresult, lang, namedGraph){
         answertype: "simple",
       });
       dispatch({
-        type: QUESTION_ANSWERING_SUCCESS,
+        type: QANARY_SUCCESS,
         namedGraph: namedGraph,
         SPARQLquery: query,
         json: jresult,

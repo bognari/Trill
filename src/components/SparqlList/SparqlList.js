@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './SparqlList.scss';
 import Interpretation from '../Interpretation';
-import {questionansweringfull} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/qanary';
 import {qanary_endpoint} from '../../config';
 
 

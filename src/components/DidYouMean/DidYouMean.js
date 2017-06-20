@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './DidYouMean.scss';
 import $ from 'jquery';
-import {questionansweringfull} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/qanary';
 import {qanary_endpoint, dbpedia_endpoint, wikidata_endpoint} from '../../config';
 
 var getFromBetween = {

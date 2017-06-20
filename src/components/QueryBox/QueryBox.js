@@ -13,7 +13,7 @@ import { Field } from 'react-redux-form';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './QueryBox.scss';
 import Location from '../../core/Location';
-import {questionansweringfull} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/qanary';
 import {setQuestion} from '../../actions/language';
 
 @connect((store) => {

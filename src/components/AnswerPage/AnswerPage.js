@@ -22,7 +22,7 @@ import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
 import LinksBar from '../LinksBar';
-import {questionansweringfull} from '../../actions/queryBackend';
+import {questionansweringfull} from '../../actions/qanary';
 
 @connect((store) => {
   return {

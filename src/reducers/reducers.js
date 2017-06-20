@@ -4,7 +4,7 @@
 
 import { combineReducers } from 'redux'
 import { KNOWLEDGEBASE_CHANGE} from '../actions/knowledgebase'
-import { QUESTION_ANSWERING_REQUEST, QUESTION_ANSWERING_SUCCESS, QUESTION_ANSWERING_FAILURE, SET_QUESTION} from '../actions/queryBackend'
+import { QANARY_REQUEST, QANARY_SUCCESS, QANARY_FAILURE, SET_QUESTION} from '../actions/qanary'
 import { ROUTE_CHANGE} from '../actions/route'
 import sparqlToUserReducer from '../reducers/sparqlToUser'
 import languageReducer from '../reducers/languageReducer'
@@ -25,7 +25,7 @@ const initialState = {
 
 const qaReducer = (state = initialState, action) => {
   switch (action.type) {
-    case QUESTION_ANSWERING_REQUEST: {
+    case QANARY_REQUEST: {
       return {
         ...state,
         question: action.question,
@@ -36,7 +36,7 @@ const qaReducer = (state = initialState, action) => {
       }
       break;
     }
-    case QUESTION_ANSWERING_SUCCESS: {
+    case QANARY_SUCCESS: {
       return {
         ...state,
         namedGraph: action.namedGraph,
@@ -48,7 +48,7 @@ const qaReducer = (state = initialState, action) => {
       }
       break;
     }
-    case QUESTION_ANSWERING_FAILURE: {
+    case QANARY_FAILURE: {
       return {
         ...state,
         error: action.error,
