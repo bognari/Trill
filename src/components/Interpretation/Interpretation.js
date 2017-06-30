@@ -12,11 +12,14 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Interpretation.scss';
 import {sparqlToUserEndpoint} from '../../config';
+import {wikidata_endpoint} from '../../config';
+import {dbpedia_endpoint} from '../../config';
 
 @connect((store) => {
   return {
     lang: store.lang.language,
     kb: store.knowledgebase.knowledgebase,
+
   }
 })
 class Sparql extends Component {
@@ -32,6 +35,7 @@ class Sparql extends Component {
       interpretation: "",
       lang:"",
       kb:"",
+      endpoint:"",
     };
   }
 
@@ -40,11 +44,13 @@ class Sparql extends Component {
       url: sparqlToUserEndpoint,
       type: "POST",
       contentType: 'application/x-www-form-urlencoded',
-      data: { sparql: query, lang: this.props.lang, kb: this.props.kb },
+      data: { sparql: query, lang: this.props.lang, kb: this.props.kb},//, endpoint: this.props.kb ="wikidata" ? wikidata_endpoint : dbpedia_endpoint  },
       success: function (result) {
         var res = result.interpretation;
         var lan = result.lang;
         var knbs = result.kb;
+        console.log("This is your KB: ",knbs);
+
         this.setState({ retrived: true, interpretation: res} );
       }.bind(this),
       error: function(err){

@@ -69,7 +69,6 @@ class AnswerPage extends Component {
           <Feedback/>
           <Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
 
-
         </div>}
 
           {this.props.information.map(function (info, index) {
