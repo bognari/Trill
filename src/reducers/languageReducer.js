@@ -5,11 +5,11 @@
 import {LANGUAGE_CHANGE} from '../actions/language'
 import { ROUTE_CHANGE} from '../actions/route'
 
-const initialStateLanguage = {
+const initialState = {
   language: "en", //initial language of the website set to english
 }
 
-export default function languageReducer(state = initialStateLanguage, action){
+export default function languageReducer(state = initialState, action){
   switch (action.type) {
     case LANGUAGE_CHANGE: {
       return {

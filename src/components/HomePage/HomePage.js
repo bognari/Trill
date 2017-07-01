@@ -26,12 +26,7 @@ class HomePage extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    //Location.push("/?query=dennis");
-  }
-
   render() {
-    console.log("RELODED")
     return (
       <div>
         <div className={s.container}>
