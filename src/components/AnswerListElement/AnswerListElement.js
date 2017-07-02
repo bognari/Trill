@@ -7,9 +7,10 @@
 
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux'
+import {Condition, Case} from 'react-case';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import ImageComponent from '../ImageComponent'
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AnswerListElement.scss';
 import Label from '../Label';
 import Loader from 'react-loader';
@@ -19,7 +20,9 @@ import LinksBar from '../LinksBar';
 import {info} from '../../actions/knowledge_base/info';
 
 @connect((store) => {
-  return {}
+  return {
+    language: store.lang.language,
+  }
 })
 class AnswerListElement extends Component {
 
@@ -28,31 +31,63 @@ class AnswerListElement extends Component {
   }
 
   componentDidMount() {
-      this.props.dispatch(info(this.props.index));
+
   }
 
   render() {
-    console.log(this.props.information);
-    var loaded = false;
-    if (this.props.information!=null){
-      loaded = true;
+    if (this.props.loaded==false){
+      this.props.dispatch(info(this.props.index));
     }
+    var label = this.props.information.label;
+    var image = this.props.information.image;
+    var lat = this.props.information.lat;
+    var abstract = this.props.information.abstract;
+
+    var left = {label: null, abstract: null, map: null};
+    if (label!=null) {
+      left.label =  (<div className={s.title}><p>{this.props.information.label}</p><LinksBar wikipedia={this.props.information.link_wikipedia} uri={this.props.information.uri} /></div>)
+    }
+    if (abstract!=null) {
+      left.abstract =  (<Label>{this.props.information.abstract}</Label>)
+    }
+
+
+    if (lat!= null){
+      left.map = (<MapBox mapid={"map" + this.props.index} lat={this.props.information.lat} long={this.props.information.long}></MapBox>)
+    }
+
+    var right = {image: null, box: null};
+    if (image!=null) {
+      right.image =  (<ImageComponent key={"image" + this.props.index} image={image}></ImageComponent>)
+    }
+    right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5} lang={this.props.language}/>)
+
+
+    console.log("Label",this.props.information.literal);
     return (
       <div className={s.container}>
+        { (this.props.loaded==true) ?
+            <Condition>
 
-        <Loader loaded={loaded} color="#333">
-          <div>
-            {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}  
-            {(info.answertype == "noinfo") ?    <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}  
-            {(info.answertype == "detail") ?    <div className={s.leftColumn}>      <div className={s.title}><p>{info.label}</p>        <LinksBar wikipedia={info.link} uri={info.uri} /></div>      {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}    </div> : null} 
-            {(info.answertype == "map") ?    <div className={s.leftColumn}>      <div className={s.title}><p>{info.label}</p>        <LinksBar wikipedia={info.link} uri={info.uri} /></div>      {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}      <MapBox mapid={"map" + info.key} lat={info.lat} long={info.long}></MapBox>    </div> : null}  
-            {(info.answertype == "detail" || info.answertype == "map") ?    <div className={s.rightColumn}>      {(info.image != "") ?        <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}      <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5} lang={this.props.language}/>    </div> : null}
-          </div>
-        </Loader>
+              <Case test={this.props.information.literal!=null} >
+                <Label type="title">{this.props.information.literal}</Label>
+              </Case>
+
+              <Case test={label!=null}>
+                <div className={s.leftColumn}>
+                  {left.label}
+                  {left.abstract}
+                  {left.map}
+                </div>
+                <div className={s.rightColumn}>
+                  {right.image}
+                  {right.topk}
+                </div>
+              </Case>
+            </Condition>
+        : null}
       </div>
     )
   }
-
-
 }
 export default withStyles(AnswerListElement, s);

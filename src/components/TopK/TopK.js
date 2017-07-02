@@ -135,6 +135,9 @@ class TopK extends Component {
         //   $("#" + id).hide();
         //   summa(this.id, topK, language, fixedProperty, id, service);
         // });
+      },
+      error: function(error){
+
       }
     });
   }

@@ -70,6 +70,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
         }
         var namedGraph = data.namedgraph;
         var jresult = JSON.parse(data.json);
+        console.log(jresult);
         dispatch({
           type: QANARY_SUCCESS,
           namedGraph: namedGraph,
@@ -106,7 +107,9 @@ function json_to_list(jresult){
       jresult.results.bindings.map(function(binding,k) {
         results.push({
           type : binding[variable].type,
+          datatype: (binding[variable].hasOwnProperty("datatype") ? binding[variable].datatype : null),
           value : binding[variable].value,
+
         })
       })
     }

@@ -5,7 +5,7 @@
 
 .container {
   margin: 0 auto;
-  padding: 30px 0 110px;
+  padding: 10px 0 10px;
   max-width: $max-content-width;
 }
 
@@ -52,8 +52,6 @@
 }
 
 .title {
-  border: 2px solid $accent;
-  padding: 10px 20px 10px 20px;
   max-width: $max-content-width;
   margin: 0 0px 10px 0;
 }
@@ -63,4 +61,8 @@
   font-size: xx-large;
   font-weight: bold;
   margin-bottom: 0;
+}
+
+.bottom{
+  height: 110px;
 }

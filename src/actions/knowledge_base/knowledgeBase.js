@@ -13,13 +13,14 @@ export default class ItemKnowledgeBase{
   constructor(k){
     this.k=k;
     this.information = {};
+    this.information.literal = null;
     this.information.label = null;
     this.information.image = null;
     this.information.uri = null;
     this.information.link_wikipedia = null;
     this.information.lat = null;
     this.information.long = null;
-    this.information.loaded = null;
+
   }
 
   //returns result=="error message" if an error occurred and "" if everything went fine
@@ -27,9 +28,6 @@ export default class ItemKnowledgeBase{
 
   startRequest(){
     return function (dispatch) {
-      console.log("Here2");
-      console.log(this.k);
-      console.log("Here3");
       dispatch({
         type: ITEM_KNOWLEDGEBASE_REQUEST,
         index: this.k,
@@ -42,7 +40,6 @@ export default class ItemKnowledgeBase{
     return function (dispatch){
       console.log("HERE before get");
       this.get(store.getState().qa.information[this.k], store.getState().lang.language, function callback(result){
-        console.log("DOne");
         if (result=="error"){
           dispatch(this.error(result));
         } else {

@@ -2,8 +2,9 @@
  * Created by Dennis on 18/05/17.
  */
 
-import {dbpedia_endpoint} from "../../config"
-import ItemKnowledgeBase from "./knowledgeBase"
+import {dbpedia_endpoint} from "../../../config"
+import ItemKnowledgeBase from "../knowledgeBase"
+import iri from "iri";
 
 export default class ItemDbpedia extends ItemKnowledgeBase{
 
@@ -36,7 +37,10 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
     var type = result.type;
     var value = result.value;
     if (type=="literal") {
-      this.information.label=value;
+      this.information.literal = value;
+      return callback();
+    } else if (type=="typed-literal") {
+      this.information.literal=value+" "+result.datatype;
       return callback();
     } else if (type="uri"){
       var sparqlQuery = "select ?label ?abstract ?image ?lat ?long ?wikilink where { "
@@ -60,16 +64,14 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
         + " } "
         + "} ";
 
-      var dbpediaQueryUrl = dbpedia_endpoint + "?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
-      var getpropertiesrequest = $.get(dbpediaQueryUrl);
-      getpropertiesrequest.success(function (result) {
-        console.log("HERE get", result);
+      var url = dbpedia_endpoint + "?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
+      $.get(url).success(function (result) {
         this.information.uri = value;
 
         if (result.results.bindings[0].label != undefined) {
-          this.label = result.results.bindings[0].label.value;
+          this.information.label = result.results.bindings[0].label.value;
         } else {
-          value.replace("http://dbpedia.org/resource/", "").replace("_", " ")
+          this.information.label = value.replace("http://dbpedia.org/resource/", "").replace("_", " ")
         }
 
         if (result.results.bindings[0].image != undefined) {
@@ -83,10 +85,25 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
 
         if (result.results.bindings[0].wikilink != undefined) {
           this.information.link_wikipedia = result.results.bindings[0].wikilink.value;
+
+
+          console.log(result.results.bindings[0].wikilink.value);
+          //Retrive the abstract from wikipedia
+          url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("http://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
+          $.get(url).success(function (data) {
+            for(var key in data.query.pages){
+              if(data.query.pages.hasOwnProperty(key)){
+                if (data.query.pages[key].extract !=undefined){
+                  this.information.abstract = data.query.pages[key].extract ;
+                  return callback();
+                }
+              }
+            }
+          }.bind(this))
+        } else {
+          return callback();
         }
-        this.information.loaded = true;
-        console.log("HERE get", result);
-        return callback();
+
       }.bind(this))
     }
   }

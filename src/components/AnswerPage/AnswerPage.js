@@ -46,7 +46,6 @@ class AnswerPage extends Component {
   }
 
   componentDidMount() {
-    console.log("HALLO",this.props.query);
     if (this.props.uriInput == true) {
       this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
       this.props.dispatch(questionansweringfull(this.props.query, this.props.language, this.props.knowledgebase));
@@ -54,6 +53,8 @@ class AnswerPage extends Component {
   }
 
   render() {
+    //<Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
+    console.log("enter answer page");
     return (
       <div className={s.container}>
         <Loader loaded={this.props.loaded} color="#333">
@@ -73,12 +74,12 @@ class AnswerPage extends Component {
           {this.props.information.map(function (info, index) {
             return (
               <div key={index}>
-                <div className="filler" />
-                <AnswerListElement id={index} index={index} information={info}>
+                <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
                 </AnswerListElement>
               </div>
             )}.bind(this))}
         </Loader>
+        <div className={s.bottom}/>
       </div>
     );
   }
