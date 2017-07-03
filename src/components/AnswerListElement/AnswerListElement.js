@@ -45,7 +45,7 @@ class AnswerListElement extends Component {
 
     var left = {label: null, abstract: null, map: null};
     if (label!=null) {
-      left.label =  (<div className={s.title}><p>{this.props.information.label}</p><LinksBar wikipedia={this.props.information.link_wikipedia} uri={this.props.information.uri} /></div>)
+      left.label =  (<div className={s.title}><p>{this.props.information.label}</p><LinksBar wikipedia={this.props.information.link_wikipedia} uri={this.props.information.uri}/></div>)
     }
     if (abstract!=null) {
       left.abstract =  (<Label>{this.props.information.abstract}</Label>)

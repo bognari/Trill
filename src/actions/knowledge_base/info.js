@@ -5,7 +5,7 @@
 import store from '../../stores/index';
 import ItemDbpedia from "./implemented/dbpedia"
 import ItemWikidata from "./implemented/wikidata"
-
+import ItemMusicBrainz from "./implemented/musicbrainz"
 
 export function info(index){
   return function (dispatch) {
@@ -23,7 +23,12 @@ export function info(index){
         dispatch(itemDbpedia.startRequest());
         break;
       }
-
+      case "musicbrainz": {
+        console.log("Here");
+        var itemMusicBrainz = new ItemMusicBrainz(index);
+        dispatch(itemMusicBrainz.startRequest());
+        break;
+      }
       console.log("ERROR The following knowledgebase is not supported:",store.getState().knowledgebase.knowledgebase);
 
     }

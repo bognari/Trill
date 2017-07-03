@@ -26,6 +26,9 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     else if(knowledgebase=="wikidata"){
       components = "wdaqua-core0-wikidata, QueryExecuter";
     }
+    else if(knowledgebase=="musicbrainz"){
+      components = "wdaqua-core0-musicbrainz, QueryExecuter";
+    }
     else{
       components = text_pipeline;
     }

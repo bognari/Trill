@@ -10,7 +10,15 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './LinksBar.scss';
+import {connect} from 'react-redux'
 
+
+
+@connect((store) => {
+  return {
+    kb: store.knowledgebase.knowledgebase,
+  }
+})
 class LinksBar extends Component {
 
   static propTypes = {
@@ -26,10 +34,16 @@ class LinksBar extends Component {
   }
 
   render() {
+    var knowledgeBases = {
+      dbpedia: require('./images/dbpedia-logo.png'),
+      wikidata: require('./images/wikidata-logo.png'),
+      musicbrainz: require('./images/musicbrainz-logo.png'),
+    };
+
     return (
       <div className={s.container}>
         {this.props.wikipedia != null ? <a href={this.props.wikipedia}><img src={require('./wikipedia-logo.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
-        {this.props.uri != null ? <a href={this.props.uri}><img src={(this.props.uri.indexOf("wikidata") > -1) ? require('./wikidata-logo-notext.png') : require('./dbpedia-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.uri != null ? <a href={this.props.uri}><img src={knowledgeBases[this.props.kb]} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }

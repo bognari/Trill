@@ -73,9 +73,12 @@ class AnswerPage extends Component {
 
           {this.props.information.map(function (info, index) {
             return (
+
               <div key={index}>
+                { (index < 20) ?
                 <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
                 </AnswerListElement>
+                  : null }
               </div>
             )}.bind(this))}
         </Loader>
