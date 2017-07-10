@@ -6,7 +6,7 @@
  * action types
  */
 
-export const LANGUAGE_CHANGE = 'LANGUAGE_CHANGE'
+export const LANGUAGE_CHANGE = 'LANGUAGE_CHANGE';
 
 /*
  * other constants
