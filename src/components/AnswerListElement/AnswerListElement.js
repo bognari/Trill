@@ -55,7 +55,10 @@ class AnswerListElement extends Component {
     if (image!=null) {
       right.image =  (<ImageComponent key={"image" + this.props.index} image={image}></ImageComponent>)
     }
-    right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5} lang={this.props.language}/>)
+    if (this.props.information.kb == "dbpedia" || this.props.information.kb == "wikidata") {
+      right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5}
+                          lang={this.props.language}/>)
+    }
 
 
     console.log("Label",this.props.information.literal);

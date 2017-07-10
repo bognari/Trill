@@ -20,20 +20,25 @@ import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
 import AnswerListElement from '../AnswerListElement/AnswerListElement'
 import {questionansweringfull} from '../../actions/qanary';
+import {setLanguage} from '../../actions/language';
+import {setKnowledgebase} from '../../actions/knowledgebase';
 
 @connect((store) => {
   return {
-    question: store.qa.question,
+    uriInput: store.qa.uriInput,
+    query_question: store.route.query, //input over the uri get parameters
+    query_lang: store.route.lang,
+    query_kb: store.route.kb,
+
+    question: store.qa.question,  //input over the information in the store
     namedGraph: store.qa.namedGraph,
     information: store.qa.information,
     SPARQLquery: store.qa.SPARQLquery,    //containes the generated sparql query
-    query: store.route.query,                //indicates if the answer or the query is displayed
     loaded: store.qa.loaded,              //indicates if the backend already gave back the answer
     error: store.qa.error,
     audiofile: store.qa.audiofile,
     qinitiated: store.qa.qinitiated,
     language: store.lang.language,
-    uriInput: store.qa.uriInput,
     knowledgebase: store.knowledgebase.knowledgebase,
     informationLoaded : store.qa.informationLoaded,
   }
@@ -47,8 +52,10 @@ class AnswerPage extends Component {
 
   componentDidMount() {
     if (this.props.uriInput == true) {
-      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
-      this.props.dispatch(questionansweringfull(this.props.query, this.props.language, this.props.knowledgebase));
+      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query_question});
+      this.props.dispatch(setKnowledgebase(this.props.query_kb));
+      this.props.dispatch(setLanguage(this.props.query_lang));
+      this.props.dispatch(questionansweringfull(this.props.query_question, this.props.query_lang, this.props.query_kb));
     }
   }
 

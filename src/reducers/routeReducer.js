@@ -16,6 +16,8 @@ export default function routeReducer(state = initialStateRoute, action){
         ...state,
         location: action.location,
         query: action.query,
+        kb: action.kb,
+        lang: action.lang
       }
       break;
     }

@@ -14,7 +14,12 @@ export const QANARY_FAILURE = 'QANARY_FAILURE';
 export function questionansweringfull(question, lang, knowledgebase, namedGraph){
 
   return function (dispatch) {
-
+    if (lang==null){
+      lang = "en";
+    }
+    if (knowledgebase==null){
+      knowledgebase= "wikidata";
+    }
     console.log("CALLED");
 
     var form  = new FormData();
