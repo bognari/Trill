@@ -34,6 +34,7 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
   }
 
   get(result,lang,callback){
+    this.information.kb = "dbpedia";
     var type = result.type;
     var value = result.value;
     if (type=="literal") {

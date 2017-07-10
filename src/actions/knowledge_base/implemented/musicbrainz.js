@@ -15,6 +15,7 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
   rank(){}
 
   get(result,lang,callback){
+    this.information.kb = "musicbrainz";
     var type = result.type;
     var value = result.value;
     console.log("RESUTL",result);
@@ -31,6 +32,9 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
         "  } " +
         "  OPTIONAL{ " +
         "    <" + value + ">  <http://purl.org/dc/elements/1.1/title> ?label . " +
+        "  } " +
+        "  OPTIONAL{ " +
+        "    <" + value + ">  <http://www.w3.org/2000/01/rdf-schema#label> ?label . " +
         "  } " +
         "  OPTIONAL{ " +
         "    <" + value + ">  foaf:isPrimaryTopicOf ?wikilink . " +

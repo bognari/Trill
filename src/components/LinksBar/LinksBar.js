@@ -13,15 +13,10 @@ import s from './LinksBar.scss';
 import {connect} from 'react-redux'
 
 
-
-@connect((store) => {
-  return {
-    kb: store.knowledgebase.knowledgebase,
-  }
-})
 class LinksBar extends Component {
 
   static propTypes = {
+    kb: PropTypes.string,
     wikipedia: PropTypes.string,
     uri: PropTypes.string,
     facebook: PropTypes.string,

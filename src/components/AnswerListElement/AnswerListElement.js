@@ -13,7 +13,6 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import ImageComponent from '../ImageComponent'
 import s from './AnswerListElement.scss';
 import Label from '../Label';
-import Loader from 'react-loader';
 import MapBox from '../MapBox';
 import TopK from '../TopK';
 import LinksBar from '../LinksBar';
@@ -30,10 +29,6 @@ class AnswerListElement extends Component {
     super(props);
   }
 
-  componentDidMount() {
-
-  }
-
   render() {
     if (this.props.loaded==false){
       this.props.dispatch(info(this.props.index));
@@ -45,7 +40,7 @@ class AnswerListElement extends Component {
 
     var left = {label: null, abstract: null, map: null};
     if (label!=null) {
-      left.label =  (<div className={s.title}><p>{this.props.information.label}</p><LinksBar wikipedia={this.props.information.link_wikipedia} uri={this.props.information.uri}/></div>)
+      left.label =  (<div className={s.title}><p>{this.props.information.label}</p><LinksBar kb={this.props.information.kb} wikipedia={this.props.information.link_wikipedia} uri={this.props.information.uri}/></div>)
     }
     if (abstract!=null) {
       left.abstract =  (<Label>{this.props.information.abstract}</Label>)

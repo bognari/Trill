@@ -15,6 +15,7 @@ export default class ItemWikidata extends ItemKnowledgeBase{
   rank(){}
 
   get(result,lang,callback){
+    this.information.kb = "wikidata";
     var type = result.type;
     var value = result.value;
     console.log("RESUTL",result);

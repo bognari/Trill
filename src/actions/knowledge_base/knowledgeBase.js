@@ -13,6 +13,7 @@ export default class ItemKnowledgeBase{
   constructor(k){
     this.k=k;
     this.information = {};
+    this.information.kb = null;
     this.information.literal = null;
     this.information.label = null;
     this.information.image = null;
