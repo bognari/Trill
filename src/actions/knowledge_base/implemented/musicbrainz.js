@@ -26,7 +26,7 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
       //Retrive information about the uri from the endpoint
       var sparqlQuery = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-        "SELECT ?label ?image ?coordinates ?wikilink ?sameAs where { " +
+        "SELECT ?label ?image ?coordinates ?wikilink ?owlSameAs where { " +
         "  OPTIONAL{ " +
         //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
         "    <" + value + "> foaf:name ?label . " +
@@ -41,7 +41,7 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
         "    <" + value + ">  foaf:isPrimaryTopicOf ?wikilink . " +
         "  } " +
         "  OPTIONAL{ " +
-        "    <" + value + ">  owl:sameAs ?sameAs . " +
+        "    <" + value + ">  owl:sameAs ?owlSameAs . " +
         "  } " +
         "} ";
 
@@ -63,6 +63,13 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
           var coordinates = result.results.bindings[0].coordinates.value.replace("Point(", "").replace(")", "").split(" ");
           this.information.lat = parseFloat(coordinates[1])
           this.information.long = parseFloat(coordinates[0]);
+        }
+
+        if (result.results.bindings[0].owlSameAs != undefined) {
+          var link = result.results.bindings[0].owlSameAs.value;
+          if (link.indexOf("http://dbpedia.org/resource") > -1){
+            this.information.links.dbpedia = link;
+          }
         }
 
         if (result.results.bindings[0].wikilink != undefined) {
