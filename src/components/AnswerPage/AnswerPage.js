@@ -19,6 +19,7 @@ import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
 import AnswerListElement from '../AnswerListElement/AnswerListElement'
+import LazyLoad from 'react-lazy-load';
 import {questionansweringfull} from '../../actions/qanary';
 import {setLanguage} from '../../actions/language';
 import {setKnowledgebase} from '../../actions/knowledgebase';
@@ -60,10 +61,9 @@ class AnswerPage extends Component {
   }
 
   render() {
-    //<Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
-    console.log("enter answer page");
     return (
       <div className={s.container}>
+        {this.props.knowledgebase=="musicbrainz" ? <div>This is under development !!!! </div> : null}
         <Loader loaded={this.props.loaded} color="#333">
 
           {(this.props.error) ? <Error>Error</Error> :
@@ -80,12 +80,11 @@ class AnswerPage extends Component {
 
           {this.props.information.map(function (info, index) {
             return (
-
               <div key={index}>
                 { (index < 20) ?
-                <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
-                </AnswerListElement>
-                  : null }
+                  <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
+                  </AnswerListElement>
+               : null }
               </div>
             )}.bind(this))}
         </Loader>
@@ -94,6 +93,6 @@ class AnswerPage extends Component {
     );
   }
 
-
 }
+
 export default withStyles(AnswerPage, s);
