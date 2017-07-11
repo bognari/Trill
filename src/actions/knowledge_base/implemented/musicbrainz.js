@@ -72,12 +72,15 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
           }
         }
 
+        console.log("BLU ");
+        console.log(result.results.bindings[0].wikilink );
         if (result.results.bindings[0].wikilink != undefined) {
           this.information.links.wikipedia = result.results.bindings[0].wikilink.value;
 
           //Retrive the abstract from wikipedia
-          url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
-          $.get(url).success(function (data) {
+          url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("http://","").replace("https://","").replace(lang+".wikipedia.org/wiki/","")).replace("%20","_");
+          var req =$.get(url)
+            req.success(function (data) {
             for(var key in data.query.pages){
               if(data.query.pages.hasOwnProperty(key)){
                 if (data.query.pages[key].extract !=undefined){
@@ -86,7 +89,6 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
                   //Retrive the image from wikipedia
                   //url = "https://"+lang+".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=100&titles="+ iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
                   //$.get(url).success(function (data) {
-
                     return callback();
                   //}).bind(this)
 
@@ -94,7 +96,10 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
                 }
               }
             }
-          }.bind(this))
+          }.bind(this));
+          req.error(function(data){
+            this.error(data);
+          })
         } else {
           return callback();
         }
