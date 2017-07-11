@@ -109,12 +109,13 @@ class SparqlList extends Component {
                 <div id="FiringSparql" className={s.qbox}>
                   {this.props.sparqlquery.map(function (newitems, index) {
                     return (
+                      <div key={index}>
+                        <p id={"q"+index} >
+                        <input type="radio" checked="false" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
+                          <Interpretation sparqlquery={newitems} namedGraph={this.props.namedGraph}/>
 
-                      <p id={"q"+index}>
-                      <input type="radio" checked="false" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
-                        <Interpretation sparqlquery={newitems} namedGraph={this.props.namedGraph}/>
-
-                      </p>)
+                        </p>
+                      </div>)
 
                         }.bind(this))
                   }

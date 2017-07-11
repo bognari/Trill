@@ -71,9 +71,7 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
             this.information.links.dbpedia = link;
           }
         }
-
-        console.log("BLU ");
-        console.log(result.results.bindings[0].wikilink );
+        
         if (result.results.bindings[0].wikilink != undefined) {
           this.information.links.wikipedia = result.results.bindings[0].wikilink.value;
 

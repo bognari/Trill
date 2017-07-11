@@ -16,7 +16,7 @@ import {connect} from 'react-redux'
 class LinksBar extends Component {
 
   static propTypes = {
-    links: PropTypes.Object,
+    links: PropTypes.object,
   };
 
   constructor(props) {
