@@ -63,7 +63,7 @@ class AnswerPage extends Component {
   render() {
     return (
       <div className={s.container}>
-        {this.props.knowledgebase=="musicbrainz" ? <div>This is under development !!!! </div> : null}
+        {this.props.knowledgebase=="musicbrainz" ? <div className={s.development}>Musicbrainz is under development !!!! </div> : null}
         <Loader loaded={this.props.loaded} color="#333">
 
           {(this.props.error) ? <Error>Error</Error> :
