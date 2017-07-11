@@ -25,7 +25,8 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
     } else if (type="uri"){
       //Retrive information about the uri from the endpoint
       var sparqlQuery = "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
-        "SELECT ?label ?image ?coordinates ?wikilink where { " +
+        "PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
+        "SELECT ?label ?image ?coordinates ?wikilink ?sameAs where { " +
         "  OPTIONAL{ " +
         //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
         "    <" + value + "> foaf:name ?label . " +
@@ -39,12 +40,16 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
         "  OPTIONAL{ " +
         "    <" + value + ">  foaf:isPrimaryTopicOf ?wikilink . " +
         "  } " +
+        "  OPTIONAL{ " +
+        "    <" + value + ">  owl:sameAs ?sameAs . " +
+        "  } " +
         "} ";
 
       var url = musicbrainz_endpoint +"?query=" + encodeURIComponent(sparqlQuery) + "&format=json";
       $.get(url).success(function (result) {
         console.log("HERE index "+this.k+" get", result);
         this.information.uri = value;
+        this.information.links.musicbrainz = value;
 
         if (result.results.bindings[0].label != undefined) {
           this.information.label = result.results.bindings[0].label.value;
@@ -61,7 +66,7 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
         }
 
         if (result.results.bindings[0].wikilink != undefined) {
-          this.information.link_wikipedia = result.results.bindings[0].wikilink.value;
+          this.information.links.wikipedia = result.results.bindings[0].wikilink.value;
 
           //Retrive the abstract from wikipedia
           url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");

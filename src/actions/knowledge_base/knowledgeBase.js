@@ -18,10 +18,9 @@ export default class ItemKnowledgeBase{
     this.information.label = null;
     this.information.image = null;
     this.information.uri = null;
-    this.information.link_wikipedia = null;
     this.information.lat = null;
     this.information.long = null;
-
+    this.information.links = {}; // put the links as keys of this object like {dbpedia: "http://dbpedia.org/resource/Test"}
   }
 
   //returns result=="error message" if an error occurred and "" if everything went fine

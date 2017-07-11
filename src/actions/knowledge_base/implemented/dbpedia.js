@@ -68,6 +68,7 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
       var url = dbpedia_endpoint + "?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
       $.get(url).success(function (result) {
         this.information.uri = value;
+        this.information.links.dbpedia = value;
 
         if (result.results.bindings[0].label != undefined) {
           this.information.label = result.results.bindings[0].label.value;
@@ -85,10 +86,8 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
         }
 
         if (result.results.bindings[0].wikilink != undefined) {
-          this.information.link_wikipedia = result.results.bindings[0].wikilink.value;
+          this.information.links.wikipedia = result.results.bindings[0].wikilink.value;
 
-
-          console.log(result.results.bindings[0].wikilink.value);
           //Retrive the abstract from wikipedia
           url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("http://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
           $.get(url).success(function (data) {

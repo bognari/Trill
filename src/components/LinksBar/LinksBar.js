@@ -16,12 +16,7 @@ import {connect} from 'react-redux'
 class LinksBar extends Component {
 
   static propTypes = {
-    kb: PropTypes.string,
-    wikipedia: PropTypes.string,
-    uri: PropTypes.string,
-    facebook: PropTypes.string,
-    twitter: PropTypes.string,
-    website: PropTypes.string,
+    links: PropTypes.Object,
   };
 
   constructor(props) {
@@ -29,16 +24,12 @@ class LinksBar extends Component {
   }
 
   render() {
-    var knowledgeBases = {
-      dbpedia: require('./images/dbpedia-logo.png'),
-      wikidata: require('./images/wikidata-logo.png'),
-      musicbrainz: require('./images/musicbrainz-logo.png'),
-    };
-
     return (
       <div className={s.container}>
-        {this.props.wikipedia != null ? <a href={this.props.wikipedia}><img src={require('./wikipedia-logo.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
-        {this.props.uri != null ? <a href={this.props.uri}><img src={knowledgeBases[this.props.kb]} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("wikipedia") == true ? <a target="_blank" href={this.props.links.wikipedia}><img src={require('./wikipedia-logo.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("dbpedia") == true ? <a target="_blank" href={this.props.links.dbpedia}><img src={require('./images/dbpedia-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("wikidata") == true ? <a target="_blank" href={this.props.links.wikidata}><img src={require('./images/wikidata-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("musicbrainz") == true ? <a target="_blank" href={this.props.links.musicbrainz}><img src={require('./images/musicbrainz-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }

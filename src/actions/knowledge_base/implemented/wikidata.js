@@ -45,6 +45,7 @@ export default class ItemWikidata extends ItemKnowledgeBase{
       $.get(url).success(function (result) {
         console.log("HERE index "+this.k+" get", result);
         this.information.uri = value;
+        this.information.links.wikidata = value;
 
         if (result.results.bindings[0].label != undefined) {
           this.information.label = result.results.bindings[0].label.value;
@@ -61,7 +62,7 @@ export default class ItemWikidata extends ItemKnowledgeBase{
         }
 
         if (result.results.bindings[0].wikilink != undefined) {
-          this.information.link_wikipedia = result.results.bindings[0].wikilink.value;
+          this.information.links.wikipedia = result.results.bindings[0].wikilink.value;
 
           //Retrive the abstract from wikipedia
           url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
