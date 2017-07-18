@@ -71,11 +71,11 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
             this.information.links.dbpedia = link;
           }
         }
-        
+
         if (result.results.bindings[0].wikilink != undefined) {
           this.information.links.wikipedia = result.results.bindings[0].wikilink.value;
 
-          //Retrive the abstract from wikipedia
+          //Retrieve the abstract from wikipedia
           url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("http://","").replace("https://","").replace(lang+".wikipedia.org/wiki/","")).replace("%20","_");
           var req =$.get(url)
             req.success(function (data) {
@@ -84,11 +84,26 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
                 if (data.query.pages[key].extract !=undefined){
                   this.information.abstract = data.query.pages[key].extract ;
 
+
                   //Retrive the image from wikipedia
-                  //url = "https://"+lang+".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=100&titles="+ iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
-                  //$.get(url).success(function (data) {
-                    return callback();
-                  //}).bind(this)
+                  url = "https://"+lang+".wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&origin=*&pithumbsize=500&titles="+ iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
+                  req = $.get(url);
+                  req.success(function (data) {
+                    console.log(data);
+                    for (var key in data.query.pages) {
+                      if (data.query.pages.hasOwnProperty(key)) {
+                        console.log(data.query.pages[key]);
+                        if (data.query.pages[key].thumbnail != undefined) {
+                          console.log(data.query.pages[key].thumbnail.source);
+                          this.information.image = data.query.pages[key].thumbnail.source;
+                          return callback();
+                        }
+                      }
+                    }
+                  }.bind(this))
+                  req.error(function(data){
+                    this.error(data);
+                  })
 
 
                 }
