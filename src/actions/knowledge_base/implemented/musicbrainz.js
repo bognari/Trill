@@ -100,10 +100,11 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
                         }
                       }
                     }
+                    return callback();
                   }.bind(this))
                   req.error(function(data){
                     this.error(data);
-                  })
+                  }.bind(this))
 
 
                 }
