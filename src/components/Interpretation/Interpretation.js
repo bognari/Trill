@@ -64,6 +64,10 @@ class Sparql extends Component {
 
   }
 
+  componentWillUnmount() {
+    this.serverRequest.abort();
+  }
+
 
   componentWillReceiveProps(nextProps) {
 

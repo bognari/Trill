@@ -8,36 +8,40 @@
 import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux'
 
-import ImageComponent from '../ImageComponent'
+
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './AnswerPage.scss';
-import Label from '../Label';
 import Loader from 'react-loader';
-import MapBox from '../MapBox';
-import TopK from '../TopK';
 import Error from '../Error';
 import Feedback from '../Feedback';
 import Sparql from '../Sparql';
 import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
-import LinksBar from '../LinksBar';
-import {questionansweringfull} from '../../actions/queryBackend';
+import AnswerListElement from '../AnswerListElement/AnswerListElement'
+import LazyLoad from 'react-lazy-load';
+import {questionansweringfull} from '../../actions/qanary';
+import {setLanguage} from '../../actions/language';
+import {setKnowledgebase} from '../../actions/knowledgebase';
 
 @connect((store) => {
   return {
-    question: store.qa.question,
+    uriInput: store.qa.uriInput,
+    query_question: store.route.query, //input over the uri get parameters
+    query_lang: store.route.lang,
+    query_kb: store.route.kb,
+
+    question: store.qa.question,  //input over the information in the store
     namedGraph: store.qa.namedGraph,
     information: store.qa.information,
     SPARQLquery: store.qa.SPARQLquery,    //containes the generated sparql query
-    query: store.route.query,                //indicates if the answer or the query is displayed
     loaded: store.qa.loaded,              //indicates if the backend already gave back the answer
     error: store.qa.error,
     audiofile: store.qa.audiofile,
     qinitiated: store.qa.qinitiated,
     language: store.lang.language,
-    uriInput: store.qa.uriInput,
     knowledgebase: store.knowledgebase.knowledgebase,
+    informationLoaded : store.qa.informationLoaded,
   }
 })
 
@@ -49,65 +53,44 @@ class AnswerPage extends Component {
 
   componentDidMount() {
     if (this.props.uriInput == true) {
-      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query});
-      this.props.dispatch(questionansweringfull(this.props.query, this.props.language, this.props.knowledgebase));
+      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query_question});
+      this.props.dispatch(setKnowledgebase(this.props.query_kb));
+      this.props.dispatch(setLanguage(this.props.query_lang));
+      this.props.dispatch(questionansweringfull(this.props.query_question, this.props.query_lang, this.props.query_kb));
     }
   }
 
   render() {
     return (
       <div className={s.container}>
-
+        {this.props.knowledgebase=="musicbrainz" ? <div className={s.development}>QA over Musicbrainz is under development !!!! </div> : null}
         <Loader loaded={this.props.loaded} color="#333">
 
-      {(this.props.error) ? <Error>Error</Error> :
-        <div className={s.feedback}>
-          <div className={s.buttonmenu}>
-            <SparqlList sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-            {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
-          </div>
-          <Feedback/>
-          <Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
-
-        </div>}
+          {(this.props.error) ? <Error>Error</Error> :
+            <div className={s.feedback}>
+              <div className={s.buttonmenu}>
+                <SparqlList sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+                {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
+              </div>
+              <Feedback/>
+              <Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
+            </div>}
 
           {this.props.information.map(function (info, index) {
             return (
-              <div className={s.contentholder} key={index}>
-                {(info.answertype == "simple") ? <Label type="title">{info.label}</Label> : null}
-
-               {(info.answertype == "noinfo") ?
-                  <a href={info.link} className={s.link}><Label type="title">{info.label}</Label></a> : null}
-
-                {(info.answertype == "detail") ?
-                  <div className={s.leftColumn}>
-                    <div className={s.title}><p>{info.label}</p>
-                      <LinksBar wikipedia={info.link} uri={info.uri} /></div>
-                    {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
-                  </div> : null}
-                {(info.answertype == "map") ?
-                  <div className={s.leftColumn}>
-                    <div className={s.title}><p>{info.label}</p>
-                      <LinksBar wikipedia={info.link} uri={info.uri} /></div>
-                    {(info.abstract != "") ? <Label>{info.abstract}</Label> : null}
-                    <MapBox mapid={"map" + info.key} lat={info.lat} long={info.long}></MapBox>
-                  </div> : null}
-
-                {(info.answertype == "detail" || info.answertype == "map") ?
-                  <div className={s.rightColumn}>
-                    {(info.image != "") ?
-                      <ImageComponent key={"image" + info.key} image={info.image}></ImageComponent> : null}
-                    <TopK sumid={"sumbox" + info.key} uri={info.uri} topK={5} lang={this.props.language}/>
-                  </div> : null}
-
+              <div key={index}>
+                { (index < 20) ?
+                  <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
+                  </AnswerListElement>
+               : null }
               </div>
-            )
-          }.bind(this))}
+            )}.bind(this))}
         </Loader>
+        <div className={s.bottom}/>
       </div>
     );
   }
 
-
 }
+
 export default withStyles(AnswerPage, s);

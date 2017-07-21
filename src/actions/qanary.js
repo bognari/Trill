@@ -7,14 +7,21 @@ import iri from 'iri';
 import {sparqlToUser} from '../actions/sparqlToUser';
 import {qanary_services, dbpedia_endpoint, wikidata_endpoint, text_pipeline, audio_pipeline} from '../config';
 
-export const QUESTION_ANSWERING_REQUEST = 'QUESTION_ANSWERING_REQUEST';
-export const QUESTION_ANSWERING_SUCCESS = 'QUESTION_ANSWERING_SUCCESS';
-export const QUESTION_ANSWERING_FAILURE = 'QUESTION_ANSWERING_FAILURE';
-export const SET_QUESTION = 'SET_QUESTION';
+export const QANARY_REQUEST = 'QANARY_REQUEST';
+export const QANARY_SUCCESS = 'QANARY_SUCCESS';
+export const QANARY_FAILURE = 'QANARY_FAILURE';
 
 export function questionansweringfull(question, lang, knowledgebase, namedGraph){
 
   return function (dispatch) {
+    if (lang==null){
+      lang = "en";
+    }
+    if (knowledgebase==null){
+      knowledgebase= "wikidata";
+    }
+    console.log("CALLED");
+
     var form  = new FormData();
     var components = "";
     if(typeof namedGraph != 'undefined'){
@@ -24,13 +31,16 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     else if(knowledgebase=="wikidata"){
       components = "wdaqua-core0-wikidata, QueryExecuter";
     }
+    else if(knowledgebase=="musicbrainz"){
+      components = "wdaqua-core0-musicbrainz, QueryExecuter";
+    }
     else{
       components = text_pipeline;
     }
 
     //check whether the question input is a string or mp3file
     if(typeof question === 'string') {
-      dispatch({type: QUESTION_ANSWERING_REQUEST, question: question});
+      dispatch({type: QANARY_REQUEST, question: question});
       form.append("textquestion", question);
     }
     else if(question == 100){
@@ -38,7 +48,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       //the API
     }
     else {
-      dispatch({type: QUESTION_ANSWERING_REQUEST, question: ""});
+      dispatch({type: QANARY_REQUEST, question: ""});
       form.append("audioquestion", question, "recording.mp3");
       components = audio_pipeline+", " + components;
     }
@@ -52,77 +62,67 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       type: "POST",
       contentType: false,
       success: function (data) {
-        //console.log("This is what we are receiving: ", data);
+        console.log("This is what we are receiving: ", data);
 
         if(typeof question != 'string') {
           dispatch({type: 'SET_QUESTION', question: data.textrepresentation});
         }
 
-          var query = [];
-          for(var i=0; i<data.sparql.length; i++) {
-            query[i] = {query:data.sparql[i] , score: data.sparql.length-i};
-            //Here we receive the question converted to a query (first one in an array of ranked possible queries)
-          }
-          if (query.length>0){
-            dispatch(sparqlToUser(query[0].query, lang, knowledgebase));
-          }
-          var namedGraph = data.namedgraph;
-          var jresult = JSON.parse(data.json);
+        var query = [];
+        for(var i=0; i<data.sparql.length; i++) {
+          query[i] = {query:data.sparql[i] , score: data.sparql.length-i};
+          //Here we receive the question converted to a query (first one in an array of ranked possible queries)
+        }
+        if (query.length>0){
+          dispatch(sparqlToUser(query[0].query, lang, knowledgebase));
+        }
+        var namedGraph = data.namedgraph;
+        var jresult = JSON.parse(data.json);
+        console.log(jresult);
+        dispatch({
+          type: QANARY_SUCCESS,
+          namedGraph: namedGraph,
+          SPARQLquery: query,
+          json: jresult,
+          information: json_to_list(jresult),
+          loaded: true,
+        });
 
-          if (jresult.hasOwnProperty("boolean")) {
-            var information = [];
-            information.push({
-              label: (jresult.boolean == true) ? "True" : "False",
-              answertype: "simple",
-            })
-            dispatch({
-              type: QUESTION_ANSWERING_SUCCESS,
-              namedGraph: namedGraph,
-              SPARQLquery: query,
-              json: jresult,
-              information: information,
-              loaded: true,
-            });
-          } else {
-            var variable=jresult.head.vars[0];
 
-            //check whether if the results are wikidata and then whether or not to rank the answers
-            if(knowledgebase == "wikidata"){
-              console.log('This is the json result (not ranked due to wikidata result): ', jresult);
-              dispatch(configureResult(query, jresult, lang, namedGraph));
-            }
-            else {
-
-              var rankedSparql = "PREFIX vrank:<http://purl.org/voc/vrank#>" +
-                "SELECT ?"+ variable + " " +
-                "FROM <http://dbpedia.org>" +
-                "FROM <http://people.aifb.kit.edu/ath/#DBpedia_PageRank>" +
-                "WHERE {" +
-                "{"+ query[0].query +"} " +
-                "OPTIONAL { ?" + variable+ " vrank:hasRank/vrank:rankValue ?v. } " +
-                "}" +
-                "ORDER BY DESC(?v) LIMIT 1000";
-
-              var rankedrequest = $.get(
-                dbpedia_endpoint+"?query="+encodeURIComponent(rankedSparql)+"&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on",
-                function (rankedresult) {
-
-                  console.log('This is the json result (ranked): ', rankedresult);
-                  dispatch(configureResult(query, rankedresult, lang, namedGraph));
-
-                }.bind(this));
-            }
-          }
       },
       error: function(e){
         var information = [];
         information.push({
           message: e.statusCode + " " + e.statusText,
         });
-        dispatch({type: QUESTION_ANSWERING_FAILURE, error: true, information: information, loaded: true});
+        dispatch({type: QANARY_FAILURE, error: true, information: information, loaded: true});
       }
     });
   }
+}
+
+function json_to_list(jresult){
+  var results = [];
+  if (jresult.hasOwnProperty("boolean")) {
+    results.push({
+      type: "literal",
+      value: (jresult.boolean == true) ? "True" : "False",
+    })
+  } else {
+    var variable=jresult.head.vars[0];
+
+    if(jresult.results.bindings.length > 0 && jresult.results.bindings.length <= 1000) {
+      jresult.results.bindings.map(function(binding,k) {
+        results.push({
+          type : binding[variable].type,
+          datatype: (binding[variable].hasOwnProperty("datatype") ? binding[variable].datatype : null),
+          value : binding[variable].value,
+
+        })
+      })
+    }
+  }
+  return results;
 }
 
 function configureResult(query, jresult, lang, namedGraph){
@@ -238,7 +238,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       key: k,
                     })
                     dispatch({
-                      type: QUESTION_ANSWERING_SUCCESS,
+                      type: QANARY_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
                       json: jresult,
@@ -265,7 +265,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       long: (result.results.bindings[0].long ==  undefined) ? parseFloat(coordinates[0]) : parseFloat(result.results.bindings[0].long.value),
                     })
                     dispatch({
-                      type: QUESTION_ANSWERING_SUCCESS,
+                      type: QANARY_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
                       json: jresult,
@@ -286,7 +286,7 @@ function configureResult(query, jresult, lang, namedGraph){
                       key: k,
                     })
                     dispatch({
-                      type: QUESTION_ANSWERING_SUCCESS,
+                      type: QANARY_SUCCESS,
                       namedGraph: namedGraph,
                       SPARQLquery: query,
                       json: jresult,
@@ -304,7 +304,7 @@ function configureResult(query, jresult, lang, namedGraph){
               key: k,
             })
             dispatch({
-              type: QUESTION_ANSWERING_SUCCESS,
+              type: QANARY_SUCCESS,
               namedGraph: namedGraph,
               SPARQLquery: query,
               json: jresult,
@@ -322,7 +322,7 @@ function configureResult(query, jresult, lang, namedGraph){
         answertype: "simple",
       });
       dispatch({
-        type: QUESTION_ANSWERING_SUCCESS,
+        type: QANARY_SUCCESS,
         namedGraph: namedGraph,
         SPARQLquery: query,
         json: jresult,

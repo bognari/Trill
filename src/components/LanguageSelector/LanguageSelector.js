@@ -22,7 +22,6 @@ import {setLanguage} from '../../actions/language';
 class LanguageSelector extends Component {
 
   handleChange(e){
-    //this.setState({language:e.target.value});
     this.props.dispatch(setLanguage(e.target.value));
   }
 

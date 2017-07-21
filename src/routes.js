@@ -18,7 +18,6 @@ import NotFoundPage from './components/NotFoundPage';
 import ErrorPage from './components/ErrorPage';
 import AnswerPage from './components/AnswerPage';
 import HomePage from './components/HomePage';
-import {startQuestionAnsweringWithTextQuestion} from './actions/queryBackend';
 import {routechange} from './actions/route';
 
 import { Provider } from 'react-redux';
@@ -27,7 +26,7 @@ import store from './stores';
 const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
-    store.dispatch(routechange(state.path, state.query.query, state.query.lang));
+    store.dispatch(routechange(state.path, state.query.query, state.query.lang, state.query.kb));
     return component && <Provider store={store}><App query={state.query} context={state.context}>{component}</App></Provider>;
   });
 

@@ -18,14 +18,16 @@ import {setKnowledgebase} from '../../actions/knowledgebase';
 @connect((store) => {
   return {
     language: store.lang.language,
+    knowledgebase: store.knowledgebase.knowledgebase,
   }
 })
 class LanguageSelectorFlags extends Component {
 
   handleChange(option){
     this.props.dispatch(setLanguage(option.name));
-    if (option.name!="en"){
-      this.props.dispatch(setKnowledgebase("wikidata"));
+    if (option.name!="en" && this.props.knowledgebase=="dbpedia"){
+      this.props.dispatch(setKnowledgebase("wikidata"
+      ));
     }
   }
 
