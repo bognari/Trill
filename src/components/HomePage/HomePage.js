@@ -8,11 +8,9 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import {connect} from 'react-redux'
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './HomePage.scss';
 import QueryBox from '../QueryBox';
-import Location from '../../core/Location';
 
 class HomePage extends Component {
 
