@@ -19,15 +19,24 @@ export default class ItemBiennale extends ItemKnowledgeBase{
     var type = result.type;
     var value = result.value;
     console.log("RESULT",result);
-    if (type=="typed-literal") {
-      this.information.literal=value;
+    if (type=="typed-literal" || type=="literal") {
+      if (result.datatype=="xsd:dateTime"){
+        //2008-01-01T00:00:00Z
+        this.information.literal=value.substring(0,4);
+      } else {
+        this.information.literal=value
+      }
       return callback();
     } else if (type="uri"){
+      if (value.endsWith(".jpg") || value.endsWith(".png")){
+        this.information.image = value ;
+        return callback();
+      }
       //Retrive information about the uri from the endpoint
       var sparqlQuery = "SELECT ?label ?image ?description where { " +
         "OPTIONAL{ " +
         //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
-        "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=?lang) . " +
+        "<" + value + "> <http://www.w3.org/2000/01/rdf-schema#label> ?label . FILTER (lang(?label)=?lang) . " +
         " values (?lang ?lang_) { (\""+lang+"\" 1) (\"en\" 2) (\"de\" 3) (\"fr\" 4) (\"it\" 5)} " + //Trick to find the labels if they do not exist in the desired language, otherwise the "Q number" appears which is ugly
         "} " +
         "OPTIONAL{ " +
@@ -39,25 +48,29 @@ export default class ItemBiennale extends ItemKnowledgeBase{
         "} order by ?lang_ ";
 
       var url = biennale_endpoint +"?query=" + encodeURIComponent(sparqlQuery) + "&format=json";
-      $.get(url).success(function (result) {
+      console.log(url);
+      var req = $.get(url);
+      req.success(function (result) {
         console.log("HERE index "+this.k+" get", result);
         this.information.uri = value;
-        this.information.links.citedudesign = value;
+        this.information.links.biennale = value;
 
         if (result.results.bindings[0].label != undefined) {
           this.information.label = result.results.bindings[0].label.value;
         }
 
         if (result.results.bindings[0].image != undefined) {
-          this.information.image = result.results.bindings[0].image.value + "?width=300";
+          this.information.image = result.results.bindings[0].image.value ;
         }
         if (result.results.bindings[0].description != undefined) {
           this.information.abstract = result.results.bindings[0].description.value;
         }
-        else {
-          return callback();
-        }
+        return callback();
 
+
+      }.bind(this));
+      req.error(function(data){
+        this.error(data);
       }.bind(this))
     }
   }
