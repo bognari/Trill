@@ -82,6 +82,11 @@ class AnswerListElement extends Component {
                   {right.topk}
                 </div>
               </Case>
+
+
+              <Case test={label==null && image!=null}>
+                  {right.image}
+              </Case>
             </Condition>
         : null}
       </div>
