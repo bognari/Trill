@@ -2,11 +2,11 @@
  * Created by Dennis on 18/05/17.
  */
 
-import {wikidata_endpoint} from "../../../config"
+import {biennale_endpoint} from "../../../config"
 import ItemKnowledgeBase from "../knowledgeBase"
 import iri from "iri";
 
-export default class ItemCiteDuDesign extends ItemKnowledgeBase{
+export default class ItemBiennale extends ItemKnowledgeBase{
 
   constructor(k){
     super(k);
@@ -38,7 +38,7 @@ export default class ItemCiteDuDesign extends ItemKnowledgeBase{
         "} " +
         "} order by ?lang_ ";
 
-      var url = citedudesign_endpoint +"?query=" + encodeURIComponent(sparqlQuery) + "&format=json";
+      var url = biennale_endpoint +"?query=" + encodeURIComponent(sparqlQuery) + "&format=json";
       $.get(url).success(function (result) {
         console.log("HERE index "+this.k+" get", result);
         this.information.uri = value;

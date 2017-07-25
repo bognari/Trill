@@ -17,6 +17,7 @@ export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qana
 //The url of the dbpedia and wikidata endpoints to use
 export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 export const wikidata_endpoint = "https://query.wikidata.org/sparql";
+export const biennale_endpoint = "http://wdaqua.univ-st-etienne.fr/hdt-endpoint/biennale/sparql";
 export const musicbrainz_endpoint = "http://wdaqua.univ-st-etienne.fr/hdt-endpoint/musicbrainz/sparql";
 //export const sparqlToUserEndpoint =  "http://localhost:1920/sparqltouser";
 export const sparqlToUserEndpoint =  "https://wdaqua-sparqltouser.univ-st-etienne.fr/sparqltouser";
