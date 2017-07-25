@@ -34,6 +34,9 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     else if(knowledgebase=="musicbrainz"){
       components = "wdaqua-core0-musicbrainz, QueryExecuter";
     }
+    else if(knowledgebase=="dblp"){
+      components = "wdaqua-core0-dblp, QueryExecuter";
+    }
     else{
       components = text_pipeline;
     }

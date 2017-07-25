@@ -29,6 +29,9 @@ class SelectorKnowledgeBase extends Component {
       },{
         id: "musicbrainz",
         name: "musicbrainz",
+      },{
+        id: "dblp",
+        name: "dblp",
       }
     ];
 
@@ -42,6 +45,7 @@ class SelectorKnowledgeBase extends Component {
         dbpedia: require('./images/dbpedia-logo.png'),
         wikidata: require('./images/wikidata-logo.png'),
         musicbrainz: require('./images/musicbrainz-logo.png'),
+        dblp: require('../../actions/knowledge_base/implemented/images/dblp_logo.png'),
       };
 
       return(

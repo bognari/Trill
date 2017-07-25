@@ -30,6 +30,7 @@ class LinksBar extends Component {
         {this.props.links.hasOwnProperty("dbpedia") == true ? <a target="_blank" href={this.props.links.dbpedia}><img src={require('../../actions/knowledge_base/implemented/images/dbpedia_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("wikidata") == true ? <a target="_blank" href={this.props.links.wikidata}><img src={require('../../actions/knowledge_base/implemented/images/wikidata_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("musicbrainz") == true ? <a target="_blank" href={this.props.links.musicbrainz}><img src={require('../../actions/knowledge_base/implemented/images/musicbrainz_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("dblp") == true ? <a target="_blank" href={this.props.links.dblp}><img src={require('../../actions/knowledge_base/implemented/images/dblp_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }
