@@ -14,44 +14,23 @@ $brand-color: #61dafb;
 .root {
   color: #000000;
   margin-top: 20px;
-  float: left;
+
 }
 
 .container {
   margin: 0 auto;
   max-width: $max-content-width;
+  height: 200px;
+  overflow-y: scroll;
+  overflow: -moz-scrollbars-none;
 }
 
-.brand {
-  color: $brand-color lightness(+10%);
-  text-decoration: none;
-  font-size: 1.75em; /* ~28px */
-}
-
-.brandTxt {
-  margin-left: 10px;
-}
-
-.nav {
-  float: right;
-  margin-top: 6px;
-}
-
-.banner {
+ul {
+  list-style-type: none;
   text-align: center;
-}
-
-.bannerTitle {
-  margin: 0;
-  padding: 10px;
-  font-weight: normal;
-  font-size: 4em;
-  line-height: 1em;
-}
-
-.bannerDesc {
   padding: 0;
-  color: rgba(255, 255, 255, .5);
-  font-size: 1.25em;
-  margin: 0;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

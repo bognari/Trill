@@ -9,44 +9,43 @@
 
 import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './BiennaleNav.scss';
+import s from './Suggestions.scss';
 import {connect} from 'react-redux';
 import n from '../Navigation/Navigation.scss';
 import Link from '../Link';
 
 @connect((store) => {
   return {
-    knowledgebase: store.knowledgebase.knowledgebase,
     language: store.lang.language,
   }
 })
 
-class BiennaleNav extends Component {
+class Suggestions extends Component {
 
   render() {
 
-    var artwork = {
-      en: "Artworks",
-      de: "",
-      fr: "Oeuvres",
-      it: "",
-    };
-
-    var artworkquery = {
-      en: "Design%20with%20heart%20exhibition%20art&lang=en&kb=biennale",
+    var q1 = {
+      en: "What country is Sinks from?",
       de: "",
       fr: "",
       it: "",
     };
 
-    var artist = {
-      en: "Artists",
+    var q1query = {
+      en: "design%20with%20heart%20exhibition%20artists&lang=en&kb=biennale",
       de: "",
-      fr: "Artistes",
+      fr: "",
       it: "",
     };
 
-    var artistquery = {
+    var q2 = {
+      en: "Who is the artist of Basics?",
+      de: "",
+      fr: "",
+      it: "",
+    };
+
+    var q2query = {
       en: "design%20with%20heart%20exhibition%20artists&lang=en&kb=biennale",
       de: "",
       fr: "",
@@ -56,8 +55,32 @@ class BiennaleNav extends Component {
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Link className={n.accentlink} to={"/question?query=" + artworkquery[this.props.language]}>{artwork[this.props.language]}</Link>
-          <Link className={n.accentlink} to={"/question?query=" + artistquery[this.props.language]}>{artist[this.props.language]}</Link>
+          <ul>
+            <li>
+          <Link className={n.darklink} to={"/question?query=" + q1query[this.props.language]}>{q1[this.props.language]}</Link>
+            </li>
+            <li>
+          <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>{q2[this.props.language]}</Link>
+            </li>
+            <li>
+              <Link className={n.darklink} to={"/question?query=" + q1query[this.props.language]}>{q1[this.props.language]}</Link>
+            </li>
+            <li>
+              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>{q2[this.props.language]}</Link>
+            </li>
+            <li>
+              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
+            </li>
+            <li>
+              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
+            </li>
+            <li>
+              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
+            </li>
+            <li>
+              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
+            </li>
+          </ul>
         </div>
       </div>
     );
@@ -65,5 +88,5 @@ class BiennaleNav extends Component {
 
 }
 
-export default withStyles(BiennaleNav, s, n);
+export default withStyles(Suggestions, s, n);
 
