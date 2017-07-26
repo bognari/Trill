@@ -19,6 +19,9 @@ import ErrorPage from './components/ErrorPage';
 import AnswerPage from './components/AnswerPage';
 import HomePage from './components/HomePage';
 import {routechange} from './actions/route';
+import {questionansweringfull} from '../src/actions/qanary';
+import {setLanguage} from '../src/actions/language';
+import {setKnowledgebase} from '../src/actions/knowledgebase';
 
 import { Provider } from 'react-redux';
 import store from './stores';
@@ -27,6 +30,12 @@ const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
     store.dispatch(routechange(state.path, state.query.query, state.query.lang, state.query.kb));
+    if (state.query.query != null) {
+      store.dispatch({type: 'SET_QUESTION', question: state.query.query});
+      store.dispatch(setKnowledgebase(state.query.kb));
+      store.dispatch(setLanguage(state.query.lang));
+      store.dispatch(questionansweringfull(state.query.query, state.query.lang, state.query.kb));
+    }
     return component && <Provider store={store}><App query={state.query} context={state.context}>{component}</App></Provider>;
   });
 
