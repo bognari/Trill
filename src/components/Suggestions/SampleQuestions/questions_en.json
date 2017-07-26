@@ -1,0 +1,36 @@
+[
+    {
+      "type": "Sample",
+      "list": [
+        {
+          "question": "What is the capital of France?",
+          "queryparams": "query=What%20is%20the%20capital%20of%20France?&lang=en&kb=wikidata"
+        },
+        {
+          "question": "Give me museums in Bonn.",
+          "queryparams": "query=Give%20me%20museums%20in%20Bonn.&lang=en&kb=wikidata"
+        },
+        {
+          "question": "How many inhabitants has Southampton?",
+          "queryparams": "query=How%20many%20inhabitants%20has%20Southampton?&lang=en&kb=wikidata"
+        },
+        {
+          "question": "List me temples in Athens.",
+          "queryparams": "query=List%20me%20temples%20in%20Athens&lang=en&kb=wikidata"
+        }
+      ]
+    },
+  {
+    "type": "Geography",
+    "list": [
+      {
+        "question": "In which countries are the alps?",
+        "queryparams": "query=In+which+countries+are+the+alps%3F"
+      },
+      {
+        "question": "What is the surface of Liechtenstein?",
+        "queryparams": "query=What%20is%20the%20surface%20of%20Liechtenstein?&lang=en&kb=wikidata"
+      }
+    ]
+  }
+]
