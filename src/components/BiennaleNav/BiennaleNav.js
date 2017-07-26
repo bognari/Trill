@@ -34,7 +34,7 @@ class BiennaleNav extends Component {
     };
 
     var artworkquery = {
-      en: "Design%20with%20heart%20exhibition%20art&lang=en&kb=biennale",
+      en: "Design%20with%20heart%20exhibition%20artwork&lang=en&kb=biennale",
       de: "",
       fr: "",
       it: "",
