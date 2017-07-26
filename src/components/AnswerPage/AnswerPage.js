@@ -64,6 +64,7 @@ class AnswerPage extends Component {
     return (
       <div className={s.container}>
         {this.props.knowledgebase=="musicbrainz" ? <div className={s.development}>QA over Musicbrainz is under development !!!! </div> : null}
+        {this.props.knowledgebase=="dblp" ? <div className={s.development}>QA over Dblp is under development !!!! </div> : null}
         <Loader loaded={this.props.loaded} color="#333">
 
           {(this.props.error) ? <Error>Error</Error> :
