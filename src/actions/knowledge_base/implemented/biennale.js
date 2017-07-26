@@ -53,7 +53,7 @@ export default class ItemBiennale extends ItemKnowledgeBase{
       req.success(function (result) {
         console.log("HERE index "+this.k+" get", result);
         this.information.uri = value;
-        this.information.links.biennale = value;
+        this.information.links.biennale = value.replace("https://wdaqua-biennale-design.univ-st-etienne.fr/entity/","https://wdaqua-biennale-design.univ-st-etienne.fr/wikibase/index.php/Item:"); //https://wdaqua-biennale-design.univ-st-etienne.fr/wikibase/index.php/Item:Q409
 
         if (result.results.bindings[0].label != undefined) {
           this.information.label = result.results.bindings[0].label.value;
