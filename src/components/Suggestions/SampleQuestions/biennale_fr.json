@@ -3,36 +3,36 @@
     "type": "Sample",
     "list": [
       {
-        "question": "What country is \"Sinks\" from?",
-        "queryparams": "query=What%20country%20is%20Sinks%20from?&lang=en&kb=biennale"
+        "question": "Sinks vient de quelle pays?",
+        "queryparams": "query=Sinks%20vient%20de%20quelle%20pays?&lang=fr&kb=biennale"
       },
       {
-        "question": "Who is the artist of Radio du Temps?",
-        "queryparams": "query=Who%20is%20the%20artist%20of%20Radio%20du%20Temps&lang=en&kb=biennale"
+        "question": "Qui est l'artiste de Radio du Temps?",
+        "queryparams": "query=Qui%20est%20l%27artiste%20de%20Radio%20du%20Temps?&lang=fr&kb=biennale"
       },
       {
-        "question": "What is Phonekerchief made out of?",
-        "queryparams": "query=What%20is%20Phonekerchief%20made%20out%20of?&lang=en&kb=biennale"
+        "question": "Quels sont les matériaux de Phonekerchief?",
+        "queryparams": "query=Quels%20sont%20les%20matériaux%20de%20Phonekerchief?&lang=fr&kb=biennale"
       },
       {
-        "question": "Art by Konstantin Grcic",
-        "queryparams": "query=Art%20by%20Konstantin%20Grcic&lang=en&kb=biennale"
+        "question": "Art créé par Konstantin Grcic",
+        "queryparams": "query=Art%20créé%20par%20Konstantin%20Grcic&lang=fr&kb=biennale"
       },
       {
-        "question": "Tidelight size",
-        "queryparams": "query=Tidelight%20size&lang=en&kb=biennale"
+        "question": "Taille de Tidelight",
+        "queryparams": "query=Taille%20de%20Tidelight&lang=fr&kb=biennale"
       },
       {
-        "question": "Artists of Design with Heart Exhibition",
-        "queryparams": "query=Artists%20of%20Design%20with%20Heart%20Exhibition&lang=en&kb=biennale"
+        "question": "Les artistes de l'exposition de Design With Heart",
+        "queryparams": "Les%20artistes%20de%20l%27exposition%20de%20Design%20With%20Heart&lang=fr&kb=biennale"
       },
       {
-        "question": "What year was Bow Bins created?",
-        "queryparams": "query=What%20year%20was%20Bow%20Bins%20created?&lang=en&kb=biennale"
+        "question": "Dans quelle année a été Bow Bins créé?",
+        "queryparams": "query=Dans%20quelle%20année%20a%20été%20Bow%20Bins%20créé?&lang=fr&kb=biennale"
       },
       {
-        "question": "Pictures of Bow Bins",
-        "queryparams": "query=Pictures%20of%20Bow%20Bins&lang=en&kb=biennale"
+        "question": "Les images de Bow Bins",
+        "queryparams": "Les%20images%20de%20Bow%20Bins&lang=fr&kb=biennale"
       }
     ]
   }

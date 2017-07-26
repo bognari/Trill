@@ -50,7 +50,6 @@ class Suggestions extends Component {
         <div className={s.container}>
           <ul>
             {list[0].list.map(function (samplequestion) {
-              console.log("====================REACHED3");
               return (<li>
                 <Link className={n.darklink} to={"/question?" + samplequestion.queryparams}>{samplequestion.question}</Link>
               </li>);
