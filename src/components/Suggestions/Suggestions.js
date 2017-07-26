@@ -13,10 +13,14 @@ import s from './Suggestions.scss';
 import {connect} from 'react-redux';
 import n from '../Navigation/Navigation.scss';
 import Link from '../Link';
+import biennalequestions from './SampleQuestions/biennale_en.json';
+import biennalequestions_fr from './SampleQuestions/biennale_fr.json';
+import samplequestions from './SampleQuestions/questions_en.json';
 
 @connect((store) => {
   return {
     language: store.lang.language,
+    knowledgebase: store.knowledgebase.knowledgebase,
   }
 })
 
@@ -24,62 +28,33 @@ class Suggestions extends Component {
 
   render() {
 
-    var q1 = {
-      en: "What country is Sinks from?",
-      de: "",
-      fr: "",
-      it: "",
-    };
+    var list;
 
-    var q1query = {
-      en: "design%20with%20heart%20exhibition%20artists&lang=en&kb=biennale",
-      de: "",
-      fr: "",
-      it: "",
-    };
-
-    var q2 = {
-      en: "Who is the artist of Basics?",
-      de: "",
-      fr: "",
-      it: "",
-    };
-
-    var q2query = {
-      en: "design%20with%20heart%20exhibition%20artists&lang=en&kb=biennale",
-      de: "",
-      fr: "",
-      it: "",
-    };
+    //to update how language is selected
+    if(this.props.knowledgebase == "biennale"){
+      switch(this.props.language) {
+        case "en":
+          list = biennalequestions;
+          break;
+        case "fr":
+          list = biennalequestions_fr;
+          break;
+      }
+    }
+    else {
+      list = samplequestions;
+    }
 
     return (
       <div className={s.root}>
         <div className={s.container}>
           <ul>
-            <li>
-          <Link className={n.darklink} to={"/question?query=" + q1query[this.props.language]}>{q1[this.props.language]}</Link>
-            </li>
-            <li>
-          <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>{q2[this.props.language]}</Link>
-            </li>
-            <li>
-              <Link className={n.darklink} to={"/question?query=" + q1query[this.props.language]}>{q1[this.props.language]}</Link>
-            </li>
-            <li>
-              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>{q2[this.props.language]}</Link>
-            </li>
-            <li>
-              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
-            </li>
-            <li>
-              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
-            </li>
-            <li>
-              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
-            </li>
-            <li>
-              <Link className={n.darklink} to={"/question?query=" + q2query[this.props.language]}>Test question?</Link>
-            </li>
+            {list[0].list.map(function (samplequestion) {
+              console.log("====================REACHED3");
+              return (<li>
+                <Link className={n.darklink} to={"/question?" + samplequestion.queryparams}>{samplequestion.question}</Link>
+              </li>);
+            })}
           </ul>
         </div>
       </div>

@@ -38,7 +38,7 @@ class HomePage extends Component {
         <div className={s.container}>
           <img src={require('./../../public/WDAquaLogo.png')} height="96" alt="WDAqua" className={s.logo}/>
           <QueryBox size="70"/>
-          {this.props.knowledgebase=="biennale" ? <Suggestions/>: null}
+          <Suggestions/>
         </div>
       </div>
     );

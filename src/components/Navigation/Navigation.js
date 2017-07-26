@@ -54,7 +54,7 @@ class Navigation extends Component {
       <div className={cx(s.root, this.props.className)} role="navigation">
         <Link className={this.props.linkClassName} to={"/about_"+this.props.language}>{about[this.props.language]}</Link>
         <Link className={this.props.linkClassName} to="/faq">{faq[this.props.language]}</Link>
-        <Link className={this.props.linkClassName} to={"/examples_en"}>{example[this.props.language]}</Link>
+        {/*<Link className={this.props.linkClassName} to={"/examples_en"}>{example[this.props.language]}</Link>*/}
         <div className={s.flags}> <SelectorKnowledgeBase/></div>
         <div className={s.flags}> <SelectorLanguageFlags/></div>
       </div>
