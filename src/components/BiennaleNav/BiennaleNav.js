@@ -8,28 +8,57 @@
  */
 
 import React, { Component } from 'react';
-import LanguageSelector from '../LanguageSelector';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import s from './Header.scss';
-import Navigation from '../Navigation';
+import s from './BiennaleNav.scss';
+import {connect} from 'react-redux';
 import n from '../Navigation/Navigation.scss';
+import Link from '../Link';
+import {questionansweringfull} from '../../actions/qanary';
 
 @connect((store) => {
   return {
     knowledgebase: store.knowledgebase.knowledgebase,
+    language: store.lang.language,
   }
 })
 
-class Header extends Component {
+class BiennaleNav extends Component {
 
   render() {
+
+    var artwork = {
+      en: "Artworks",
+      de: "",
+      fr: "Oeuvres",
+      it: "",
+    };
+
+    var artworkquery = {
+      en: "Design%20with%20heart%20exhibition%20art&lang=en&kb=biennale",
+      de: "",
+      fr: "",
+      it: "",
+    };
+
+    var artist = {
+      en: "Artists",
+      de: "",
+      fr: "Artistes",
+      it: "",
+    };
+
+    var artistquery = {
+      en: "design%20with%20heart%20exhibition%20artists&lang=en&kb=biennale",
+      de: "",
+      fr: "",
+      it: "",
+    };
+
     return (
       <div className={s.root}>
         <div className={s.container}>
-          <Navigation className={s.nav} linkClassName={n.darklink} />
-          <LanguageSelector />
-          <div className={s.banner}>
-          </div>
+          <Link className={n.accentlink} to={"/question?query=" + artworkquery[this.props.language]}>{artwork[this.props.language]}</Link>
+          <Link className={n.accentlink} to={"/question?query=" + artistquery[this.props.language]}>{artist[this.props.language]}</Link>
         </div>
       </div>
     );
@@ -37,5 +66,5 @@ class Header extends Component {
 
 }
 
-export default withStyles(Header, s, n);
+export default withStyles(BiennaleNav, s, n);
 

@@ -1,6 +1,6 @@
 {
-  "name": "Header",
+  "name": "BiennaleNav",
   "version": "0.0.0",
   "private": true,
-  "main": "./Header.js"
+  "main": "./BiennaleNav.js"
 }
