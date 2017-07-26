@@ -1,0 +1,6 @@
+{
+  "name": "BiennaleNav",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./BiennaleNav.js"
+}
