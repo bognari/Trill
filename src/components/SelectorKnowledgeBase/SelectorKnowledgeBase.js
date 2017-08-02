@@ -29,9 +29,6 @@ class SelectorKnowledgeBase extends Component {
       },{
         id: "musicbrainz",
         name: "musicbrainz",
-      },{
-        id: "biennale",
-        name: "biennale",
       }
     ];
 

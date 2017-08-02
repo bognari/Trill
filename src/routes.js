@@ -30,7 +30,8 @@ const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
     store.dispatch(routechange(state.path, state.query.query, state.query.lang, state.query.kb));
-    if (state.query.query != null) {
+    var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
+    if (state.query.query != null && isBrowser()==true){
       store.dispatch({type: 'SET_QUESTION', question: state.query.query});
       store.dispatch(setKnowledgebase(state.query.kb));
       store.dispatch(setLanguage(state.query.lang));
