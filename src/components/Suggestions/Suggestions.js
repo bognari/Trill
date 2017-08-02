@@ -20,40 +20,50 @@ import samplequestions from './SampleQuestions/questions_en.json';
 @connect((store) => {
   return {
     language: store.lang.language,
-    knowledgebase: store.knowledgebase.knowledgebase,
+    kb: store.knowledgebase.knowledgebase,
   }
 })
 
 class Suggestions extends Component {
 
+  shuffle(array) {
+    let counter = array.length;
+
+    // While there are elements in the array
+    while (counter > 0) {
+      // Pick a random index
+      let index = Math.floor(Math.random() * counter);
+
+      // Decrease counter by 1
+      counter--;
+
+      // And swap the last element with it
+      let temp = array[counter];
+      array[counter] = array[index];
+      array[index] = temp;
+  }
+
+  return array;
+}
+
   render() {
 
-    var list;
+    var list = samplequestions;
 
-    //to update how language is selected
-    if(this.props.knowledgebase == "biennale"){
-      switch(this.props.language) {
-        case "en":
-          list = biennalequestions;
-          break;
-        case "fr":
-          list = biennalequestions_fr;
-          break;
-      }
-    }
-    else {
-      list = samplequestions;
-    }
 
     return (
       <div className={s.root}>
         <div className={s.container}>
           <ul>
-            {list[0].list.map(function (samplequestion) {
-              return (<li>
-                <Link className={n.darklink} to={"/question?" + samplequestion.queryparams}>{samplequestion.question}</Link>
-              </li>);
-            })}
+            {this.shuffle(list[0].list).map(function (samplequestion, index) {
+              if (samplequestion.lang==this.props.language && samplequestion.kb==this.props.kb) {
+                var link = "/question?query=" + encodeURI(samplequestion.question) + "&lang=" + this.props.language +"&kb=" + this.props.kb ;
+                return (<li key={index}>
+                  <Link className={n.darklink}
+                        to={link}>{samplequestion.question}</Link>
+                </li>);
+              }
+            }.bind(this))}
           </ul>
         </div>
       </div>
