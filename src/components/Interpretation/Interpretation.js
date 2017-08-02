@@ -77,7 +77,8 @@ class Sparql extends Component {
 
 
   render() {
-
+    console.log("STATE");
+    console.log(this.state.retrived);
     return (
 
       <div className={s.container}>

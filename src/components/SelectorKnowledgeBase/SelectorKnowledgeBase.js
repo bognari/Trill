@@ -46,6 +46,7 @@ class SelectorKnowledgeBase extends Component {
         wikidata: require('./images/wikidata-logo.png'),
         musicbrainz: require('./images/musicbrainz-logo.png'),
         dblp: require('../../actions/knowledge_base/implemented/images/dblp_logo.png'),
+        biennale: require('./images/biennale_logo.png'),
       };
 
       return(

@@ -20,7 +20,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     if (knowledgebase==null){
       knowledgebase= "wikidata";
     }
-    console.log("CALLED");
+    console.log("CALLED",typeof namedGraph);
 
     var form  = new FormData();
     var components = "";
@@ -36,6 +36,9 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     }
     else if(knowledgebase=="dblp"){
       components = "wdaqua-core0-dblp, QueryExecuter";
+    }
+    else if(knowledgebase=="biennale"){
+      components = "wdaqua-core0-biennale, QueryExecuter";
     }
     else{
       components = text_pipeline;

@@ -227,7 +227,7 @@ class QueryBox extends Component {
                 <input id="querytext" type="text" name="query" className={(this.props.header == true)? s.headertextinput : s.textinput} placeholder={placeholder[this.props.language]} required autoFocus size={this.props.size} onChange={this.handleÍnput} value={this.props.question}/>
                 {/*<button id="record" type="button" className={s.hide}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button>*/}
                 {(mic==true) ? <button id="record" type="button" className={(this.props.header == true)? s.headerbutton : s.button}><img src={require('./Mic2.png')} alt="" height="15px" className={s.mic}/></button> : <div id="record" style={{display: "inline-block"}}></div> }
-                <input id="go" type="submit" className={(this.props.header == true)? s.headerbutton : s.button} value={go[this.props.language]}/>
+                <input id="go" type="submit" className={(this.props.header == true)? s.headerbutton : s.button} value={go[this.props.language]} />
               </div>
             {/*}*/}
         </form>

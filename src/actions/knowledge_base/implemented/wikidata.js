@@ -19,7 +19,7 @@ export default class ItemWikidata extends ItemKnowledgeBase{
     var type = result.type;
     var value = result.value;
     console.log("RESUTL",result);
-    if (type=="typed-literal") {
+    if (type=="typed-literal" || type=="literal") {
       this.information.literal=value;
       return callback();
     } else if (type="uri"){

@@ -1,0 +1,40 @@
+[
+  {
+    "type": "Sample",
+    "list": [
+      {
+        "question": "Sinks vient de quelle pays?",
+        "queryparams": "query=Sinks%20vient%20de%20quelle%20pays?&lang=fr&kb=biennale"
+      },
+      {
+        "question": "Qui est l'artiste de Radio du Temps?",
+        "queryparams": "query=Qui%20est%20l%27artiste%20de%20Radio%20du%20Temps?&lang=fr&kb=biennale"
+      },
+      {
+        "question": "Quels sont les matériaux de Phonekerchief?",
+        "queryparams": "query=Quels%20sont%20les%20matériaux%20de%20Phonekerchief?&lang=fr&kb=biennale"
+      },
+      {
+        "question": "Art créé par Konstantin Grcic",
+        "queryparams": "query=Art%20créé%20par%20Konstantin%20Grcic&lang=fr&kb=biennale"
+      },
+      {
+        "question": "Taille de Tidelight",
+        "queryparams": "query=Taille%20de%20Tidelight&lang=fr&kb=biennale"
+      },
+      {
+        "question": "Les artistes de l'exposition de Design With Heart",
+        "queryparams": "Les%20artistes%20de%20l%27exposition%20de%20Design%20With%20Heart&lang=fr&kb=biennale"
+      },
+      {
+        "question": "Dans quelle année a été Bow Bins créé?",
+        "queryparams": "query=Dans%20quelle%20année%20a%20été%20Bow%20Bins%20créé?&lang=fr&kb=biennale"
+      },
+      {
+        "question": "Les images de Bow Bins",
+        "queryparams": "Les%20images%20de%20Bow%20Bins&lang=fr&kb=biennale"
+      }
+    ]
+  }
+]
+

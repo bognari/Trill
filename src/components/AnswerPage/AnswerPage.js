@@ -51,14 +51,14 @@ class AnswerPage extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    if (this.props.uriInput == true) {
-      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query_question});
-      this.props.dispatch(setKnowledgebase(this.props.query_kb));
-      this.props.dispatch(setLanguage(this.props.query_lang));
-      this.props.dispatch(questionansweringfull(this.props.query_question, this.props.query_lang, this.props.query_kb));
-    }
-  }
+//  componentDidMount() {
+//    if (this.props.uriInput == true) {
+//      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query_question});
+//      this.props.dispatch(setKnowledgebase(this.props.query_kb));
+//      this.props.dispatch(setLanguage(this.props.query_lang));
+//      this.props.dispatch(questionansweringfull(this.props.query_question, this.props.query_lang, this.props.query_kb));
+//    }
+//  }
 
   render() {
     return (

@@ -1,0 +1,227 @@
+[
+  {
+    "type": "WIKIDATA ENGLISH",
+    "list": [
+      {
+        "question": "What is the capital of France?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Water",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Give me museums in Turin.",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "How many inhabitants has Southampton?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "List me temples in Athens.",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "In which countries are the alps?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "What is the surface of Liechtenstein?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "formula water",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "What is the formula of Glucose?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "When was the Battle of Waterloo?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "When did the Soviet Union ended?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who is the king of Jordan? ",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who is the mayor of Berlin?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "What is the party of the mayor of Berlin?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Where was Albert Einstein born?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Give me actors starring in the Lord of the Rings.",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who produced the Life is Beautiful?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who are the members of Green Day?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Give me songs of Pink Floyd.",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Give me songs of Pink Floyd.",
+        "lang": "en",
+        "kb": "musicbrainz"
+      },
+      {
+        "question": "Beatles",
+        "lang": "en",
+        "kb": "musicbrainz"
+      },
+      {
+        "question": "Who is a member of Green Day?",
+        "lang": "en",
+        "kb": "musicbrainz"
+      },
+      {
+        "question": "Albums by Linkin Park",
+        "lang": "en",
+        "kb": "musicbrainz"
+      },
+      {
+        "question": "Publications by Dennis Diefenbach.",
+        "lang": "en",
+        "kb": "dblp"
+      },
+      {
+        "question": "How many publications has ",
+        "lang": "en",
+        "kb": "dblp"
+      },
+      {
+        "question": "Qual'è la capitale della Francia",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "acqua",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Unione Europea",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Dammi musei a Torino.",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Quanti abitanti ha Southampton?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Dammi templi ad Atene",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "In quali paesi sono le Alpi?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Qual'é la superficie del Liechtenstein?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "formula dell'acqua",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Qual'é la formula del Glucosio?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Quando fu la Battaglia di Waterloo?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Chi é il re della Giordania",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Chi è il sindaco di Berlino?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Qual'é il partito del sindaco di Berlino?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Dove é nato Albert Einstein?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Dammi gli attori del Signore degli Anelli.",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Chi ha prodotto La Vita é Bella?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Chi sono i membri dei Green Day?",
+        "lang": "it",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Dammi canzoni dei Pink Floyd.",
+        "lang": "it",
+        "kb": "wikidata"
+      }
+    ]
+  }
+]
