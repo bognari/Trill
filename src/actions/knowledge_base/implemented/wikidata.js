@@ -19,10 +19,22 @@ export default class ItemWikidata extends ItemKnowledgeBase{
     var type = result.type;
     var value = result.value;
     console.log("RESUTL",result);
-    if (type=="typed-literal" || type=="literal") {
+    if (type=="literal") {
       this.information.literal=value;
       return callback();
-    } else if (type="uri"){
+    } else if (type=="typed-literal"){
+      if (result.datatype=="http://www.w3.org/2001/XMLSchema#decimal") {
+        this.information.literal = parseFloat(value).toLocaleString("DE-de");
+        return callback();
+      } else if (result.datatype=="http://www.w3.org/2001/XMLSchema#dateTime"){
+          //2008-01-01T00:00:00Z
+          this.information.literal=value.substring(0,10);
+          return callback();
+      } else {
+        this.information.literal=value;
+        return callback();
+      }
+    } else if (type=="uri"){
       //Retrive information about the uri from the endpoint
       var sparqlQuery = "SELECT ?label ?image ?coordinates ?wikilink where { " +
         "OPTIONAL{ " +
