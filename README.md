@@ -1,6 +1,6 @@
 ## Trill — Reusable Front-End for Question Answering Systems on top of Qanary
 
-This repository contains a Reusable Front-End for Question Answering (QA) Systems over DBpedia and Wikidata. It supports multiple languages, namely English, German, French and Italian. It is written in Redux and React.
+This repository contains a Reusable Front-End for Question Answering (QA) Systems over DBpedia and Wikidata. It supports multiple languages, namely English, German, French and Italian. It is written in Redux and React. A DEMO can be found under (www.wdaqua.eu/qa).
 
 ### Getting Started
 
