@@ -28,20 +28,8 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       components = "QueryExecuter";
       form.append("graph", namedGraph);
     }
-    else if(knowledgebase=="wikidata"){
-      components = "wdaqua-core0-wikidata, QueryExecuter";
-    }
-    else if(knowledgebase=="musicbrainz"){
-      components = "wdaqua-core0-musicbrainz, QueryExecuter";
-    }
-    else if(knowledgebase=="dblp"){
-      components = "wdaqua-core0-dblp, QueryExecuter";
-    }
-    else if(knowledgebase=="biennale"){
-      components = "wdaqua-core0-biennale, QueryExecuter";
-    }
-    else{
-      components = text_pipeline;
+    else {
+      components = "wdaqua-core1, QueryExecuter";
     }
 
     //check whether the question input is a string or mp3file
@@ -60,6 +48,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     }
     form.append("componentlist[]", [components]);
     form.append("language", lang);
+    form.append("targetdata", knowledgebase);
 
     var questionresult = $.ajax({
       url: qanary_services+"/questionansweringfull",

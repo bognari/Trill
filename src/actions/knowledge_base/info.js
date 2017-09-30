@@ -31,6 +31,7 @@ export function info(index){
       case "dblp": {
         var itemDblp = new ItemDblp(index);
         dispatch(itemDblp.startRequest());
+        break;
       }
       case "biennale": {
         var itemBiennale = new ItemBiennale(index);
