@@ -9,10 +9,15 @@
 
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { connect } from 'react-redux';
 import $ from 'jquery';
 import s from './TopK.scss';
 
-
+@connect((store) => {
+  return {
+    knowledgebase: store.knowledgebase.knowledgebase,
+  }
+})
 class TopK extends Component {
 
   static propTypes = {
@@ -50,7 +55,14 @@ class TopK extends Component {
       }
     });
 
-    var url = (uri.indexOf("wikidata") > -1) ? "https://km.aifb.kit.edu/services/okno/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang : "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+    var url = null;
+    if (this.props.knowledgebase == "wikidata"){
+      url = "https://km.aifb.kit.edu/services/okno/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+    } else if (this.props.knowledgebase == "dbpedia"){
+      url = "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+    } else if (this.props.knowledgebase == "dblp"){
+      url = "http://wdaqua-summa-server.univ-st-etienne.fr/summa/sum" + "?entity=" + uri + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+    }
 
     // if (language != null) {
     //   url += "&language=" + language;
@@ -71,6 +83,7 @@ class TopK extends Component {
         $("#" + id + "_loading").remove();
       },
       success : function(data) {
+        console.log(data);
         function label(uri) {
           for ( k = 0; k < keys.length; k++) {
             if(data[keys[k]]["@id"] == uri){
@@ -140,6 +153,11 @@ class TopK extends Component {
 
       }
     });
+  }
+
+  componentWillUnmount(){
+    $("#" + this.props.sumid).empty();
+    $("#" + this.props.sumid).remove();
   }
 
 
