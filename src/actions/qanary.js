@@ -65,7 +65,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
 
         var query = [];
         for(var i=0; i<data.sparql.length; i++) {
-          query[i] = {query:data.sparql[i] , score: data.sparql.length-i};
+          query[i] = {query:data.sparql[i].query , score: data.sparql.length-i};
           //Here we receive the question converted to a query (first one in an array of ranked possible queries)
         }
         if (query.length>0){
