@@ -1,0 +1,16 @@
+@import '../variables.scss';
+
+
+.container {
+  max-width: $max-content-width;
+  display: inline-block;
+  float: left;
+}
+
+.color-box {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  left: 5px;
+  top: 5px;
+}

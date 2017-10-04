@@ -14,15 +14,12 @@ import s from './AnswerPage.scss';
 import Loader from 'react-loader';
 import Error from '../Error';
 import Feedback from '../Feedback';
-import Sparql from '../Sparql';
 import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
 import AnswerListElement from '../AnswerListElement/AnswerListElement'
 import LazyLoad from 'react-lazy-load';
-import {questionansweringfull} from '../../actions/qanary';
-import {setLanguage} from '../../actions/language';
-import {setKnowledgebase} from '../../actions/knowledgebase';
+import Confidence from "../Confidence/Confidence";
 
 @connect((store) => {
   return {
@@ -51,15 +48,6 @@ class AnswerPage extends Component {
     super(props);
   }
 
-//  componentDidMount() {
-//    if (this.props.uriInput == true) {
-//      this.props.dispatch({type: 'SET_QUESTION', question: this.props.query_question});
-//      this.props.dispatch(setKnowledgebase(this.props.query_kb));
-//      this.props.dispatch(setLanguage(this.props.query_lang));
-//      this.props.dispatch(questionansweringfull(this.props.query_question, this.props.query_lang, this.props.query_kb));
-//    }
-//  }
-
   render() {
     return (
       <div className={s.container}>
@@ -70,6 +58,7 @@ class AnswerPage extends Component {
           {(this.props.error) ? <Error>Error</Error> :
             <div className={s.feedback}>
               <div className={s.buttonmenu}>
+                {//<Confidence query={this.props.SPARQLquery[0]}/>}
                 <SparqlList sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
                 {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
               </div>
