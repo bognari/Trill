@@ -1,6 +1,0 @@
-{
-  "name": "LanguageSelector",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./LanguageSelector.js"
-}
