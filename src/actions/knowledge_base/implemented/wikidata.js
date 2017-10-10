@@ -79,7 +79,6 @@ export default class ItemWikidata extends ItemKnowledgeBase{
           //Retrive the abstract from wikipedia
           url = "https://"+lang+".wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&origin=*&explaintext=&titles=" + iri.toIRIString(result.results.bindings[0].wikilink.value.replace("https://"+lang+".wikipedia.org/wiki/","")).replace("%20","_");
           $.get(url).success(function (data) {
-            console.log("BLU");
             for(var key in data.query.pages){
               if(data.query.pages.hasOwnProperty(key)){
                 if (data.query.pages[key].extract !=undefined){

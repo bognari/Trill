@@ -30,7 +30,6 @@ class AnswerListElement extends Component {
   }
 
   render() {
-    console.log("Answer List Element");
     if (this.props.loaded==false){
       this.props.dispatch(info(this.props.index));
     }
@@ -57,12 +56,9 @@ class AnswerListElement extends Component {
       right.image =  (<ImageComponent key={"image" + this.props.index} image={image}></ImageComponent>)
     }
     if (this.props.information.kb == "dbpedia" || this.props.information.kb == "wikidata" || this.props.information.kb == "dblp" || this.props.information.kb == "musicbrainz") {
-      right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5}
-                          lang={this.props.language[0]}/>)
+      right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5} lang={this.props.language[0]} kb={this.props.information.kb}/> )
     }
 
-
-    console.log("Label",this.props.information.literal);
     return (
       <div className={s.container}>
         { (this.props.loaded==true) ?

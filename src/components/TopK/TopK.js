@@ -13,11 +13,6 @@ import { connect } from 'react-redux';
 import $ from 'jquery';
 import s from './TopK.scss';
 
-@connect((store) => {
-  return {
-    knowledgebase: store.knowledgebase.knowledgebase,
-  }
-})
 class TopK extends Component {
 
   static propTypes = {
@@ -56,17 +51,15 @@ class TopK extends Component {
     });
 
     var url = null;
-    if (this.props.knowledgebase == "wikidata"){
+    if (this.props.kb == "wikidata"){
       url = "https://km.aifb.kit.edu/services/okno/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
-    } else if (this.props.knowledgebase == "dbpedia"){
+    } else if (this.props.kb == "dbpedia"){
       url = "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
-    } else if (this.props.knowledgebase == "dblp"){
+    } else if (this.props.kb == "dblp"){
       url = "http://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
-    } else if (this.props.knowledgebase == "musicbrainz"){
+    } else if (this.props.kb == "musicbrainz"){
       url = "http://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=musicbrainz&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     }
-    console.log(uri);
-    console.log(url);
     // if (language != null) {
     //   url += "&language=" + language;
     // }
@@ -86,7 +79,7 @@ class TopK extends Component {
         $("#" + id + "_loading").remove();
       },
       success : function(data) {
-        console.log(data);
+        console.log("DATA",data);
         function label(uri) {
           for ( k = 0; k < keys.length; k++) {
             if(data[keys[k]]["@id"] == uri){
