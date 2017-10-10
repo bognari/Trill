@@ -74,7 +74,7 @@ class LanguageSelectorFlags extends Component {
 
 
   handleChange(option){
-    this.props.dispatch(setLanguage(option.id));
+    this.props.dispatch(setLanguage([option.id]));
   }
 
   render() {
