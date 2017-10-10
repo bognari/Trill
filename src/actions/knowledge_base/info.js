@@ -11,8 +11,9 @@ import ItemBiennale from "./implemented/biennale"
 
 export function info(index){
   return function (dispatch) {
-    console.log(store.getState().knowledgebase);
-    switch (store.getState().knowledgebase.knowledgebase) {
+    console.log("INFO");
+    console.log(store.getState().qa.information[index].kb);
+    switch (store.getState().qa.information[index].kb) {
       case "wikidata": {
         var itemWikidata = new ItemWikidata(index);
         dispatch(itemWikidata.startRequest());
@@ -38,7 +39,7 @@ export function info(index){
         dispatch(itemBiennale.startRequest());
         break;
       }
-      console.log("ERROR The following knowledgebase is not supported:",store.getState().knowledgebase.knowledgebase);
+      console.log("ERROR The following knowledgebase is not supported:",store.getState().qa.information[index].kb);
 
     }
   }

@@ -58,7 +58,7 @@ class Suggestions extends Component {
             {this.shuffle(list[0].list).map(function (samplequestion, index) {
               if (samplequestion.lang==this.props.language && samplequestion.kb==this.props.kb) {
                 var link = "/question?query=" + encodeURI(samplequestion.question) + "&lang=" + this.props.language +"&kb=" + this.props.kb ;
-                return (<li key={index}>
+                return (<li key={index} className={s.li}>
                   <Link className={n.darklink}
                         to={link}>{samplequestion.question}</Link>
                 </li>);

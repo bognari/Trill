@@ -23,53 +23,63 @@ import {setKnowledgebase} from '../../actions/knowledgebase';
 })
 class LanguageSelectorFlags extends Component {
 
-  handleChange(option){
-    this.props.dispatch(setLanguage(option.name));
-    if (option.name!="en" && this.props.knowledgebase=="dbpedia"){
-      this.props.dispatch(setKnowledgebase("wikidata"
-      ));
+  initialFlag = {
+    id: this.props.language,
+    name: this.props.language,
+  }
+
+  options = [
+    {
+      id: "en",
+      name: "English",
+    },{
+      id: "de",
+      name: "German",
+    },{
+      id: "fr",
+      name: "French",
+    },{
+      id: "it",
+      name: "Italian",
     }
+  ];
+
+  flags = {
+    de: require('./images/flags/germany.png'),
+    en: require('./images/flags/united-kingdom.png'),
+    fr: require('./images/flags/france.png'),
+    it: require('./images/flags/italy.png'),
+  }
+
+  flagTemplate(item, search) {
+    console.log("item flag");
+    console.log(item);
+    return(
+      <div key="item.name">
+        <img className={s.img} src={this.flags[item.id]}/>
+        <span>{item.name}</span>
+      </div>);
+  }
+
+  flagSelected(item) {
+    var selected = [];
+    for (var i=0; i<item.length; i++){
+      selected.push(<img key={i} className={s.img} src={this.flags[item[i].id]}/>)
+    }
+    return(
+      <div key="item">
+        {selected}
+      </div>);
+  }
+
+
+  handleChange(option){
+    this.props.dispatch(setLanguage(option.id));
   }
 
   render() {
-
-    var initialFlag = {
-      id: this.props.language,
-      name: this.props.language,
-    }
-
-    var flags = [
-      {
-        id: "en",
-        name: "en",
-      },{
-        id: "de",
-        name: "de",
-      },{
-        id: "fr",
-        name: "fr",
-      },{
-        id: "it",
-        name: "it",
-      }
-    ];
-
-    var flagTemplate = function(item, search) {
-      var flags = {
-        de: require('./images/flags/de.png'),
-        en: require('./images/flags/gb.png'),
-        fr: require('./images/flags/fr.png'),
-        it: require('./images/flags/it.png'),
-      };
-
-      return(
-        <div key="item.name">
-          <img className={s.img} src={flags[item.name]}/>
-        </div>);
-    };
-
     return (
-      <ReactSuperSelect onChange={this.handleChange.bind(this)} customOptionTemplateFunction={flagTemplate}  dataSource={flags} initialValue={initialFlag} clearable={false} deselectOnSelectedOptionClick={false} />
+      <ReactSuperSelect onChange={this.handleChange.bind(this)} customSelectedValueTemplateFunction={this.flagSelected.bind(this)} customOptionTemplateFunction={this.flagTemplate.bind(this)}  dataSource={this.options} initialValue={this.initialFlag} clearable={false} deselectOnSelectedOptionClick={false} />
     );
   }
 }

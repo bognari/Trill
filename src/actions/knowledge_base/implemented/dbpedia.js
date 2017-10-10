@@ -37,6 +37,7 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
     this.information.kb = "dbpedia";
     var type = result.type;
     var value = result.value;
+    console.log("RESUTL",result);
     if (type=="literal") {
       this.information.literal = value;
       return callback();
@@ -67,6 +68,7 @@ export default class ItemDbpedia extends ItemKnowledgeBase{
 
       var url = dbpedia_endpoint + "?query=" + encodeURIComponent(sparqlQuery) + "&format=application%2Fsparql-results%2Bjson&CXML_redir_for_hrefs=&timeout=30000&debug=on";
       $.get(url).success(function (result) {
+        console.log("RESUTL",result);
         this.information.uri = value;
         this.information.links.dbpedia = value;
 

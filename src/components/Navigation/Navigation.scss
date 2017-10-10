@@ -9,7 +9,16 @@
 @import '../variables.scss';
 
 .root {
+  display: table;
 }
+
+
+.darklink{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+
 
 .link,
 .darklink,
@@ -34,6 +43,8 @@
 .darklink:active,
 .darklink:visited {
   color: rgba(51, 51, 51, 0.6);
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .darklink:hover {

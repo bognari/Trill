@@ -12,6 +12,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './MapBox.scss'
 import { render } from 'react-dom';
 
+
+
 class MapBox extends Component {
 
   static propTypes = {
@@ -69,8 +71,7 @@ class MapBox extends Component {
 
     return (
       <div className={s.container}>
-        <div id={this.props.mapid} className={s.map}>
-        </div>
+        <div id={this.props.mapid} className={s.map}/>
       </div>
     );
   }

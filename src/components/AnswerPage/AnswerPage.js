@@ -18,6 +18,7 @@ import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
 import AnswerListElement from '../AnswerListElement/AnswerListElement'
+import {Condition, Case} from 'react-case';
 import LazyLoad from 'react-lazy-load';
 import Confidence from "../Confidence/Confidence";
 
@@ -32,13 +33,14 @@ import Confidence from "../Confidence/Confidence";
     namedGraph: store.qa.namedGraph,
     information: store.qa.information,
     SPARQLquery: store.qa.SPARQLquery,    //containes the generated sparql query
-    loaded: store.qa.loaded,              //indicates if the backend already gave back the answer
-    error: store.qa.error,
+    sparqlInterpretationloaded: store.qa.sparqlInterpretationloaded,              //indicates if the backend already gave back the answer
+    sparqlInterpretationError: store.qa.sparqlInterpretationError,
     audiofile: store.qa.audiofile,
     qinitiated: store.qa.qinitiated,
     language: store.lang.language,
     knowledgebase: store.knowledgebase.knowledgebase,
     informationLoaded : store.qa.informationLoaded,
+    loaded: store.qa.loaded,
   }
 })
 
@@ -49,32 +51,36 @@ class AnswerPage extends Component {
   }
 
   render() {
+    console.log("Answer page");
+    console.log(this.props.loaded);
     return (
       <div className={s.container}>
-        {this.props.knowledgebase=="musicbrainz" ? <div className={s.development}>QA over Musicbrainz is under development !!!! </div> : null}
-        {this.props.knowledgebase=="dblp" ? <div className={s.development}>QA over Dblp is under development !!!! </div> : null}
         <Loader loaded={this.props.loaded} color="#333">
-
-          {(this.props.error) ? <Error>Error</Error> :
-            <div className={s.feedback}>
-              <div className={s.buttonmenu}>
-                {//<Confidence query={this.props.SPARQLquery[0]}/>}
-                <SparqlList sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
-                {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
+          {(this.props.error) ? <Error>Error</Error> : //check if an error occured
+              <div>
+                {this.props.information.length > 0 ?  //check if there is an answer
+                    <div>
+                        <div className={s.buttonmenu}>
+                          {/*<Confidence query={this.props.SPARQLquery[0]}/> */}
+                          <SparqlList sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/>
+                          {(this.props.SPARQLquery != "") ? <Entity sparqlquery={this.props.SPARQLquery} namedGraph={this.props.namedGraph}/> : null}
+                          <Feedback className={s.feedback}/>
+                          <Interpretation index={0}/>
+                        </div>
+                      {this.props.information.map(function (info, index) {
+                        console.log("ENTERED");
+                        return (
+                          <div key={index}>
+                            { (index < 20) ?
+                              <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
+                              </AnswerListElement>
+                              : null }
+                          </div>
+                        )}.bind(this))}
+                    </div>
+                  : <div>No Answer</div>}
               </div>
-              <Feedback/>
-              <Interpretation sparqlquery={this.props.SPARQLquery[0]} namedGraph={this.props.namedGraph}/>
-            </div>}
-
-          {this.props.information.map(function (info, index) {
-            return (
-              <div key={index}>
-                { (index < 20) ?
-                  <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
-                  </AnswerListElement>
-               : null }
-              </div>
-            )}.bind(this))}
+            }
         </Loader>
         <div className={s.bottom}/>
       </div>

@@ -5,7 +5,7 @@
 import { KNOWLEDGEBASE_CHANGE} from '../actions/knowledgebase'
 
 const initialStateKnowledgebase = {
-  knowledgebase: "wikidata", //initial language of the website set to english
+  knowledgebase: ["wikidata"], //initial language of the website set to english
 }
 
 export default function knowledgebaseReducer (state = initialStateKnowledgebase, action){

@@ -9,14 +9,19 @@
 
 @import '../variables.scss';
 
-.img {
-  height: 18px;
+.img{
+  //height: 19px;
+  //padding-left: 8px;
+  //padding-right: 8px;
+  height: 30px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 3px;
+  padding-top: 3px;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  /* padding-bottom: 3px; */
-  /* padding-top: 3px; */
-  padding: 2px 2px;
+  display: inline;
 }
 
 

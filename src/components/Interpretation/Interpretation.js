@@ -11,15 +11,12 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Interpretation.scss';
-import {sparqlToUserEndpoint} from '../../config';
-import {wikidata_endpoint} from '../../config';
-import {dbpedia_endpoint} from '../../config';
+import {sparqlToUser} from '../../actions/sparqlToUser';
 
 @connect((store) => {
   return {
-    lang: store.lang.language,
-    kb: store.knowledgebase.knowledgebase,
-
+    sparqlInterpretationloaded : store.qa.sparqlInterpretationloaded,
+    SPARQLquery: store.qa.SPARQLquery,
   }
 })
 class Sparql extends Component {
@@ -28,69 +25,21 @@ class Sparql extends Component {
 
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      retrived: false,
-      interpretation: "",
-      lang:"",
-      kb:"",
-      endpoint:"",
-    };
-  }
-
-  call(query){
-    this.serverRequest = $.ajax({
-      url: sparqlToUserEndpoint,
-      type: "POST",
-      contentType: 'application/x-www-form-urlencoded',
-      data: { sparql: query, lang: this.props.lang, kb: this.props.kb},//, endpoint: this.props.kb ="wikidata" ? wikidata_endpoint : dbpedia_endpoint  },
-      success: function (result) {
-        var res = result.interpretation;
-        var lan = result.lang;
-        var knbs = result.kb;
-        console.log("This is your KB: ",knbs);
-
-        this.setState({ retrived: true, interpretation: res} );
-      }.bind(this),
-      error: function(err){
-        console.log(err)
-      }
-    })
-  }
-  componentDidMount() {
-
-    this.call(this.props.sparqlquery.query);
-
-  }
-
-  componentWillUnmount() {
-    this.serverRequest.abort();
-  }
-
-
-  componentWillReceiveProps(nextProps) {
-
-    this.call(nextProps.sparqlquery.query);
-  }
-
-
-
   render() {
-    console.log("STATE");
-    console.log(this.state.retrived);
+    console.log("INDEX>>>>>>>>>>>>>>>>>>>> ",this.props.index);
+    console.log(this.props.sparqlInterpretationloaded[this.props.index]);
+    if (this.props.sparqlInterpretationloaded[this.props.index]==false){
+      this.props.dispatch(sparqlToUser(this.props.index));
+    }
+    console.log("loaded");
+    console.log(this.props.SPARQLquery[this.props.index]);
     return (
-
-      <div className={s.container}>
-        <div className={s.wrapfloat}>
+      <div>
+        { (this.props.sparqlInterpretationloaded[this.props.index]==true) ?
+        <div className={s.container}>
+          {this.props.SPARQLquery[this.props.index].interpretation}
         </div>
-        {(this.state.retrived) ?
-          <div id="FiringSparql" className={s.qbox}>
-            <p id="q">
-              {this.state.interpretation}
-            </p>
-          </div>: null
-        }
+          : null}
       </div>
     );
   }

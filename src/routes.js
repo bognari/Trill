@@ -29,13 +29,21 @@ import store from './stores';
 const router = new Router(on => {
   on('*', async (state, next) => {
     const component = await next();
-    store.dispatch(routechange(state.path, state.query.query, state.query.lang, state.query.kb));
+    console.log(state.query.lang );
+    var lang;
+    var kb;
+    if ((typeof state.query.lang != 'undefined') && (typeof state.query.kb != 'undefined')) {
+      console.log(state.query.lang.toString());
+       lang = state.query.lang.split(",");
+       kb = state.query.kb.split(",");
+    }
+    store.dispatch(routechange(state.path, state.query.query, lang, kb));
     var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
     if (state.query.query != null && isBrowser()==true){
       store.dispatch({type: 'SET_QUESTION', question: state.query.query});
-      store.dispatch(setKnowledgebase(state.query.kb));
-      store.dispatch(setLanguage(state.query.lang));
-      store.dispatch(questionansweringfull(state.query.query, state.query.lang, state.query.kb));
+      store.dispatch(setKnowledgebase(kb));
+      store.dispatch(setLanguage(lang));
+      store.dispatch(questionansweringfull(state.query.query, lang, kb));
     }
     return component && <Provider store={store}><App query={state.query} context={state.context}>{component}</App></Provider>;
   });

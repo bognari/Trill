@@ -14,7 +14,7 @@ if (jresult.hasOwnProperty("boolean")) {
     SPARQLquery: query,
     json: jresult,
     information: information,
-    loaded: true,
+    sparqlInterpretationloaded: true,
   });
 } else {
   var variable=jresult.head.vars[0];

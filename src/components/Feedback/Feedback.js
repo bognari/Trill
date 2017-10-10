@@ -20,7 +20,7 @@ import {qanary_services} from '../../config';
     json: store.qa.json,
     question: store.qa.question,
     language: store.lang.language,
-    knowledgebase: store.knowledgebase.knowledgebase,
+    knowledgebase: store.qa.information[0].kb,
   }
 })
 class Feedback extends Component {
@@ -53,7 +53,7 @@ class Feedback extends Component {
     }.bind(this));
 
     feedbackreq.fail(function(e) {
-      this.setState({error: !this.state.error});
+      this.setState({error: !this.state.sparqlInterpretationError});
     }.bind(this));
   }
 
@@ -87,11 +87,11 @@ class Feedback extends Component {
     }
 
     return (
-      <div id="holder">
+      <div id="container" className={s.container}>
         {/*<div id="button" onClick={this.handleClick} className={(this.state.feedbackbox) ? s.buttonpressed : s.button}>Feedback</div>*/}
 
-        <div id="container" className={s.container}>
-          {(this.state.submitted && !this.state.error) ? <p>{thanks[this.props.language]}</p> :
+
+          {(this.state.submitted && !this.state.sparqlInterpretationError) ? <p>{thanks[this.props.language]}</p> :
             <form id="form" className={s.form} action="" method="POST">
               <input type="hidden" id="question" name="question" value={this.props.question}/>
               <input type="hidden" id="sparql" name="sparql" value={this.props.SPARQLquery[0].query}/>
@@ -104,9 +104,7 @@ class Feedback extends Component {
               </p>
             </form>
           }
-          {(this.state.error) ? <p>Sorry, there was an error.</p> : null}
-
-        </div>
+          {(this.state.sparqlInterpretationError) ? <p>Sorry, there was an error.</p> : null}
       </div>
     );
   }

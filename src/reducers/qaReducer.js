@@ -4,6 +4,7 @@
 
 import { QANARY_REQUEST, QANARY_SUCCESS, QANARY_FAILURE, } from '../actions/qanary'
 import {ITEM_KNOWLEDGEBASE_REQUEST, ITEM_KNOWLEDGEBASE_SUCCESS, ITEM_KNOWLEDGEBASE_FAILURE} from '../actions/knowledge_base/knowledgeBase'
+import { SPARQL_TO_USER_REQUEST, SPARQL_TO_USER_SUCCESS, SPARQL_TO_USER_FAILURE} from '../actions/sparqlToUser'
 
 export const SET_QUESTION = 'SET_QUESTION';
 
@@ -12,13 +13,14 @@ const initialState = {
   namedGraph: "",
   question: "", //text question
   information: [],
-  SPARQLquery: "", //containes the generated sparql query
+  SPARQLquery: [], //containes the generated sparql query
   json: "",
-  loaded: false, //indicates if the backend already gave back the answer
-  error: false,
   informationLoaded : [],
   informationError: [],
-
+  sparqlInterpretationError: [],
+  sparqlInterpretationloaded: [],
+  loaded: false,
+  error: false,
 }
 
 export default function qaReducer(state = initialState, action){
@@ -33,32 +35,42 @@ export default function qaReducer(state = initialState, action){
         SPARQLquery: "",
         json: "",
         loaded: false,
-        error: false,
       }
       break;
     }
     case QANARY_SUCCESS: {
-      var tmp = new Array(action.information.length);
-      for (var i = 0; i < tmp.length; i++) {
-        tmp[i]=false;
+      var tmp1 = new Array(action.information.length);
+      for (var i = 0; i < tmp1.length; i++) {
+        tmp1[i]=false;
         //Do something
       }
+      var tmp2 = new Array(action.SPARQLquery.length);
+      for (var i = 0; i < tmp2.length; i++) {
+        tmp2[i]=Object.assign(action.SPARQLquery[i]);
+        //Do something
+      }
+      var tmp3 = new Array(action.SPARQLquery.length);
+      for (var i = 0; i < tmp3.length; i++) {
+        tmp3[i]=false;
+        //Do something
+      }
+      var newArr = action.SPARQLquery.slice();
       return {
         ...state,
         namedGraph: action.namedGraph,
         information: action.information.concat(),
-        informationLoaded: tmp,
-        SPARQLquery: action.SPARQLquery,
+        informationLoaded: tmp1,
+        SPARQLquery: tmp2,
+        sparqlInterpretationloaded: tmp3,
         json: action.json,
         loaded: true,
-        error: false,
       }
       break;
     }
     case QANARY_FAILURE: {
       return {
         ...state,
-        error: action.error,
+        error: action.sparqlInterpretationError,
         loaded: true,
       }
       break;
@@ -82,6 +94,7 @@ export default function qaReducer(state = initialState, action){
       break;
     }
     case ITEM_KNOWLEDGEBASE_SUCCESS: {
+      console.log("SUCCESS");
       return {
         ...state,
         information: [
@@ -102,8 +115,42 @@ export default function qaReducer(state = initialState, action){
         ...state,
         informationError: [
           ...state.informationError.slice(0, action.index),
-          action.error,
+          action.sparqlInterpretationError,
           ...state.informationError.slice(action.index + 1)
+        ],
+      }
+      break;
+    }
+    case SPARQL_TO_USER_REQUEST: {
+      return {
+        ...state,
+      }
+      break;
+    }
+    case SPARQL_TO_USER_SUCCESS: {
+
+      return {
+        ...state,
+        SPARQLquery: [
+          ...state.SPARQLquery.slice(0, action.index),
+          {...state.SPARQLquery[action.index], interpretation: action.sparqlInterpretation},
+          ...state.SPARQLquery.slice(action.index + 1)
+          ],
+        sparqlInterpretationloaded: [
+          ...state.sparqlInterpretationloaded.slice(0, action.index),
+          true,
+          ...state.sparqlInterpretationloaded.slice(action.index + 1)
+        ],
+      }
+      break;
+    }
+    case SPARQL_TO_USER_FAILURE: {
+      return {
+        ...state,
+        sparqlInterpretationError:  [
+          ...state.sparqlInterpretationError.slice(0, action.index),
+          action.error,
+          ...state.sparqlInterpretationError.slice(action.index + 1)
         ],
       }
       break;

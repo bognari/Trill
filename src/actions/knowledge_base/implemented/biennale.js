@@ -69,7 +69,7 @@ export default class ItemBiennale extends ItemKnowledgeBase{
 
 
       }.bind(this));
-      req.error(function(data){
+      req.sparqlInterpretationError(function(data){
         this.error(data);
       }.bind(this))
     }

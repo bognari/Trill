@@ -102,7 +102,7 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
                     }
                     return callback();
                   }.bind(this))
-                  req.error(function(data){
+                  req.sparqlInterpretationError(function(data){
                     this.error(data);
                   }.bind(this))
 
@@ -111,8 +111,8 @@ export default class ItemMusicBrainz extends ItemKnowledgeBase{
               }
             }
           }.bind(this));
-          req.error(function(data){
-            this.error(data);
+          req.sparqlInterpretationError(function(data){
+            this.sparqlInterpretationError(data);
           })
         } else {
           return callback();

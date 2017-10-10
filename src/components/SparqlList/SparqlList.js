@@ -20,6 +20,8 @@ import {qanary_endpoint} from '../../config';
   return {
     question: store.qa.question,
     SPARQLquery: store.qa.SPARQLquery,
+    SPARQLqueryKB: store.qa.SPARQLqueryKB,
+    SPARQLqueryConfidence: store.qa.SPARQLqueryConfidence,
     namedGraph: store.qa.namedGraph,
     language: store.lang.language,
     knowledgebase: store.knowledgebase.knowledgebase,
@@ -49,10 +51,12 @@ class SparqlList extends Component {
   }
 
   handleClick2(selectedquery, index, e){
-
-    var replacedsparql = this.props.sparqlquery ;
-    replacedsparql[0].query = selectedquery; //replace the first query with the selected query
-    replacedsparql[0].score = replacedsparql[0].score+100; //increase its score
+    console.log("This is the sparql queries list:",this.props.SPARQLquery);
+    var replacedsparql = [].concat(this.props.SPARQLquery) ;
+    replacedsparql[0].query = this.props.sparqlquery[index].query; //replace the first query with the selected query
+    replacedsparql[0].score = this.props.sparqlquery[0].score; //increase its score
+    replacedsparql[0].confidence = this.props.sparqlquery[index].confidence;
+    replacedsparql[0].kb = this.props.sparqlquery[index].kb;
     replacedsparql.splice(index, 1); //remove the selected query from where it was in the list before
     console.log("This is the updated sparql queries list: ",replacedsparql);
 
@@ -66,12 +70,15 @@ class SparqlList extends Component {
         + "  ?a"+i+" oa:hasBody \"" +  replacedsparql[i].query.replace("\n", " ") + "\" ;"
         + "     oa:annotatedBy <www.wdaqua.eu> ; "
         + "         oa:annotatedAt ?time ; "
-        + "         qa:hasScore "+ replacedsparql[i].score + " . \n";
+        + "         qa:hasScore \""+ replacedsparql[i].score + "\"^^xsd:integer ; \n"
+        + "         qa:hasConfidence \""+ replacedsparql[i].confidence + "\" ; \n"
+        + "         qa:overKb \""+ replacedsparql[i].kb + "\" . \n";
       sparqlPart2+= " BIND (IRI(str(RAND())) AS ?a"+i+") . \n";
     }
 
     var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
       + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
+      + "prefix xsd: <http://www.w3.org/2001/XMLSchema#> "
       + "INSERT { "
       + "GRAPH <" + this.props.namedGraph + "> { "
       + sparqlPart1
@@ -81,7 +88,7 @@ class SparqlList extends Component {
       + "BIND (IRI(str(RAND())) AS ?b) . "
       + "BIND (now() as ?time) . "
       + "}";
-
+    console.log(sparql);
     this.serverRequest = $.ajax({
       url: qanary_endpoint,
       type: "POST",
@@ -98,6 +105,7 @@ class SparqlList extends Component {
   }
 
   render() {
+    console.log("LIST",this.props.sparqlquery);
     return (
       <div className={s.container}>
         <div className={s.wrapfloat}>
@@ -111,12 +119,10 @@ class SparqlList extends Component {
                     return (
                       <div key={index}>
                         <p id={"q"+index} >
-                        <input type="radio" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
-                          <Interpretation sparqlquery={newitems} namedGraph={this.props.namedGraph}/>
-
+                          <input type="radio" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}>&nbsp; &nbsp; {newitems.query} </input>
+                          <Interpretation index={index}/>
                         </p>
                       </div>)
-
                         }.bind(this))
                   }
                 </div> : null
