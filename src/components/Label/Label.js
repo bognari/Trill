@@ -45,6 +45,13 @@ class Label extends Component {
       var secondhalf = this.props.children.slice(1500);
     }
 
+    var seeMore = {
+      en: "see",
+      de: "Über uns",
+      fr: "Sur nous",
+      it: "Su di noi",
+    };
+
     return (
       <div className={this.props.type == 'title'? s.title : s.normal}>
         {largetext ? <p><span>{firsthalf}</span><span id="seeblock">... <span id="seemore" className={s.seemore}>see more</span></span><span id="secondhalf" className={s.secondhalf}>{secondhalf}</span> <span id="seeless" className={s.seeless}>see less</span></p> : <p>{this.props.children}</p>}

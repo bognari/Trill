@@ -27,6 +27,7 @@ class Footer extends Component {
       de: "Fehler Melden",
       fr: "Signaler une erreur",
       it: "Segnalare un errore",
+      es: "Reportar un error",
     }
 
     return (

@@ -11,9 +11,10 @@ export const SPARQL_TO_USER_FAILURE = 'SPARQL_TO_USER_FAILURE';
 
 
 
-export function sparqlToUser(index, lang){
+export function sparqlToUser(index){
   console.log(store.getState().qa.SPARQLquery[index])
   var query = store.getState().qa.SPARQLquery[index];
+  var lang = store.getState().lang.language[0];
   return function (dispatch) {
     console.log("SPARQLTOUSER");
     dispatch({type: SPARQL_TO_USER_REQUEST});

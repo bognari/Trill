@@ -63,6 +63,7 @@ class Feedback extends Component {
       de: "Ist diese Antwort korrekt?",
       fr: "Cette response est correcte?",
       it: "Questa risposta è giusta?",
+      es: "¿Es ésta la pregunta correcta?",
     }
 
     var yes = {
@@ -70,6 +71,7 @@ class Feedback extends Component {
       de: "Ja",
       fr: "Oui",
       it: "Sì",
+      es: "Sí",
     }
 
     var no = {
@@ -77,6 +79,7 @@ class Feedback extends Component {
       de: "Nein",
       fr: "No",
       it: "No",
+      es: "No",
     }
 
     var thanks = {
@@ -84,6 +87,7 @@ class Feedback extends Component {
       de: "Danke für ihr Feedback!",
       fr: "Merci!",
       it: "Grazie!",
+      es: "¡Gracias!"
     }
 
     return (

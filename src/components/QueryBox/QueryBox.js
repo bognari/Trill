@@ -189,6 +189,7 @@ class QueryBox extends Component {
       de: "Gebe eine Frage ein ... ",
       fr: "Entrez une question ... ",
       it: "Fammi una domanda ... ",
+      es: "Introduce una pregunta...",
     };
 
     var go = {
@@ -196,6 +197,7 @@ class QueryBox extends Component {
       de: "Los",
       fr: "Go",
       it: "Vai",
+      es: "Enviar",
     }
 
     var mic = false;

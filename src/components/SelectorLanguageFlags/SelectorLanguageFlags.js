@@ -34,13 +34,16 @@ class LanguageSelectorFlags extends Component {
       name: "English",
     },{
       id: "de",
-      name: "German",
+      name: "Deutsch",
     },{
       id: "fr",
-      name: "French",
+      name: "Francais",
     },{
       id: "it",
-      name: "Italian",
+      name: "Italiano",
+    },{
+      id: "es",
+      name: "Español",
     }
   ];
 
@@ -49,6 +52,7 @@ class LanguageSelectorFlags extends Component {
     en: require('./images/flags/united-kingdom.png'),
     fr: require('./images/flags/france.png'),
     it: require('./images/flags/italy.png'),
+    es: require('./images/flags/spain.png'),
   }
 
   flagTemplate(item, search) {

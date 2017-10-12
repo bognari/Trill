@@ -34,6 +34,7 @@ class Navigation extends Component {
       de: "Über uns",
       fr: "Sur nous",
       it: "Su di noi",
+      es: "Sobre nosotros",
     };
 
     var faq = {
@@ -41,6 +42,7 @@ class Navigation extends Component {
       de: "FAQ",
       fr: "FAQ",
       it: "FAQ",
+      es: "FAQ",
     };
 
     var example = {
@@ -48,6 +50,7 @@ class Navigation extends Component {
       de: "Beispiele",
       fr: "Examples",
       it: "Esempi",
+      es: "Ejemplos",
     };
 
     return (

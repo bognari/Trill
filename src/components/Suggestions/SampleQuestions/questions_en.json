@@ -123,7 +123,7 @@
         "kb": "dblp"
       },
       {
-        "question": "How many publications has ",
+        "question": "How many publications has Dennis Diefenbach?",
         "lang": "en",
         "kb": "dblp"
       },
@@ -221,7 +221,35 @@
         "question": "Dammi canzoni dei Pink Floyd.",
         "lang": "it",
         "kb": "wikidata"
+      },
+      {
+        "question": "¿Cuál es la capital de Aragón?",
+        "lang": "es",
+        "kb": "dbpedia"
+      },
+      {
+      "question": "ensaimada",
+      "lang": "es",
+      "kb": "dbpedia"
+      },
+      {
+        "question": "queso de cabrales",
+        "lang": "es",
+        "kb": "dbpedia"
+      },
+      {
+        "question": "islas de España",
+        "lang": "es",
+        "kb": "dbpedia"
       }
+    ,
+      {
+        "question": "tres tristes tigres",
+        "lang": "es",
+        "kb": "dbpedia"
+      }
+
+
     ]
   }
 ]
