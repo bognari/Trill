@@ -18,6 +18,7 @@ const initialState = {
   informationLoaded : [],
   informationError: [],
   sparqlInterpretationError: [],
+  sparqlInterpretationloading: [],
   sparqlInterpretationloaded: [],
   loaded: false,
   error: false,
@@ -46,7 +47,7 @@ export default function qaReducer(state = initialState, action){
       }
       var tmp2 = new Array(action.SPARQLquery.length);
       for (var i = 0; i < tmp2.length; i++) {
-        tmp2[i]=Object.assign(action.SPARQLquery[i]);
+        tmp2[i]=Object.assign({},action.SPARQLquery[i]);
         //Do something
       }
       var tmp3 = new Array(action.SPARQLquery.length);
@@ -54,14 +55,20 @@ export default function qaReducer(state = initialState, action){
         tmp3[i]=false;
         //Do something
       }
+      var tmp4 = new Array(action.SPARQLquery.length);
+      for (var i = 0; i < tmp4.length; i++) {
+        tmp4[i]=false;
+        //Do something
+      }
       var newArr = action.SPARQLquery.slice();
       return {
         ...state,
         namedGraph: action.namedGraph,
         information: action.information.concat(),
-        informationLoaded: tmp1,
-        SPARQLquery: tmp2,
-        sparqlInterpretationloaded: tmp3,
+        informationLoaded: tmp1.concat(),
+        SPARQLquery: tmp2.concat(),
+        sparqlInterpretationloaded: tmp3.concat(),
+        sparqlInterpretationloading: tmp4.concat(),
         json: action.json,
         loaded: true,
       }
@@ -122,8 +129,14 @@ export default function qaReducer(state = initialState, action){
       break;
     }
     case SPARQL_TO_USER_REQUEST: {
+
       return {
         ...state,
+        sparqlInterpretationloading: [
+          ...state.sparqlInterpretationloading.slice(0, action.index),
+          true,
+          ...state.sparqlInterpretationloading.slice(action.index + 1)
+        ],
       }
       break;
     }

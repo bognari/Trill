@@ -16,8 +16,7 @@ export function sparqlToUser(index){
   var query = store.getState().qa.SPARQLquery[index];
   var lang = store.getState().lang.language[0];
   return function (dispatch) {
-    console.log("SPARQLTOUSER");
-    dispatch({type: SPARQL_TO_USER_REQUEST});
+    dispatch({type: SPARQL_TO_USER_REQUEST, index: index});
     $.ajax({
       url: sparqlToUserEndpoint,
       type: "POST",

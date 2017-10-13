@@ -122,7 +122,7 @@ class SparqlList extends Component {
                         <input type="radio" className={s.sparqlmenu} name = "selectquery" value = {newitems.query} onClick={this.handleClick2.bind(this, newitems.query,index)}/>
                         &nbsp; &nbsp;
                         <div className={s.containerTwo}>
-                          <Interpretation index={index}/>
+                          <Interpretation id={index} index={index}/>
                         </div>
                         <div> &nbsp; &nbsp; &nbsp; {newitems.query}</div>
                       </li>)

@@ -15,6 +15,7 @@ import {sparqlToUser} from '../../actions/sparqlToUser';
 
 @connect((store) => {
   return {
+    sparqlInterpretationloading : store.qa.sparqlInterpretationloading,
     sparqlInterpretationloaded : store.qa.sparqlInterpretationloaded,
     SPARQLquery: store.qa.SPARQLquery,
   }
@@ -26,13 +27,9 @@ class Sparql extends Component {
   };
 
   render() {
-    console.log("INDEX>>>>>>>>>>>>>>>>>>>> ",this.props.index);
-    console.log(this.props.sparqlInterpretationloaded[this.props.index]);
-    if (this.props.sparqlInterpretationloaded[this.props.index]==false){
+    if (this.props.sparqlInterpretationloading[this.props.index]==false){
       this.props.dispatch(sparqlToUser(this.props.index));
     }
-    console.log("loaded");
-    console.log(this.props.SPARQLquery[this.props.index]);
     return (
       <div className={s.container}>
         { (this.props.sparqlInterpretationloaded[this.props.index]==true) ?
