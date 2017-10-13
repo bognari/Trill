@@ -41,6 +41,7 @@ class HeaderSearch extends Component {
           <Navigation className={s.nav} linkClassName={n.darklink}/>
           {(this.props.location == "/")? <div className={s.placeholder}></div> : <Link className={s.brand} to="/">
             <img src={require('./../../public/WDAquaLogoSmall.png')} height="24" alt="WDAqua" className={s.logo}/>
+            &nbsp;
             </Link>}
               {(["/question"].indexOf(this.props.location) == -1) ? null : <QueryBox size="50" header={true}/>}
           {this.props.knowledgebase=="biennale" ? <BiennaleNav/>: null}
