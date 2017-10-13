@@ -34,9 +34,9 @@ class Sparql extends Component {
     console.log("loaded");
     console.log(this.props.SPARQLquery[this.props.index]);
     return (
-      <div>
+      <div className={s.container}>
         { (this.props.sparqlInterpretationloaded[this.props.index]==true) ?
-        <div className={s.container}>
+        <div>
           {this.props.SPARQLquery[this.props.index].interpretation}
         </div>
           : null}
