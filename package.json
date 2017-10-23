@@ -59,6 +59,7 @@
     "react-router": "^2.8.1",
     "react-routing": "0.0.7",
     "react-super-select": "^0.5.11",
+    "react-youtube": "^7.5.0",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
     "redux-promise-middleware": "^4.1.0",
