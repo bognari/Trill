@@ -37,6 +37,7 @@ class SelectorKnowledgeBase extends Component {
     musicbrainz: require('./images/musicbrainz-logo.png'),
     dblp: require('../../actions/knowledge_base/implemented/images/dblp_logo.png'),
     biennale: require('./images/biennale_logo.png'),
+    freebase: require('./images/freebase-logo.png'),
   };
 
   handleChange(option){

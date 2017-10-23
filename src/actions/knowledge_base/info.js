@@ -8,6 +8,7 @@ import ItemWikidata from "./implemented/wikidata"
 import ItemMusicBrainz from "./implemented/musicbrainz"
 import ItemDblp from "./implemented/dblp"
 import ItemBiennale from "./implemented/biennale"
+import ItemFreebase from "./implemented/freebase"
 
 export function info(index){
   return function (dispatch) {
@@ -37,6 +38,11 @@ export function info(index){
       case "biennale": {
         var itemBiennale = new ItemBiennale(index);
         dispatch(itemBiennale.startRequest());
+        break;
+      }
+      case "freebase": {
+        var itemFreebase = new ItemFreebase(index);
+        dispatch(itemFreebase.startRequest());
         break;
       }
       console.log("ERROR The following knowledgebase is not supported:",store.getState().qa.information[index].kb);

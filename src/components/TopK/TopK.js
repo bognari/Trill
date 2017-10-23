@@ -56,9 +56,9 @@ class TopK extends Component {
     } else if (this.props.kb == "dbpedia"){
       url = "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "dblp"){
-      url = "http://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+      url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "musicbrainz"){
-      url = "http://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=musicbrainz&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+      url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=musicbrainz&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     }
     // if (language != null) {
     //   url += "&language=" + language;

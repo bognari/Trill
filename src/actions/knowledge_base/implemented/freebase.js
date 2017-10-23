@@ -2,11 +2,11 @@
  * Created by Dennis on 18/05/17.
  */
 
-import {wikidata_endpoint} from "../../../config"
+import {freebase_endpoint} from "../../../config"
 import ItemKnowledgeBase from "../knowledgeBase"
 import iri from "iri";
 
-export default class ItemWikidata extends ItemKnowledgeBase{
+export default class ItemFreebase extends ItemKnowledgeBase{
 
   constructor(k){
     super(k);
@@ -15,7 +15,7 @@ export default class ItemWikidata extends ItemKnowledgeBase{
   rank(){}
 
   get(result,lang,callback){
-    this.information.kb = "wikidata";
+    this.information.kb = "freebase";
     var type = result.type;
     var value = result.value;
     console.log("RESUTL",result);
@@ -36,31 +36,31 @@ export default class ItemWikidata extends ItemKnowledgeBase{
       }
     } else if (type=="uri"){
       //Retrive information about the uri from the endpoint
-      var sparqlQuery = "SELECT ?label ?image ?coordinates ?wikilink ?youtube where { " +
-        "OPTIONAL{ " +
+      var sparqlQuery = "SELECT ?label ?image ?lat ?long ?wikilink ?text where { " +
+        " OPTIONAL{ " +
         //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
-        "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=?lang) . " +
+        "<" + value + "> <http://www.w3.org/2000/01/rdf-schema#label> ?label . FILTER (lang(?label)=?lang) . " +
         " values (?lang ?lang_) { (\""+lang+"\" 1) (\"en\" 2) (\"de\" 3) (\"fr\" 4) (\"it\" 5)} " + //Trick to find the labels if they do not exist in the desired language, otherwise the "Q number" appears which is ugly
         "} " +
-        "OPTIONAL{ " +
-        "<" + value + "> wdt:P18 ?image . " +
+        " OPTIONAL{ " +
+        "<" + value + "> <http://rdf.freebase.com/ns/type.content_import.uri> ?image . " +
         "} " +
-        "OPTIONAL{ " +
-        "<" + value + "> wdt:P625 ?coordinates . " +
-        "} " +
-        "OPTIONAL{ " +
-        "<" + value + "> wdt:P1651 ?youtube . " +
-        "} " +
-        "OPTIONAL{ " +
-        "?wikilink a schema:Article ; schema:about <" + value + "> ; schema:inLanguage \""+ lang +"\" ; schema:isPartOf <https://"+lang+".wikipedia.org/> ." +
-        "} " +
+        " OPTIONAL{ " +
+        "  <" + value + "> <http://rdf.freebase.com/ns/location.location.geolocation..location.geocode.latitude> ?lat . " +
+        " } " +
+        " OPTIONAL{ " +
+        "  <" + value + "> <http://rdf.freebase.com/ns/location.location.geolocation..location.geocode.longitude> ?long . " +
+        " } " +
+        " OPTIONAL{ " +
+        "  <" + value + "> <http://rdf.freebase.com/ns/common.topic.description> ?text . FILTER (lang(?text)=\""+lang+"\") . " +
+        " } " +
         "} order by ?lang_ ";
-
-      var url = wikidata_endpoint +"?query=" + encodeURIComponent(sparqlQuery) + "&format=json";
-      $.get(url).success(function (result) {
+      var url = freebase_endpoint +"?query=" + encodeURIComponent(sparqlQuery) + "&format=json";
+      var request=$.get(url);
+      request.success(function (result) {
         console.log("HERE index "+this.k+" get", result);
         this.information.uri = value;
-        this.information.links.wikidata = value;
+        this.information.links.freebase = value;
 
         if (result.results.bindings[0].label != undefined) {
           this.information.label = result.results.bindings[0].label.value;
@@ -70,14 +70,13 @@ export default class ItemWikidata extends ItemKnowledgeBase{
           this.information.image = result.results.bindings[0].image.value + "?width=300";
         }
 
-        if (result.results.bindings[0].coordinates != undefined) {
-          var coordinates = result.results.bindings[0].coordinates.value.replace("Point(", "").replace(")", "").split(" ");
-          this.information.lat = parseFloat(coordinates[1])
-          this.information.long = parseFloat(coordinates[0]);
+        if (result.results.bindings[0].long != undefined && result.results.bindings[0].long != undefined) {
+          this.information.lat = parseFloat(result.results.bindings[0].lat.value);
+          this.information.long = parseFloat(result.results.bindings[0].long.value);
         }
 
-        if (result.results.bindings[0].youtube != undefined) {
-          this.information.youtube = result.results.bindings[0].youtube.value;
+        if (result.results.bindings[0].text != undefined) {
+          this.information.abstract = result.results.bindings[0].text.value;
         }
 
         if (result.results.bindings[0].wikilink != undefined) {
@@ -98,8 +97,10 @@ export default class ItemWikidata extends ItemKnowledgeBase{
         } else {
           return callback();
         }
-
       }.bind(this))
+      request.error(function(error){
+        console.log("ERROR", error);
+      })
     }
   }
 }

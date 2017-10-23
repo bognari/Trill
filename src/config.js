@@ -18,6 +18,7 @@ export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qana
 export const dbpedia_endpoint = "https://dbpedia.org/sparql";
 export const wikidata_endpoint = "https://query.wikidata.org/sparql";
 export const biennale_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/biennale/sparql";
+export const freebase_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/freebase_big/sparql";
 export const musicbrainz_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/musicbrainz/sparql";
 export const dblp_endpoint = "http://wdaqua-hdt-endpoint.univ-st-etienne.fr/dblp/sparql";
 //export const sparqlToUserEndpoint =  "http://localhost:1920/sparqltouser";
