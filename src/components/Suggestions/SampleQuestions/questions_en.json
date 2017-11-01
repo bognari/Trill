@@ -241,15 +241,294 @@
         "question": "islas de España",
         "lang": "es",
         "kb": "dbpedia"
-      }
-    ,
+      },
       {
         "question": "tres tristes tigres",
         "lang": "es",
         "kb": "dbpedia"
+      },
+      {
+        "question": "Who are the actors of Titanic?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "What is the nationality of Jackson Pollock?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "List movies with Hugh Laurie.",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who are the Beatles's members?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Sherlock Holmes",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "atomic number of polonium",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who is the director of A Clockwork Orange?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "What is the population of China?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "When is Ramesses II born?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who is the creator of Breaking Bad?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who is the author of A Game of Thrones?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "Who is Bach?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "What is the music genre of Gorillaz?",
+        "lang": "en",
+        "kb": "wikidata"
+      },
+      {
+        "question": "What are the capitals of the European Union?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+      "question": "What is the music genre of Bob Marley?",
+      "lang": "en",
+      "kb": "wikidata"
+      },{
+        "question": "Who is Tom Cruise?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "When was D-Day?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "Who wrote Dubliners?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "Who is the author of Foundation?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "What is the birth date of George Washington?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "What is the flag of the European Union?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "Who is the mayor of London?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "Who is the author of Le Petit Prince?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "Who is the director of Big Fish?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "What are the borders of Mexico?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "What are the official names of the European Union?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "Who is the prime minister of France?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "Where is the inventor of dynamite born?",
+        "lang": "en",
+        "kb": "wikidata"
+      },{
+        "question": "président du Ghana",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quelle est la population du Japon ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "population de la France",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui est le président de la France ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "numéro atomique du polonium",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui est le mari de Lee Krasner ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui est le maire de Londre ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quand est né Louis XIV ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Sherlock Holmes",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quelle est la date de naissance de George Washington ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui sont les membres des Beatles ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quel est le fuseau horaire de San Francisco ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui est le réalisateur de Pulp Fiction ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Où est né Jules César ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quel est le numéro atomique du Polonium ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quand était la bataille d'Actium ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui est l'auteur du Petit Prince ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quel est le drapeau de l'Union Européenne ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui est le maire de Paris ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quelle est la population de la France ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quelle est la nationalité de Jackson Pollock ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quels sont les frontières de Mexico ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quel est le code postal de Lyon ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Qui est Bach?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Quand était la prise de la Bastille ?",
+        "lang": "fr",
+        "kb": "wikidata"
+      },{
+        "question": "Daños el primer ministro de Francia.",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "El número atómico del polonio.",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "¿Quién es el marido de Lee Krasner?",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "Guatemala",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "¿Quién es el primer ministro de Francia?",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "Quiénes son los miembros de los Beatles?",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "Lugar de nacimiento de Julio César.",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "Dónde muertó Abraham Lincoln?",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "El Bob Marley",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "¿Qué es I, Robot?",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "hija de Barack Obama",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "¿Cuál es la población de Japón?",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "¿Qué es Robin Hood?",
+        "lang": "es",
+        "kb": "wikidata"
+      },{
+        "question": "¿Quién es Barack Obama?",
+        "lang": "es",
+        "kb": "wikidata"
       }
-
-
     ]
   }
 ]
