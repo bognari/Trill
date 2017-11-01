@@ -119,7 +119,8 @@ class DidYouMean extends Component {
         + "  ?a"+i+" oa:hasBody \"" +  replacedsparql[i].query.replace("\n", " ") + "\" ;"
         + "     oa:annotatedBy <www.wdaqua.eu> ; "
         + "         oa:annotatedAt ?time ; "
-        + "         qa:hasScore "+ replacedsparql[i].score + " . \n";
+        + "         qa:hasScore "+ replacedsparql[i].score + " ;  "
+        + "         qa:overKb \""+this.props.knowledgebase+"\" .  \n ";
       sparqlPart2+= " BIND (IRI(str(RAND())) AS ?a"+i+") . \n";
     }
 
