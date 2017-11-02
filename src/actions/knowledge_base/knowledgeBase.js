@@ -21,6 +21,7 @@ export default class ItemKnowledgeBase{
     this.information.lat = null;
     this.information.long = null;
     this.information.youtube = null;
+    this.information.website = null;
     this.information.links = {}; // put the links as keys of this object like {dbpedia: "http://dbpedia.org/resource/Test"}
   }
 

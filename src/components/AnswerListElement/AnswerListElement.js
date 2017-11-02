@@ -6,10 +6,11 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 import {Condition, Case} from 'react-case';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import YouTube from 'react-youtube'
+import YouTube from 'react-youtube';
+
 
 import ImageComponent from '../ImageComponent'
 import s from './AnswerListElement.scss';
@@ -40,10 +41,11 @@ class AnswerListElement extends Component {
     var lat = this.props.information.lat;
     var abstract = this.props.information.abstract;
     var video = this.props.information.youtube;
+    var webpage = this.props.information.webpage;
     console.log("VIDEO");
     console.log(video);
 
-    var left = {label: null, abstract: null, map: null, youtube:null};
+    var left = {label: null, abstract: null, map: null, youtube:null, webpage};
     if (label!=null) {
       left.label =  (<div className={s.title}><p>{this.props.information.label}</p><LinksBar links={this.props.information.links} /></div>)
     }
@@ -61,9 +63,12 @@ class AnswerListElement extends Component {
       left.youtube =  (<YouTube videoId={this.props.information.youtube} opts={options_video} id={this.props.index}/>)
     }
 
-
     if (lat!= null){
       left.map = (<MapBox mapid={"map" + this.props.index} lat={this.props.information.lat} long={this.props.information.long}></MapBox>)
+    }
+
+    if (webpage!=null){
+      left.webpage = <iframe src={webpage}/>
     }
 
     var right = {image: null, box: null};
@@ -92,6 +97,7 @@ class AnswerListElement extends Component {
                   {left.abstract}
                   {left.map}
                   {left.youtube}
+                  {left.webpage}
                 </div>
                 <div className={s.rightColumn}>
                   {right.image}

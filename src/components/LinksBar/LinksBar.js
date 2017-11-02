@@ -33,6 +33,7 @@ class LinksBar extends Component {
         {this.props.links.hasOwnProperty("dblp") == true ? <a target="_blank" href={this.props.links.dblp}><img src={require('../../actions/knowledge_base/implemented/images/dblp_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("biennale") == true ? <a target="_blank" href={this.props.links.biennale}><img src={require('../../actions/knowledge_base/implemented/images/biennale_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("freebase") == true ? <a target="_blank" href={this.props.links.freebase}><img src={require('../../actions/knowledge_base/implemented/images/freebase_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("doi") == true ? <a target="_blank" href={this.props.links.doi}><img src={require('./images/doi-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }
