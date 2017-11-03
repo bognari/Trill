@@ -55,7 +55,6 @@
     "react-leaflet": "^0.12.3",
     "react-loader": "^2.4.0",
     "react-redux": "^4.4.5",
-    "react-redux-form": "^1.2.2",
     "react-router": "^2.8.1",
     "react-routing": "0.0.7",
     "react-super-select": "^0.5.11",
