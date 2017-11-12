@@ -4,6 +4,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './DidYouMean.scss';
 import $ from 'jquery';
 import {questionansweringfull} from '../../actions/qanary';
+import {pushQueries} from '../../actions/qanary_push';
 import {qanary_endpoint, dbpedia_endpoint, wikidata_endpoint} from '../../config';
 
 var getFromBetween = {
@@ -82,19 +83,7 @@ class DidYouMean extends Component {
   }
 
   handleClick3(spqno, e){
-    // var rplcSPARQL = this.props.sparqlquery ;
-    // var selectedquery=[];
-    // selectedquery[0] = {query:"" , score:0};
-    // var no=0;
-    // for(var i=0;i<spqno.length; i++){
-    //   no = spqno[i];
-    //   selectedquery=this.props.sparqlquery[no];
-    //   console.log("this is the sparql we want: ",selectedquery);
-    //   console.log("this is its number: ",no);
-    //   rplcSPARQL[i].query = selectedquery.query;
-    //   rplcSPARQL[i].score = selectedquery.score;
-    // }
-
+    //reorder queries
     var replacedsparql = this.props.sparqlquery;//note: the changes made to replacedsparql, will also happen to sparqlquery
 
     var selectedq;
@@ -111,47 +100,8 @@ class DidYouMean extends Component {
       console.log("This is the replacedsparql at each loop: ", replacedsparql);
     }
 
-    var sparqlPart1 = "";
-    var sparqlPart2 = "";
-    for (var i=0; i<Math.min(replacedsparql.length ,30); i++){
-      sparqlPart1+=" ?a"+i+" a qa:AnnotationOfAnswerSPARQL . "
-        + "  ?a"+i+" oa:hasTarget <URIAnswer> . "
-        + "  ?a"+i+" oa:hasBody \"" +  replacedsparql[i].query.replace("\n", " ") + "\" ;"
-        + "     oa:annotatedBy <www.wdaqua.eu> ; "
-        + "         oa:annotatedAt ?time ; "
-        + "         qa:hasScore "+ replacedsparql[i].score + " ;  "
-        + "         qa:overKb \""+this.props.knowledgebase+"\" .  \n ";
-      sparqlPart2+= " BIND (IRI(str(RAND())) AS ?a"+i+") . \n";
-    }
-
-    var sparql = "prefix qa: <http://www.wdaqua.eu/qa#> "
-      + "prefix oa: <http://www.w3.org/ns/openannotation/core/> "
-      + "INSERT { "
-      + "GRAPH <" + this.props.namedGraph + "> { "
-      + sparqlPart1
-      + " }} "
-      + "WHERE { "
-      + sparqlPart2
-      + "BIND (IRI(str(RAND())) AS ?b) . "
-      + "BIND (now() as ?time) . "
-      + "}";
-
-    this.serverRequest = $.ajax({
-      url: qanary_endpoint,
-      type: "POST",
-      contentType: 'application/x-www-form-urlencoded',
-      data: {query: sparql},
-      beforeSend: function (xhr) {
-        xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:admin"));
-        xhr.setRequestHeader('Accept', 'application/sparql-results+json');
-      },
-      success: function (result) {
-        this.props.dispatch(questionansweringfull(100, this.props.language, this.props.knowledgebase, this.props.namedGraph));
-      }.bind(this)
-    })
-  }
-
-  componentDidMount() {
+    //push queries to qanary triplestore
+    this.props.dispatch(pushQueries(replacedsparql,this.props.language,this.props.knowledgebase,this.props.namedGraph));
   }
 
   render() {
