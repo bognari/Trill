@@ -38,6 +38,7 @@ class SelectorKnowledgeBase extends Component {
     dblp: require('../../actions/knowledge_base/implemented/images/dblp_logo.png'),
     biennale: require('./images/biennale_logo.png'),
     freebase: require('./images/freebase-logo.png'),
+    scigraph: require('./images/scigraph-logo.png'),
   };
 
   handleChange(option){
@@ -95,6 +96,9 @@ class SelectorKnowledgeBase extends Component {
       },{
         id: "dblp",
         name: "dblp",
+      },{
+        id: "scigraph",
+        name: "scigraph",
       }
     ];
 
