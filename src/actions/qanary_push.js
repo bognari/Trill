@@ -15,7 +15,7 @@ import {questionansweringfull} from "./qanary";
 import {qanary_endpoint} from '../config';
 
 
-export function pushQueries(sparqlList, language, knowledgebase, namedGraph){
+export function pushQueries(sparqlList, language, knowledgebase, namedGraph, question){
   return function (dispatch) {
     var sparqlPart1 = "";
     var sparqlPart2 = "";
@@ -43,7 +43,7 @@ export function pushQueries(sparqlList, language, knowledgebase, namedGraph){
       + "}";
 
     dispatch({type: QANARY_PUSH_REQUEST, list: sparqlList});
-    $.ajax({
+    return $.ajax({
       url: qanary_endpoint,
       type: "POST",
       contentType: 'application/x-www-form-urlencoded',
@@ -57,8 +57,7 @@ export function pushQueries(sparqlList, language, knowledgebase, namedGraph){
         information.push({
           message: result,
         });
-        dispatch({type: QANARY_PUSH_SUCCESS, error: true, information: information});
-        dispatch(questionansweringfull(100, language, knowledgebase, namedGraph));
+        return dispatch({type: QANARY_PUSH_SUCCESS, error: true, information: information});
       },
       error: function (e) {
         var information = [];
@@ -70,5 +69,4 @@ export function pushQueries(sparqlList, language, knowledgebase, namedGraph){
     })
   }
 }
-
 

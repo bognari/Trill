@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './DidYouMean.scss';
 import $ from 'jquery';
-import {questionansweringfull} from '../../actions/qanary';
 import {pushQueries} from '../../actions/qanary_push';
-import {qanary_endpoint, dbpedia_endpoint, wikidata_endpoint} from '../../config';
+import {questionansweringfull} from '../../actions/qanary';
+import {dbpedia_endpoint, wikidata_endpoint} from '../../config';
 
 var getFromBetween = {
   results:[],
@@ -101,7 +101,10 @@ class DidYouMean extends Component {
     }
 
     //push queries to qanary triplestore
-    this.props.dispatch(pushQueries(replacedsparql,this.props.language,this.props.knowledgebase,this.props.namedGraph));
+    this.props.dispatch(pushQueries(replacedsparql,this.props.language,this.props.knowledgebase,this.props.namedGraph)).then(() =>
+      this.props.dispatch(questionansweringfull(100, this.props.language, this.props.knowledgebase, this.props.namedGraph))
+    );
+
   }
 
   render() {

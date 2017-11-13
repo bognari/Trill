@@ -20,11 +20,13 @@ import AnswerPage from './components/AnswerPage';
 import HomePage from './components/HomePage';
 import {routechange} from './actions/route';
 import {questionansweringfull} from '../src/actions/qanary';
+import {pushQueries} from '../src/actions/qanary_push';
 import {setLanguage} from '../src/actions/language';
 import {setKnowledgebase} from '../src/actions/knowledgebase';
 
 import { Provider } from 'react-redux';
 import store from './stores';
+import {simpleUri} from "./actions/simpleUri";
 
 const router = new Router(on => {
   on('*', async (state, next) => {
@@ -39,12 +41,18 @@ const router = new Router(on => {
     }
     store.dispatch(routechange(state.path, state.query.query, lang, kb));
     var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
-    if (state.query.query != null && isBrowser()==true){
+    if (state.query.uri != null && isBrowser()==true){ //this is the case where the user click on the link of topk
+      store.dispatch({type: 'SET_QUESTION', question: state.query.query});
+      store.dispatch(setKnowledgebase(kb));
+      store.dispatch(setLanguage(lang));
+      store.dispatch(simpleUri(state.query.query, state.query.uri, kb[0]));
+    } else if (state.query.query != null && isBrowser()==true){
       store.dispatch({type: 'SET_QUESTION', question: state.query.query});
       store.dispatch(setKnowledgebase(kb));
       store.dispatch(setLanguage(lang));
       store.dispatch(questionansweringfull(state.query.query, lang, kb));
     }
+
     return component && <Provider store={store}><App query={state.query} context={state.context}>{component}</App></Provider>;
   });
 

@@ -52,7 +52,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
     form.append("language[]", lang.join(", "));
     form.append("targetdata[]", knowledgebase.join(", "));
 
-    var questionresult = $.ajax({
+    return $.ajax({
       url: qanary_services+"/questionansweringfull",
       data: form,
       processData: false,
@@ -102,7 +102,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
   }
 }
 
-function json_to_list(jresult, kb){
+export function json_to_list(jresult, kb){
   var results = [];
   if (jresult.hasOwnProperty("boolean")) {
     results.push({

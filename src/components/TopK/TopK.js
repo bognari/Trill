@@ -13,6 +13,11 @@ import { connect } from 'react-redux';
 import $ from 'jquery';
 import s from './TopK.scss';
 
+@connect((store) => {
+  return {
+    namedGraph: store.qa.namedGraph,
+  }
+})
 class TopK extends Component {
 
   static propTypes = {
@@ -79,6 +84,7 @@ class TopK extends Component {
         $("#" + id + "_loading").remove();
       },
       success : function(data) {
+        $("#" + id).empty();
         console.log("DATA",data);
         function label(uri) {
           for ( k = 0; k < keys.length; k++) {
@@ -126,12 +132,15 @@ class TopK extends Component {
           }
         }
 
+
         $("#" + id).append("<h2>Summary</h2><table></table>");
         for (var i = 0; i < print.statements.length; i++) {
           if (print.statements[i].subject == print.entity) {
-            $("#" + id).children("table").append("<tr><td>" + label(print.statements[i].predicate) + "&nbsp;&nbsp;&nbsp;&nbsp;</td><td>" + label(print.statements[i].object)+ "</td></tr>");
+            var path = "/question?query="+label(print.statements[i].object)+"&lang="+this.props.lang+"&kb="+this.props.kb+"&uri="+print.statements[i].object+"&ng="+this.props.namedGraph;
+            $("#" + id).children("table").append("<tr><td>" + label(print.statements[i].predicate) + "&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href=\""+path+"\">"+label(print.statements[i].object)+"</a></td></tr>");
           } else if (print.statements[i].object == print.entity) {
-            $("#" + id).children("table").append("<tr><td>" + label(print.statements[i].predicate) + " of&nbsp;&nbsp;&nbsp;&nbsp;</td><td>" + label(print.statements[i].subject) + "</td></tr>");
+            var path = "/question?query="+label(print.statements[i].subject)+"&lang="+this.props.lang+"&kb="+this.props.kb+"&uri="+print.statements[i].subject+"&ng="+this.props.namedGraph;
+            $("#" + id).children("table").append("<tr><td>" + label(print.statements[i].predicate) + " of&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href=\""+path+"\">"+label(print.statements[i].subject)+"</a></td></tr>");
           }
         }
         // $("#" + id).append("<i style='font-size:10px'>_______<br>Summary by <a href='" + service.substring(0, service.lastIndexOf("/")) + "'>" + service.substring(0, service.lastIndexOf("/")) + "</a></i>");
@@ -144,7 +153,7 @@ class TopK extends Component {
         //   $("#" + id).hide();
         //   summa(this.id, topK, language, fixedProperty, id, service);
         // });
-      },
+      }.bind(this),
       error: function(error){
           console.log(error);
       }
@@ -152,8 +161,9 @@ class TopK extends Component {
   }
 
   componentWillUnmount(){
-    $("#" + this.props.sumid).empty();
-    $("#" + this.props.sumid).remove();
+    var id = this.props.sumid;
+    $("#" + id).empty();
+    $("#" + id).remove();
   }
 
 
