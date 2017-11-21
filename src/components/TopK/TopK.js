@@ -55,15 +55,18 @@ class TopK extends Component {
       }
     });
 
+    console.log("ENTERED SUMMARY "+this.props.kb);
     var url = null;
     if (this.props.kb == "wikidata"){
       url = "https://km.aifb.kit.edu/services/okno/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "dbpedia"){
       url = "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "dblp"){
-      url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+      url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=dblp&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "musicbrainz"){
       url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=musicbrainz&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+    } else if (this.props.kb == "freebase"){
+      url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=freebase&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     }
     // if (language != null) {
     //   url += "&language=" + language;

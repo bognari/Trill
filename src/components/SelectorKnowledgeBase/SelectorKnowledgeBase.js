@@ -95,6 +95,9 @@ class SelectorKnowledgeBase extends Component {
       },{
         id: "dblp",
         name: "dblp",
+      },{
+        id: "freebase",
+        name: "freebase",
       }
     ];
 
