@@ -58,7 +58,7 @@ class TopK extends Component {
     console.log("ENTERED SUMMARY "+this.props.kb);
     var url = null;
     if (this.props.kb == "wikidata"){
-      url = "https://km.aifb.kit.edu/services/okno/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+      url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=wikidata&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "dbpedia"){
       url = "https://km.aifb.kit.edu/services/link/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "dblp"){
