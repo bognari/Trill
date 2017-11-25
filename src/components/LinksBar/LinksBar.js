@@ -26,6 +26,7 @@ class LinksBar extends Component {
   render() {
     return (
       <div className={s.container}>
+        {this.props.links.hasOwnProperty("homepage") == true ? <a target="_blank" href={this.props.links.homepage}><img src={require('./images/homepage.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("wikipedia") == true ? <a target="_blank" href={this.props.links.wikipedia}><img src={require('./images/wikipedia-logo.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("dbpedia") == true ? <a target="_blank" href={this.props.links.dbpedia}><img src={require('../../actions/knowledge_base/implemented/images/dbpedia_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("wikidata") == true ? <a target="_blank" href={this.props.links.wikidata}><img src={require('../../actions/knowledge_base/implemented/images/wikidata_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
