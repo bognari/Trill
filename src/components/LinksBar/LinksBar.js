@@ -34,6 +34,11 @@ class LinksBar extends Component {
         {this.props.links.hasOwnProperty("biennale") == true ? <a target="_blank" href={this.props.links.biennale}><img src={require('../../actions/knowledge_base/implemented/images/biennale_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("freebase") == true ? <a target="_blank" href={this.props.links.freebase}><img src={require('../../actions/knowledge_base/implemented/images/freebase_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("doi") == true ? <a target="_blank" href={this.props.links.doi}><img src={require('./images/doi-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("facebook") == true ? <a target="_blank" href={this.props.links.facebook}><img src={require('./images/facebook.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("github") == true ? <a target="_blank" href={this.props.links.github}><img src={require('./images/github.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("twitter") == true ? <a target="_blank" href={this.props.links.twitter}><img src={require('./images/twitter.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("instagram") == true ? <a target="_blank" href={this.props.links.instagram}><img src={require('./images/instagram.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+
       </div>
     );
   }
