@@ -39,7 +39,7 @@ class LinksBar extends Component {
         {this.props.links.hasOwnProperty("github") == true ? <a target="_blank" href={this.props.links.github}><img src={require('./images/github.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("twitter") == true ? <a target="_blank" href={this.props.links.twitter}><img src={require('./images/twitter.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("instagram") == true ? <a target="_blank" href={this.props.links.instagram}><img src={require('./images/instagram.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
-
+        {this.props.links.hasOwnProperty("orcid") == true ? <a target="_blank" href={this.props.links.orcid}><img src={require('./images/orcid.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }

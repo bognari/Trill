@@ -36,7 +36,7 @@ export default class ItemWikidata extends ItemKnowledgeBase{
       }
     } else if (type=="uri"){
       //Retrive information about the uri from the endpoint
-      var sparqlQuery = "SELECT ?label ?image ?coordinates ?wikilink ?youtube ?github ?twitter ?facebook ?instagram ?homepage where { " +
+      var sparqlQuery = "SELECT ?label ?image ?coordinates ?wikilink ?youtube ?github ?twitter ?facebook ?instagram ?homepage ?orcid where { " +
         "OPTIONAL{ " +
         //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
         "<" + value + "> rdfs:label ?label . FILTER (lang(?label)=?lang) . " +
@@ -65,6 +65,9 @@ export default class ItemWikidata extends ItemKnowledgeBase{
         "} " +
         "OPTIONAL{ " +
         "<" + value + "> wdt:P856 ?homepage . " +
+        "} " +
+        "OPTIONAL{ " +
+        "<" + value + "> wdt:P496 ?orcid . " +
         "} " +
         "OPTIONAL{ " +
         "?wikilink a schema:Article ; schema:about <" + value + "> ; schema:inLanguage \""+ lang +"\" ; schema:isPartOf <https://"+lang+".wikipedia.org/> ." +
@@ -113,6 +116,10 @@ export default class ItemWikidata extends ItemKnowledgeBase{
 
         if (result.results.bindings[0].homepage != undefined) {
           this.information.links.homepage = result.results.bindings[0].homepage.value;
+        }
+
+        if (result.results.bindings[0].orcid != undefined) {
+          this.information.links.orcid = "https://orcid.org/"+result.results.bindings[0].orcid.value;
         }
 
         if (result.results.bindings[0].wikilink != undefined) {
