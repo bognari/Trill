@@ -31,7 +31,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       form.append("graph", namedGraph);
     }
     else {
-      components = "wdaqua-core1-scigraph, QueryExecuter";
+      components = "wdaqua-core1, QueryExecuter";
     }
 
     //check whether the question input is a string or mp3file

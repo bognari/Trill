@@ -59,6 +59,8 @@ class TopK extends Component {
       url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     } else if (this.props.kb == "musicbrainz"){
       url = "https://wdaqua-summa-server.univ-st-etienne.fr/sum" + "?kb=musicbrainz&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
+    } else if (this.props.kb == "scigraph"){
+      url = "http://localhost:3031/sum" + "?kb=scigraph&entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     }
     // if (language != null) {
     //   url += "&language=" + language;

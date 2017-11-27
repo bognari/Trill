@@ -24,9 +24,9 @@ export default class ItemScigraph extends ItemKnowledgeBase{
       return callback();
     } else if (type="uri"){
       //Retrive information about the uri from the endpoint
-      var sparqlQuery = "PREFIX sg: <http://www.springernature.com/scigraph/ontologies/core/> "+
+      var sparqlQuery = "PREFIX sg: <http://scigraph.springernature.com/ontologies/core/> "+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-        "SELECT ?label ?abstract ?doi where { " +
+        "SELECT ?label ?doi ?webpage where { " +
         "  OPTIONAL{ " +
         //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
         "    <" + value + "> sg:publishedName ?label . " +
@@ -38,7 +38,7 @@ export default class ItemScigraph extends ItemKnowledgeBase{
         "    <" + value + ">  sg:doiLink ?doi . " +
         "  } " +
         "  OPTIONAL{ " +
-        "    <" + value + ">  sg:abstract ?abstract . " +
+        "    <" + value + ">  sg:webpage ?webpage . " +
         "  } " +
         "} ";
       console.log(sparqlQuery);
@@ -56,12 +56,33 @@ export default class ItemScigraph extends ItemKnowledgeBase{
           this.information.abstract = result.results.bindings[0].abstract.value;
         }
 
+        if (result.results.bindings[0].webpage != undefined) {
+          this.information.links.webpage = result.results.bindings[0].webpage.value;
+        }
+
         if (result.results.bindings[0].doi != undefined) {
           var doi = result.results.bindings[0].doi.value;
           this.information.links.doi = doi;
+
+          //Retrive the abstract from springer api
+          url = "http://api.springer.com/metadata/json/doi/"+doi.replace("http://dx.doi.org/","")+"?api_key=93f11aed022b47339ab260ea464512f6";
+          var request = $.getJSON(url);
+          request.success(function (data) {
+            console.log(data);
+            console.log(data.query);
+            console.log(data.records);
+                  this.information.abstract = data.records[0].abstract ;
+                  return callback();
+          }.bind(this))
+          request.error(function (data) {
+            console.log(data);
+            return callback();
+          })
+        } else {
+          return callback();
         }
 
-        return callback();
+        //to get the abstract curl
 
       }.bind(this))
     }
