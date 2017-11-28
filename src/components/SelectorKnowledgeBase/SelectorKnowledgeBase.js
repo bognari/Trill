@@ -96,9 +96,12 @@ class SelectorKnowledgeBase extends Component {
       },{
         id: "dblp",
         name: "dblp",
-      },{
+      }, {
         id: "scigraph",
         name: "scigraph",
+      }, {
+        id: "freebase",
+        name: "freebase",
       }
     ];
 

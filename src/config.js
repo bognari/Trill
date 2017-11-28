@@ -22,6 +22,7 @@ export const freebase_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint
 export const hdt_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/";
 export const musicbrainz_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/musicbrainz/sparql";
 export const dblp_endpoint = "http://wdaqua-hdt-endpoint.univ-st-etienne.fr/dblp/sparql";
+export const endpoint = "http://wdaqua-hdt-endpoint.univ-st-etienne.fr/";
 //export const sparqlToUserEndpoint =  "http://localhost:1920/sparqltouser";
 export const sparqlToUserEndpoint =  "https://wdaqua-sparqltouser.univ-st-etienne.fr/sparqltouser";
 export const audio_pipeline = "SpeechRecognitionKaldi";

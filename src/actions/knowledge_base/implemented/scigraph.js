@@ -26,7 +26,7 @@ export default class ItemScigraph extends ItemKnowledgeBase{
       //Retrive information about the uri from the endpoint
       var sparqlQuery = "PREFIX sg: <http://scigraph.springernature.com/ontologies/core/> "+
         "PREFIX owl: <http://www.w3.org/2002/07/owl#> " +
-        "SELECT ?label ?doi ?webpage where { " +
+        "SELECT ?label ?doi ?homepage where { " +
         "  OPTIONAL{ " +
         //"<" + value + "> rdfs:label ?label . FILTER (lang(?label)=\""+ lang +"\" || lang(?label)=\"en\" || lang(?label)=\"de\" || lang(?label)=\"fr\" || lang(?label)=\"it\")" +
         "    <" + value + "> sg:publishedName ?label . " +
@@ -38,7 +38,7 @@ export default class ItemScigraph extends ItemKnowledgeBase{
         "    <" + value + ">  sg:doiLink ?doi . " +
         "  } " +
         "  OPTIONAL{ " +
-        "    <" + value + ">  sg:webpage ?webpage . " +
+        "    <" + value + ">  sg:webpage ?homepage . " +
         "  } " +
         "} ";
       console.log(sparqlQuery);
@@ -56,8 +56,8 @@ export default class ItemScigraph extends ItemKnowledgeBase{
           this.information.abstract = result.results.bindings[0].abstract.value;
         }
 
-        if (result.results.bindings[0].webpage != undefined) {
-          this.information.links.webpage = result.results.bindings[0].webpage.value;
+        if (result.results.bindings[0].homepage != undefined) {
+          this.information.links.homepage = result.results.bindings[0].homepage.value;
         }
 
         if (result.results.bindings[0].doi != undefined) {

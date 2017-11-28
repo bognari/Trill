@@ -26,6 +26,7 @@ class LinksBar extends Component {
   render() {
     return (
       <div className={s.container}>
+        {this.props.links.hasOwnProperty("homepage") == true ? <a target="_blank" href={this.props.links.homepage}><img src={require('./images/homepage.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("wikipedia") == true ? <a target="_blank" href={this.props.links.wikipedia}><img src={require('./images/wikipedia-logo.png')} height="30" alt="wikipedia" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("dbpedia") == true ? <a target="_blank" href={this.props.links.dbpedia}><img src={require('../../actions/knowledge_base/implemented/images/dbpedia_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("wikidata") == true ? <a target="_blank" href={this.props.links.wikidata}><img src={require('../../actions/knowledge_base/implemented/images/wikidata_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
@@ -35,6 +36,11 @@ class LinksBar extends Component {
         {this.props.links.hasOwnProperty("freebase") == true ? <a target="_blank" href={this.props.links.freebase}><img src={require('../../actions/knowledge_base/implemented/images/freebase_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("scigraph") == true ? <a target="_blank" href={this.props.links.scigraph}><img src={require('../../actions/knowledge_base/implemented/images/scigraph_logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("doi") == true ? <a target="_blank" href={this.props.links.doi}><img src={require('./images/doi-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("facebook") == true ? <a target="_blank" href={this.props.links.facebook}><img src={require('./images/facebook.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("github") == true ? <a target="_blank" href={this.props.links.github}><img src={require('./images/github.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("twitter") == true ? <a target="_blank" href={this.props.links.twitter}><img src={require('./images/twitter.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("instagram") == true ? <a target="_blank" href={this.props.links.instagram}><img src={require('./images/instagram.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("orcid") == true ? <a target="_blank" href={this.props.links.orcid}><img src={require('./images/orcid.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }
