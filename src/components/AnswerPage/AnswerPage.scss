@@ -10,6 +10,16 @@
   clear: both;
 }
 
+.copyright {
+  padding: 0 20px 0 20px;
+  border: 2px solid $background-gray;
+  color: $foreground-gray;
+  font-weight: bold;
+  font-size: large;
+  margin-bottom: 15px;
+  clear: both;
+}
+
 .link,
 .link:active,
 .link:visited {

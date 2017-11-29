@@ -528,6 +528,30 @@
         "question": "¿Quién es Barack Obama?",
         "lang": "es",
         "kb": "wikidata"
+      },{
+        "question": "knowledge and information systems",
+        "lang": "en",
+        "kb": "scigraph"
+      },{
+        "question": "vanessa lopez",
+        "lang": "en",
+        "kb": "scigraph"
+      },{
+        "question": "Give me publications of vanessa lopez.",
+        "lang": "en",
+        "kb": "scigraph"
+      },{
+        "question": "DBpedia author",
+        "lang": "en",
+        "kb": "scigraph"
+      },{
+        "question": "What is the affiliation of vanessa lopez?",
+        "lang": "en",
+        "kb": "scigraph"
+      },{
+        "question": "journals in IT in Business",
+        "lang": "en",
+        "kb": "scigraph"
       }
     ]
   }

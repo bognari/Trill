@@ -21,6 +21,7 @@ import AnswerListElement from '../AnswerListElement/AnswerListElement'
 import {Condition, Case} from 'react-case';
 import LazyLoad from 'react-lazy-load';
 import Confidence from "../Confidence/Confidence";
+import Link from "../Link/Link";
 
 @connect((store) => {
   return {
@@ -81,6 +82,8 @@ class AnswerPage extends Component {
                   : <div>No Answer</div>}
               </div>
             }
+          {/*Dont't delete the next line to fullfill cc-by copyright of scigraph */}
+          {this.props.knowledgebase=="scigraph"? <div className={s.copyright}>This informations comes from <a href="http://scigraph.springernature.com/">Scigraph</a></div> : null}
         </Loader>
         <div className={s.bottom}/>
       </div>
