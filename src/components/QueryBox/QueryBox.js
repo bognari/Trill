@@ -152,7 +152,7 @@ class QueryBox extends Component {
         //from here is a test to understand the audio service
 
         var mpfile = new File([mpblob], "recording.mp3");
-        that.props.dispatch(questionansweringfull(mpfile, "en", that.props.knowledgebase));
+        that.props.dispatch(questionansweringfull(mpfile, ["en"], that.props.knowledgebase));
         Location.push("/question");
       }
       fileReader.readAsArrayBuffer(blob);
