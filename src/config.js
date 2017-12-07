@@ -29,6 +29,9 @@ export const audio_pipeline = "SpeechRecognitionKaldi";
 export const text_pipeline = "wdaqua-core1, QueryExecuter";
 //export const databaseUrl = process.env.DATABASE_URL || 'postgresql://demo:Lqk62xg6TBm5UhfR@demo.ctbl5itzitm4.us-east-1.rds.amazonaws.com:5432/membership01';
 
+
+export unneeded = "bla";
+
 export const analytics = {
 
   // https://analytics.google.com/
