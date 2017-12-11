@@ -13,7 +13,7 @@ import s from './HomePage.scss';
 import QueryBox from '../QueryBox';
 import Suggestions from '../Suggestions';
 import {connect} from 'react-redux';
-import Collapsible from 'react-collapsible';
+
 
 @connect((store) => {
   return {
@@ -39,9 +39,9 @@ class HomePage extends Component {
         <div className={s.container}>
           <img src={require('./../../public/WDAquaLogo.png')} height="96" alt="WDAqua" className={s.logo}/>
           <QueryBox size="70"/>
-          <Collapsible trigger="Start here">
+
             <Suggestions/>
-          </Collapsible>
+
 
         </div>
       </div>

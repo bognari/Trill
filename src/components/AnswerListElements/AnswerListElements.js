@@ -53,9 +53,21 @@ class AnswerListElements extends Component {
 
     var left = {label: null, abstract: null, map: null, youtube: null};
     if (label != null) {
-      left.label = (
-        <div className={s.title}><p>{this.props.information.label}</p><LinksBar links={this.props.information.links}/>
-        </div>)
+      if(abstract != null || lat != null || image != null){
+        left.label = (
+          <div className={s.title}>
+            <div> {this.props.information.label}</div>
+            <div className ={s.icon}> + </div>
+            <LinksBar links={this.props.information.links}/>
+          </div>)
+      }else{
+        left.label = (
+          <div className={s.title}><p>{this.props.information.label}</p><LinksBar links={this.props.information.links}/>
+          </div>)
+      }
+
+
+
     }
     if (abstract != null) {
       left.abstract = (<Label>{this.props.information.abstract}</Label>)
