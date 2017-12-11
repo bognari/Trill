@@ -56,13 +56,13 @@ class AnswerListElements extends Component {
       if(abstract != null || lat != null || image != null){
         left.label = (
           <div className={s.title}>
-            <div> {this.props.information.label}</div>
+            {this.props.information.label}
             <div className ={s.icon}> + </div>
             <LinksBar links={this.props.information.links}/>
           </div>)
       }else{
         left.label = (
-          <div className={s.title}><p>{this.props.information.label}</p><LinksBar links={this.props.information.links}/>
+          <div className={s.title}>{this.props.information.label}<LinksBar links={this.props.information.links}/>
           </div>)
       }
 
@@ -114,15 +114,17 @@ class AnswerListElements extends Component {
 
               <Case test={label != null}>
                 <Collapsible trigger={left.label}>
-                  <div className={s.leftColumn}>
-                    {left.abstract}
-                    {left.map}
-                    {left.youtube}
-                    {left.webpage}
-                  </div>
-                  <div className={s.rightColumn}>
-                    {right.image}
-                    {right.topk}
+                  <div className={s.info}>
+                    <div className={s.leftColumn}>
+                      {left.abstract}
+                      {left.map}
+                      {left.youtube}
+                      {left.webpage}
+                    </div>
+                    <div className={s.rightColumn}>
+                      {right.image}
+                      {right.topk}
+                    </div>
                   </div>
                 </Collapsible>
 

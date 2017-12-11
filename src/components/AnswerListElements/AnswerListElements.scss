@@ -64,12 +64,16 @@
   font-weight: bold;
   margin-bottom: 0;
 }
+
+.info {
+  padding-top: 15px;
+}
+
 .icon {
-  text-align: right;
+  display: inline;
+  float: right;
   padding-left: 10px;
   color: $accent;
   font-size: xx-large;
   font-weight: bold;
-
-
 }
