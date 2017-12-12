@@ -85,33 +85,33 @@ class AnswerListElement extends Component {
     return (
       <div className={s.container}>
         { (this.props.loaded==true) ?
-            <Condition>
+          <Condition>
 
-              <Case test={this.props.information.literal!=null} >
-                <Label type="title">{this.props.information.literal}</Label>
-              </Case>
+            <Case test={this.props.information.literal!=null} >
+              <Label type="title">{this.props.information.literal}</Label>
+            </Case>
 
-              <Case test={label!=null}>
-                <div className={s.leftColumn}>
-                  {left.label}
-                  {left.abstract}
-                  {left.map}
-                  {left.youtube}
-                  {left.webpage}
-                </div>
-                <div className={s.rightColumn}>
-                  {right.image}
-                  {right.topk}
-                </div>
-              </Case>
-              <Case test={label==null && image != null}>
-                  {right.image}
-              </Case>
+            <Case test={label!=null}>
+              <div className={s.leftColumn}>
+                {left.label}
+                {left.abstract}
+                {left.map}
+                {left.youtube}
+                {left.webpage}
+              </div>
+              <div className={s.rightColumn}>
+                {right.image}
+                {right.topk}
+              </div>
+            </Case>
+            <Case test={label==null && image != null}>
+              {right.image}
+            </Case>
 
 
 
-            </Condition>
-        : null}
+          </Condition>
+          : null}
       </div>
     )
   }

@@ -14,6 +14,7 @@ import QueryBox from '../QueryBox';
 import Suggestions from '../Suggestions';
 import {connect} from 'react-redux';
 
+
 @connect((store) => {
   return {
     knowledgebase: store.knowledgebase.knowledgebase,
@@ -38,7 +39,10 @@ class HomePage extends Component {
         <div className={s.container}>
           <img src={require('./../../public/WDAquaLogo.png')} height="96" alt="WDAqua" className={s.logo}/>
           <QueryBox size="70"/>
-          <Suggestions/>
+
+            <Suggestions/>
+
+
         </div>
       </div>
     );
