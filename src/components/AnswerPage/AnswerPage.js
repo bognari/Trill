@@ -79,7 +79,7 @@ class AnswerPage extends Component {
   }
   onChangePage(pageOfItems) {
     // update state with new page of items
-    console.log("Cest MATEUB E?CORE");
+
     this.setState({ pageOfItems: pageOfItems });
 
   }
