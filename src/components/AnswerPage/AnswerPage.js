@@ -6,7 +6,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
@@ -17,8 +17,10 @@ import Feedback from '../Feedback';
 import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
-import AnswerListElement from '../AnswerListElement/AnswerListElement'
-import AnswerListElements from '../AnswerListElements/AnswerListElements'
+
+
+import AnswerListElements from '../AnswerListElements/AnswerListElements';
+import Pagination from '../Pagination/Pagination';
 import {Condition, Case} from 'react-case';
 import LazyLoad from 'react-lazy-load';
 import Confidence from "../Confidence/Confidence";
@@ -48,15 +50,45 @@ import index from "../../stores/index";
   }
 })
 class AnswerPage extends Component {
+  /* {this.props.information.map(function (info, index) {
+                     console.log("ENTERED");
 
+                       return(
+                       <div key={index}>
+                         { (index < 20) ?
+                           <AnswerListElements id={index} index={index} information={info} collapsible ={k>1} loaded={this.props.informationLoaded[index]}>
+                           </AnswerListElements>
+                         : null }
+                       </div>
+                   );
+
+
+
+
+                    }.bind(this))}*/
   constructor(props) {
     super(props);
+    var exampleItems  = this.props.information;
+    // noinspection JSAnnotator
+    this.state = {
+      exampleItems: exampleItems,
+      pageOfItems: [],
+    };
+    this.onChangePage = this.onChangePage.bind(this);
 
+  }
+  onChangePage(pageOfItems) {
+    // update state with new page of items
+    console.log("Cest MATEUB E?CORE");
+    this.setState({ pageOfItems: pageOfItems });
 
   }
 
+
   render() {
     let k = this.props.information.length;
+    console.log("LA Valeur de K est                              jlsdfkjlsdhfsdhfhsdlfjlksdjfmksdjflsdkjflsdlfkjsdlfsdlkflskdjl : " + k);
+    this.state.exampleItems = this.props.information;
     return (
       <div className={s.container}>
         <Loader loaded={this.props.loaded} color="#333">
@@ -71,38 +103,27 @@ class AnswerPage extends Component {
                     <Feedback className={s.feedback}/>
                     <Interpretation index={0}/>
                   </div>
-                  {this.props.information.map(function (info, index) {
-                    console.log("ENTERED");
 
 
-                    if(k<=1){
-                      return(
-                      <div key={index}>
-                        { (index < 20) ?
-                          <AnswerListElement id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
-                          </AnswerListElement>
-                        : null }
+                  {this.state.pageOfItems.map(function (info, index) {
+                    return(
+                    <div key={index}>
+                        {(index < 20) ?
+                          <AnswerListElements id={index} index={index} information={info} collapsible={k < 1} loaded={this.props.informationLoaded[index]} >
+                          </AnswerListElements>
+                          : null}
+
                       </div>);
-
-                    }else{
-                      return(
-                        <div key={index}>
-                          { (index < 20) ?
-                            <AnswerListElements id={index} index={index} information={info} loaded={this.props.informationLoaded[index]}>
-                            </AnswerListElements>
-                            :null}
-
-                        </div>);
-                      }
+                  }.bind(this))}
+                  <Pagination items={this.state.exampleItems} onChangePage={this.onChangePage} />
 
 
-                   }.bind(this))}
                 </div>
                 : <div>No Answer</div>}
             </div>
           }
           {/*Dont't delete the next line to fullfill cc-by copyright of scigraph */}
-          {this.props.knowledgebase=="scigraph"? <div className={s.copyright}>This informations comes from <a href="http://scigraph.springernature.com/">Scigraph</a></div> : null}
+          {this.props.knowledgebase=="scigraph" ? <div className={s.copyright}>This informations comes from <a href="http://scigraph.springernature.com/">Scigraph</a></div> : null}
         </Loader>
         <div className={s.bottom}/>
       </div>
