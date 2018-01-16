@@ -6,7 +6,7 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
 
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
@@ -17,14 +17,10 @@ import Feedback from '../Feedback';
 import SparqlList from '../SparqlList';
 import Interpretation from '../Interpretation';
 import Entity from '../DidYouMean';
-import AnswerListElement from '../AnswerListElement/AnswerListElement'
-import AnswerListElements from '../AnswerListElements/AnswerListElements'
-import {Condition, Case} from 'react-case';
-import LazyLoad from 'react-lazy-load';
-import Confidence from "../Confidence/Confidence";
 
-import Link from "../Link/Link";
-import index from "../../stores/index";
+
+import AnswerListElements from '../AnswerListElements/AnswerListElements';
+import AnswerListElement from '../AnswerListElement/AnswerListElement';
 import MapBoxBig from "../MapBoxBig/MapBoxBig";
 
 @connect((store) => {
@@ -48,23 +44,45 @@ import MapBoxBig from "../MapBoxBig/MapBoxBig";
   }
 })
 class AnswerPage extends Component {
+  /* {this.props.information.map(function (info, index) {
+                     console.log("ENTERED");
 
+                       return(
+                       <div key={index}>
+                         { (index < 20) ?
+                           <AnswerListElements id={index} index={index} information={info} collapsible ={k>1} loaded={this.props.informationLoaded[index]}>
+                           </AnswerListElements>
+                         : null }
+                       </div>
+                   );
+
+
+
+
+                    }.bind(this))}*/
   constructor(props) {
     super(props);
+    var exampleItems  = this.props.information;
+    // noinspection JSAnnotator
+    this.state = {
+      exampleItems: exampleItems,
+      pageOfItems: [],
+    };
+    this.onChangePage = this.onChangePage.bind(this);
+
   }
+  onChangePage(pageOfItems) {
+    // update state with new page of items
+
+    this.setState({ pageOfItems: pageOfItems });
+  }
+
 
   render() {
     var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
     let k = this.props.information.length;
-    console.log("INFO HERE");
     console.log(this.props.information);
-
-    var lat = [];
-    var long = [];
-    for (var i =0; i< this.props.information.length; i++){
-      lat.push(this.props.information[i].lat);
-      long.push(this.props.information[i].long);
-    }
+    this.state.exampleItems = this.props.information;
     return (
       <div className={s.container}>
         <Loader loaded={this.props.loaded} color="#333">
@@ -99,12 +117,25 @@ class AnswerPage extends Component {
                         </div>);
                       }
                    }.bind(this))}
+
+                  {/*{this.state.pageOfItems.map(function (info, index) {*/}
+                    {/*return(*/}
+                    {/*<div key={index}>*/}
+                        {/*{(index < 20) ?*/}
+                          {/*<AnswerListElements id={index} index={index} information={info} collapsible={k < 1} loaded={this.props.informationLoaded[index]} >*/}
+                          {/*</AnswerListElements>*/}
+                          {/*: null}*/}
+
+                      {/*</div>);*/}
+                  {/*}.bind(this))}*/}
+                  {/*<Pagination items={this.state.exampleItems} onChangePage={this.onChangePage} />*/}
+
                 </div>
                 : <div>No Answer</div>}
             </div>
           }
           {/*Dont't delete the next line to fullfill cc-by copyright of scigraph */}
-          {this.props.knowledgebase=="scigraph"? <div className={s.copyright}>This informations comes from <a href="http://scigraph.springernature.com/">Scigraph</a></div> : null}
+          {this.props.knowledgebase=="scigraph" ? <div className={s.copyright}>This informations comes from <a href="http://scigraph.springernature.com/">Scigraph</a></div> : null}
         </Loader>
         <div className={s.bottom}/>
       </div>

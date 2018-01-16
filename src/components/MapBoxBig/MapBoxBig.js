@@ -18,10 +18,8 @@ class MapBoxBig extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      render: false,
-    }
   }
+
 
   componentDidMount() {
 
@@ -52,7 +50,6 @@ class MapBoxBig extends Component {
     console.log("lat_max " + lat_max);
     console.log(lat_min);
     console.log(long_min);
-
     if (lat_max != null && lat_min != null) {
       var corner1 = L2.latLng(lat_min, long_min),
         corner2 = L2.latLng(lat_max, long_max),
@@ -73,7 +70,7 @@ class MapBoxBig extends Component {
           }
         }
       }
-      this.setState({render: true});
+      //document.querySelector('#show').style = "display: inline-block";
     }
 
 
@@ -105,15 +102,14 @@ class MapBoxBig extends Component {
 
 
   render() {
-    if (this.state.render == true){
       return (
-        <div className={s.container}>
-          <div id={this.props.mapid} className={s.map}/>
+        <div id="show" className={s.container}>
+           <div id={this.props.mapid} className={s.map}/>
         </div>
       );
-    } else {
-      return (null)
-    }
+    //} else {
+    //  return (null)
+    //}
 
   }
 

@@ -31,7 +31,16 @@ class AnswerListElements extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      open : false,
+    };
   }
+
+  swap(){
+    console.log(this.state.open);
+    this.setState({ open: !this.state.open });
+  }
+
 
   render() {
     if (this.props.information.abstract==null && this.props.information.links!=null && this.props.information.links.wikipedia!=null){
@@ -43,15 +52,16 @@ class AnswerListElements extends Component {
     var abstract = this.props.information.abstract;
     var video = this.props.information.youtube;
     var webpage = this.props.information.webpage;
+
     var left = {label: null, abstract: null, map: null, youtube: null};
     if (label != null) {
       if(abstract != null || lat != null || image != null){
         left.label = (
           <div className={s.title}>
             {this.props.information.label}
-            <div className ={s.icon}> + </div>
+            {this.state.open == false ? <div className ={s.icon}> + </div> : <div className ={s.icon}> - </div>}
             <LinksBar links={this.props.information.links}/>
-          </div>)
+          </div> )
       }else{
         left.label = (
           <div className={s.title}>{this.props.information.label}<LinksBar links={this.props.information.links}/>
@@ -102,7 +112,7 @@ class AnswerListElements extends Component {
             </Case>
 
             <Case test={label != null}>
-              <Collapsible trigger={left.label}>
+              <Collapsible trigger={left.label} open ={this.props.collapsible} onOpening={this.swap} onClosing = {this.swap} >
                 <div className={s.info}>
                   <div className={s.leftColumn}>
                     {left.abstract}
@@ -114,16 +124,16 @@ class AnswerListElements extends Component {
                     {right.image}
                     {right.topk}
                   </div>
-                </div>
-              </Collapsible>
-            </Case>
-            <Case test={label == null && image != null}>
-              {right.image}
-            </Case>
-          </Condition>
-          : null}
-      </div>)
-    }
+              </div>
+            </Collapsible>
+          </Case>
+          <Case test={label == null && image != null}>
+            {right.image}
+          </Case>
+        </Condition>
+        : null}
+    </div>)
+  }
 }
 
 export default withStyles(AnswerListElements, s);
