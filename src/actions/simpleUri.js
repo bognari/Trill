@@ -2,11 +2,10 @@
  * Created by Dennis on 11/11/16.
  */
 
-import iri from 'iri';
-
 import {json_to_list} from '../actions/qanary';
 import {endpoint} from '../config';
 import {QANARY_REQUEST, QANARY_SUCCESS, QANARY_FAILURE} from "./qanary";
+import {info2} from "./knowledge_base/info2";
 
 export function simpleUri(question, uri, knowledgebase){
 
@@ -30,6 +29,7 @@ export function simpleUri(question, uri, knowledgebase){
           information: json_to_list(data, knowledgebase),
           loaded: true,
         });
+        dispatch(info2(knowledgebase,data,sparqlQuery));
       },
       error: function(e){
         var information = [];

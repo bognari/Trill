@@ -28,18 +28,19 @@ class MapBox extends Component {
 
   componentDidMount() {
 
-      var L = require('leaflet');
+    var L = require('leaflet');
 
-      var map = L.map(this.props.mapid).setView([this.props.lat, this.props.long], 13);
+    var map = L.map(this.props.mapid).setView([this.props.lat, this.props.long], 13);
 
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-      L.marker([this.props.lat, this.props.long]).addTo(map)
-        //.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
-
+    if (this.props.geoJson==null){
+      L.marker([this.props.lat, this.props.long]).addTo(map);
+    } else {
+      L.geoJSON(this.props.geoJson).addTo(map);
+    }
 
 
     //===========

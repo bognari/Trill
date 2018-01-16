@@ -15,14 +15,17 @@ export const qanary_services =  "https://wdaqua-qanary.univ-st-etienne.fr";
 //The url where qanary is pushing the information
 export const qanary_endpoint =  "https://wdaqua-endpoint.univ-st-etienne.fr/qanary/query";
 //The url of the dbpedia and wikidata endpoints to use
-export const dbpedia_endpoint = "https://dbpedia.org/sparql";
-export const wikidata_endpoint = "https://query.wikidata.org/sparql";
+//export const dbpedia_endpoint = "https://dbpedia.org/sparql";
+export const dbpedia_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/dbpedia_2016_10/sparql";
+export const wikidata_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/wikidata/sparql";
+//export const wikidata_endpoint = "https://query.wikidata.org/sparql";
 export const biennale_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/biennale/sparql";
 export const freebase_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/freebase_big/sparql";
 export const hdt_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/";
 export const musicbrainz_endpoint = "https://wdaqua.univ-st-etienne.fr/hdt-endpoint/musicbrainz/sparql";
 export const dblp_endpoint = "http://wdaqua-hdt-endpoint.univ-st-etienne.fr/dblp/sparql";
-export const endpoint = "http://wdaqua-hdt-endpoint.univ-st-etienne.fr/";
+export const scigraph_endpoint = "http://wdaqua-hdt-endpoint.univ-st-etienne.fr/scigraph/sparql";
+export const endpoint = "https://wdaqua-hdt-endpoint.univ-st-etienne.fr/";
 //export const sparqlToUserEndpoint =  "http://localhost:1920/sparqltouser";
 export const sparqlToUserEndpoint =  "https://wdaqua-sparqltouser.univ-st-etienne.fr/sparqltouser";
 export const audio_pipeline = "SpeechRecognitionKaldi";

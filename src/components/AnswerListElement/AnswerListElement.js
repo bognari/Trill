@@ -19,7 +19,8 @@ import MapBox from '../MapBox';
 import TopK from '../TopK';
 import LinksBar from '../LinksBar';
 
-import {info} from '../../actions/knowledge_base/info';
+import {wikipedia} from '../../actions/wikipedia';
+import {osmRelation} from "../../actions/osmRelation";
 
 @connect((store) => {
   return {
@@ -33,8 +34,11 @@ class AnswerListElement extends Component {
   }
 
   render() {
-    if (this.props.loaded==false){
-      this.props.dispatch(info(this.props.index));
+    if (this.props.information.abstract===null && this.props.information.links!=null && this.props.information.links.wikipedia!=null){
+      this.props.dispatch(wikipedia(this.props.index, this.props.information.links.wikipedia, this.props.language));
+    }
+    if (this.props.information.osmRelation!=null && (this.props.information.geoJson===null || this.props.information.geoJson!='undefined')){
+      this.props.dispatch(osmRelation(this.props.index, this.props.information.osmRelation));
     }
     var label = this.props.information.label;
     var image = this.props.information.image;
@@ -42,8 +46,6 @@ class AnswerListElement extends Component {
     var abstract = this.props.information.abstract;
     var video = this.props.information.youtube;
     var webpage = this.props.information.webpage;
-    console.log("VIDEO");
-    console.log(video);
 
     var left = {label: null, abstract: null, map: null, youtube:null};
     if (label!=null) {
@@ -64,7 +66,7 @@ class AnswerListElement extends Component {
     }
 
     if (lat!= null){
-      left.map = (<MapBox mapid={"map" + this.props.index} lat={this.props.information.lat} long={this.props.information.long}></MapBox>)
+      left.map = (<MapBox mapid={"map" + this.props.index} lat={this.props.information.lat} long={this.props.information.long} geoJson={this.props.information.geoJson}></MapBox>)
     }
 
     if (webpage!=null){
@@ -78,19 +80,14 @@ class AnswerListElement extends Component {
     if (this.props.information.kb == "dbpedia" || this.props.information.kb == "wikidata" || this.props.information.kb == "dblp" || this.props.information.kb == "musicbrainz" || this.props.information.kb == "scigraph" || this.props.information.kb == "freebase") {
       right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5} lang={this.props.language[0]} kb={this.props.information.kb}/> )
     }
-
-
-
-
     return (
       <div className={s.container}>
         { (this.props.loaded==true) ?
           <Condition>
-
             <Case test={this.props.information.literal!=null} >
+              {console.log(this.props.information.literal)}
               <Label type="title">{this.props.information.literal}</Label>
             </Case>
-
             <Case test={label!=null}>
               <div className={s.leftColumn}>
                 {left.label}
@@ -107,9 +104,6 @@ class AnswerListElement extends Component {
             <Case test={label==null && image != null}>
               {right.image}
             </Case>
-
-
-
           </Condition>
           : null}
       </div>

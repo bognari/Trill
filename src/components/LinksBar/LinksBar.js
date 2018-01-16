@@ -93,6 +93,13 @@ class LinksBar extends Component {
     e.stopPropagation();
   }
 
+  openstreetmap(e){
+    window.open(this.props.links.openstreetmap);
+    e.stopPropagation();
+  }
+
+
+
 
   render() {
     return (
@@ -111,6 +118,7 @@ class LinksBar extends Component {
         {this.props.links.hasOwnProperty("twitter") == true ? <a href="" onClick={this.twitter.bind(this)}><img src={require('./images/twitter.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("instagram") == true ? <a href="" onClick={this.instagram.bind(this)}><img src={require('./images/instagram.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
         {this.props.links.hasOwnProperty("orcid") == true ? <a href="" onClick={this.orcid.bind(this)}><img src={require('./images/orcid.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
+        {this.props.links.hasOwnProperty("openstreetmap") == true ? <a href="" onClick={this.openstreetmap.bind(this)}><img src={require('../../actions/knowledge_base/implemented/images/openstreetmap-logo.png')} height="30" alt="resource" className={s.imglink}/></a> : null}
       </div>
     );
   }

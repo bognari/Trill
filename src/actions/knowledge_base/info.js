@@ -10,6 +10,7 @@ import ItemDblp from "./implemented/dblp"
 import ItemBiennale from "./implemented/biennale"
 import ItemFreebase from "./implemented/freebase"
 import ItemScigraph from "./implemented/scigraph"
+import ItemOpenStreetMap from "./implemented/openstreetmap";
 
 export function info(index){
   return function (dispatch) {
@@ -49,6 +50,11 @@ export function info(index){
       case "scigraph": {
         var itemScigraph = new ItemScigraph(index);
         dispatch(itemScigraph.startRequest());
+        break;
+      }
+      case "openstreetmap": {
+        var itemOpenstreetmap = new ItemOpenStreetMap(index);
+        dispatch(itemOpenstreetmap.startRequest());
         break;
       }
       console.log("ERROR The following knowledgebase is not supported:",store.getState().qa.information[index].kb);
