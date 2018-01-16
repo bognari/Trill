@@ -2,10 +2,8 @@
  * Created by Dennis on 11/11/16.
  */
 
-import iri from 'iri';
-
-import {sparqlToUser} from '../actions/sparqlToUser';
-import {qanary_services, dbpedia_endpoint, wikidata_endpoint, text_pipeline, audio_pipeline} from '../config';
+import {qanary_services, audio_pipeline} from '../config';
+import {info2} from "./knowledge_base/info2";
 
 export const QANARY_REQUEST = 'QANARY_REQUEST';
 export const QANARY_SUCCESS = 'QANARY_SUCCESS';
@@ -14,8 +12,6 @@ export const QANARY_FAILURE = 'QANARY_FAILURE';
 export function questionansweringfull(question, lang, knowledgebase, namedGraph){
 
   return function (dispatch) {
-    console.log("GGGG");
-    console.log(knowledgebase.join(", "));
     if (lang==null){
       lang = ["en"];
     }
@@ -74,20 +70,22 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
             score: data.sparql.length-i});
           //Here we receive the question converted to a query (first one in an array of ranked possible queries)
         }
+
         // if (query.length>0){
         //   dispatch(sparqlToUser(query[0], lang, knowledgebase));
         // }
         var namedGraph = data.namedgraph;
         var jresult = JSON.parse(data.json);
         console.log(jresult);
+
         dispatch({
           type: QANARY_SUCCESS,
           namedGraph: namedGraph,
           SPARQLquery: query,
           json: jresult,
-          information: json_to_list(jresult, query[0].kb),
           loaded: true,
         });
+        dispatch(info2(data.sparql[0].kb,jresult,data.sparql[0].query));
 
 
       },

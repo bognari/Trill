@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 import {Condition, Case} from 'react-case';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import YouTube from 'react-youtube';
-
+import iri from "iri";
 
 import ImageComponent from '../ImageComponent'
 import s from './AnswerListElements.scss';
@@ -19,7 +19,7 @@ import MapBox from '../MapBox';
 import TopK from '../TopK';
 import LinksBar from '../LinksBar';
 
-import {info} from '../../actions/knowledge_base/info';
+import {wikipedia} from '../../actions/wikipedia';
 import Collapsible from 'react-collapsible';
 
 @connect((store) => {
@@ -31,16 +31,20 @@ class AnswerListElements extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      open : false,
+    };
   }
 
-  onChange(){
-
+  swap(){
+    console.log(this.state.open);
+    this.setState({ open: !this.state.open });
   }
+
 
   render() {
-    if (this.props.loaded == false) {
-
-      this.props.dispatch(info(this.props.index));
+    if (this.props.information.abstract==null && this.props.information.links!=null && this.props.information.links.wikipedia!=null){
+      this.props.dispatch(wikipedia(this.props.index, this.props.information.links.wikipedia, this.props.language));
     }
     var label = this.props.information.label;
     var image = this.props.information.image;
@@ -48,8 +52,6 @@ class AnswerListElements extends Component {
     var abstract = this.props.information.abstract;
     var video = this.props.information.youtube;
     var webpage = this.props.information.webpage;
-    console.log("VIDEO");
-    console.log(video);
 
     var left = {label: null, abstract: null, map: null, youtube: null};
     if (label != null) {
@@ -57,9 +59,9 @@ class AnswerListElements extends Component {
         left.label = (
           <div className={s.title}>
             {this.props.information.label}
-            <div className ={s.icon}> + </div>
+            {this.state.open == false ? <div className ={s.icon}> + </div> : <div className ={s.icon}> - </div>}
             <LinksBar links={this.props.information.links}/>
-          </div>)
+          </div> )
       }else{
         left.label = (
           <div className={s.title}>{this.props.information.label}<LinksBar links={this.props.information.links}/>
@@ -83,9 +85,9 @@ class AnswerListElements extends Component {
       left.youtube = (<YouTube videoId={this.props.information.youtube} opts={options_video} id={this.props.index}/>)
     }
 
+    console.log("LATTT"+lat);
     if (lat != null) {
-      left.map = (<MapBox mapid={"map" + this.props.index} lat={this.props.information.lat}
-                          long={this.props.information.long}></MapBox>)
+      left.map = (<MapBox mapid={"map" + this.props.index} lat={this.props.information.lat} long={this.props.information.long}></MapBox>)
     }
 
     if (webpage != null) {
@@ -100,52 +102,38 @@ class AnswerListElements extends Component {
       right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5}
                           lang={this.props.language[0]} kb={this.props.information.kb}/> )
     }
+    return (
+      <div className={s.container}>
+        {(this.props.loaded == true) ?
+          <Condition>
 
-    //console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+            <Case test={this.props.information.literal != null}>
+              <Label type="title">{this.props.information.literal}</Label>
+            </Case>
 
-      return (
-        <div className={s.container}>
-          {(this.props.loaded == true) ?
-            <Condition>
-
-              <Case test={this.props.information.literal != null}>
-                <Label type="title">{this.props.information.literal}</Label>
-              </Case>
-
-              <Case test={label != null}>
-                <Collapsible trigger={left.label}>
-                  <div className={s.info}>
-                    <div className={s.leftColumn}>
-                      {left.abstract}
-                      {left.map}
-                      {left.youtube}
-                      {left.webpage}
-                    </div>
-                    <div className={s.rightColumn}>
-                      {right.image}
-                      {right.topk}
-                    </div>
+            <Case test={label != null}>
+              <Collapsible trigger={left.label} open ={this.props.collapsible} onOpening={this.swap} onClosing = {this.swap} >
+                <div className={s.info}>
+                  <div className={s.leftColumn}>
+                    {left.abstract}
+                    {left.map}
+                    {left.youtube}
+                    {left.webpage}
                   </div>
-                </Collapsible>
-
-
-              </Case>
-              <Case test={label == null && image != null}>
-
-                {right.image}
-              </Case>
-
-
-            </Condition>
-            : null}
-        </div>)
-
-
-
-
-    }
-
-
+                  <div className={s.rightColumn}>
+                    {right.image}
+                    {right.topk}
+                  </div>
+              </div>
+            </Collapsible>
+          </Case>
+          <Case test={label == null && image != null}>
+            {right.image}
+          </Case>
+        </Condition>
+        : null}
+    </div>)
+  }
 }
 
 export default withStyles(AnswerListElements, s);

@@ -32,17 +32,10 @@ class TopK extends Component {
   }
 
   componentDidMount() {
-    // summa("http://dbpedia.org/resource/Quentin_Tarantino", 5, "en", null,
-    //   "pf-summary", "http://km.aifb.kit.edu/services/link/sum");
-
-    //==============================
-
     var id = this.props.sumid;
     var uri = this.props.uri;
     var topK = this.props.topK;
 
-
-    //$("#" + id).hide();
     $.ajaxSetup({
       accepts : {
         "json" : "application/ld+json, application/json, text/javascript"
@@ -55,7 +48,6 @@ class TopK extends Component {
       }
     });
 
-    console.log("ENTERED SUMMARY "+this.props.kb);
     var url = null;
     if (this.props.kb == "wikidata"){
       url = "https://wdaqua-summa-server.univ-st-etienne.fr/wikidata/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
@@ -70,12 +62,6 @@ class TopK extends Component {
     } else if (this.props.kb == "freebase"){
       url = "https://wdaqua-summa-server.univ-st-etienne.fr/freebase/sum" + "?entity=" + encodeURIComponent(uri) + "&topK=" + topK + "&maxHops=1" + "&language=" + this.props.lang;
     }
-    // if (language != null) {
-    //   url += "&language=" + language;
-    // }
-    // if (fixedProperty != null) {
-    //   url += "&fixedProperty=" + fixedProperty;
-    // }
 
     $.ajax({
       dataType : "json",
@@ -90,7 +76,6 @@ class TopK extends Component {
       },
       success : function(data) {
         $("#" + id).empty();
-        console.log("DATA",data);
         function label(uri) {
           for ( k = 0; k < keys.length; k++) {
             if(data[keys[k]]["@id"] == uri){
@@ -148,16 +133,6 @@ class TopK extends Component {
             $("#" + id).children("table").append("<tr><td>" + label(print.statements[i].predicate) + " of&nbsp;&nbsp;&nbsp;&nbsp;</td><td><a href=\""+path+"\">"+label(print.statements[i].subject)+"</a></td></tr>");
           }
         }
-        // $("#" + id).append("<i style='font-size:10px'>_______<br>Summary by <a href='" + service.substring(0, service.lastIndexOf("/")) + "'>" + service.substring(0, service.lastIndexOf("/")) + "</a></i>");
-        // $("#" + id).show();
-        // $("#" + id + "_close").click(function() {
-        //   $("#" + id).remove();
-        // });
-        // $('.' + id + '.click').click(function() {
-        //   $("#" + id).empty();
-        //   $("#" + id).hide();
-        //   summa(this.id, topK, language, fixedProperty, id, service);
-        // });
       }.bind(this),
       error: function(error){
           console.log(error);

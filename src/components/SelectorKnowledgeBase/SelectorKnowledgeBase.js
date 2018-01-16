@@ -39,6 +39,7 @@ class SelectorKnowledgeBase extends Component {
     biennale: require('./images/biennale_logo.png'),
     freebase: require('./images/freebase-logo.png'),
     scigraph: require('./images/scigraph-logo.png'),
+    openstreetmap: require('./images/openstreetmap-logo.png'),
   };
 
   handleChange(option){
@@ -102,7 +103,11 @@ class SelectorKnowledgeBase extends Component {
       }, {
         id: "freebase",
         name: "freebase",
+      }, {
+        id: "openstreetmap",
+        name: "openstreetmap",
       }
+
     ];
 
 

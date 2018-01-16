@@ -67,7 +67,9 @@
     "redux-promise-middleware": "^4.1.0",
     "redux-thunk": "^2.1.0",
     "source-map-support": "0.4.0",
+    "sparqljs": "^2.0.0",
     "style-loader": "^0.13.1",
+    "underscore": "^1.8.3",
     "use-strict": "^1.0.1",
     "webpack": "^1.13.2",
     "whatwg-fetch": "0.11.0"
