@@ -112,7 +112,7 @@ class AnswerListElements extends Component {
             </Case>
 
             <Case test={label != null}>
-              <Collapsible trigger={left.label} open ={this.props.collapsible} onOpening={this.swap} onClosing = {this.swap} >
+              <Collapsible trigger={left.label} open ={this.props.collapsible} onOpening={this.swap.bind(this)} onClosing = {this.swap.bind(this)} >
                 <div className={s.info}>
                   <div className={s.leftColumn}>
                     {left.abstract}
