@@ -45,63 +45,43 @@ import MapBoxBig from "../MapBoxBig/MapBoxBig";
   }
 })
 class AnswerPage extends Component {
-  /*{this.props.information.map(function (info, index) {
-                    if(k<=1){
-                      return(
-                      <div key={index}>
-                        { (index < 20) ?
-                          <AnswerListElement id={index} collapsed = {true} index={index} information={info} loaded={true}>
-                          </AnswerListElement>
-                        : null }
-                      </div>);
-                    }else{
-                      return(
-                        <div key={index}>
-                          { (index < 20) ?
-                            <AnswerListElements id={index} index={index} information={info} loaded={this.props.informationLoaded}>
-                            </AnswerListElements>
-                            :null}
-                        </div>);
-                      }
-                   }.bind(this))}
-  {this.props.information.map(function (info, index) {
-                     console.log("ENTERED");
-
-                       return(
-                       <div key={index}>
-                         { (index < 20) ?
-                           <AnswerListElements id={index} index={index} information={info} collapsible ={k>1} loaded={this.props.informationLoaded[index]}>
-                           </AnswerListElements>
-                         : null }
-                       </div>
-                   );
-
-
-
-
-                    }.bind(this))}*/
   constructor(props) {
     super(props);
+    console.log("constructor");
+    console.log(this.props.information);
     var exampleItems  = this.props.information;
     // noinspection JSAnnotator
     this.state = {
       exampleItems: exampleItems,
       pageOfItems: [],
+      loaded : false,
     };
     this.onChangePage = this.onChangePage.bind(this);
 
   }
-  onChangePage(pageOfItems) {
+
+  onChangePage(pageOfItems, start, end) {
     // update state with new page of items
-    console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+    //console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+    console.log("before the call");
+    console.log(this.state.pageOfItems);
+
     this.setState({ pageOfItems: pageOfItems });
+    console.log("after the call");
+    console.log(pageOfItems);
   }
+
 
 
   render() {
     var isBrowser=new Function("try {return this===window;}catch(e){ return false;}");
     let k = this.props.information.length;
     this.state.exampleItems = this.props.information;
+
+    console.log("this.state.exampleItems");
+    let g = Array.apply(null, {length: k}).map(Number.call, Number)
+    console.log(this.state.exampleItems);
+
     return (
       <div className={s.container}>
         <Loader loaded={this.props.loaded} color="#333">
@@ -120,10 +100,12 @@ class AnswerPage extends Component {
 
 
                   {this.state.pageOfItems.map(function (info, index) {
+                    console.log("im inside");
+                    console.log(info);
                     return(
                     <div key={index}>
                         {(index < 20) ?
-                          <AnswerListElements id={index} index={index} information={info} collapsible={k <= 1} loaded={this.props.informationLoaded[index]} >
+                          <AnswerListElements id={index} index={info} information={this.props.information[info]} collapsible={k <= 1} loaded={true} >
                           </AnswerListElements>
                           : null}
 
@@ -131,7 +113,7 @@ class AnswerPage extends Component {
                   )
                   }.bind(this))
                   }
-                  <Pagination items={this.state.exampleItems} onChangePage={this.onChangePage} />
+                  <Pagination items={g} onChangePage={this.onChangePage} />
 
                 </div>
                 : <div>No Answer</div> }

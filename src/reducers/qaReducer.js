@@ -72,6 +72,7 @@ export default function qaReducer(state = initialState, action){
         sparqlInterpretationloaded: tmp3.concat(),
         sparqlInterpretationloading: tmp4.concat(),
         json: action.json,
+        loaded: true,
       }
       break;
     }
@@ -93,7 +94,6 @@ export default function qaReducer(state = initialState, action){
     case ITEM_KNOWLEDGEBASE_REQUEST: {
       return {
         ...state,
-        informationLoaded: false,
       }
       break;
     }
@@ -102,7 +102,6 @@ export default function qaReducer(state = initialState, action){
         ...state,
         information: action.information,
         informationLoaded: true,
-        loaded: true,
       }
       break;
     }

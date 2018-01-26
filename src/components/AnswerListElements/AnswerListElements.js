@@ -37,15 +37,17 @@ class AnswerListElements extends Component {
   }
 
   swap(){
-    console.log(this.state.open);
+    //console.log(this.state.open);
     this.setState({ open: !this.state.open });
   }
 
 
   render() {
-    if (this.props.information.abstract==null && this.props.information.links!=null && this.props.information.links.wikipedia!=null){
+    if (this.props.information.abstract===null && this.props.information.links!=null && this.props.information.links.wikipedia!=null){
       this.props.dispatch(wikipedia(this.props.index, this.props.information.links.wikipedia, this.props.language));
     }
+    console.log("AAABBBBBBSSSSSSSSTTTTRRRRACCCCTT");
+    console.log(this.props.information.abstract == null);
     var label = this.props.information.label;
     var image = this.props.information.image;
     var lat = this.props.information.lat;
@@ -102,6 +104,8 @@ class AnswerListElements extends Component {
       right.topk = (<TopK sumid={"sumbox" + this.props.index} uri={this.props.information.uri} topK={5}
                           lang={this.props.language[0]} kb={this.props.information.kb}/> )
     }
+    console.log("inside éééé");
+    console.log(this.props.loaded);
     return (
       <div className={s.container}>
         {(this.props.loaded == true) ?
@@ -112,7 +116,7 @@ class AnswerListElements extends Component {
             </Case>
 
             <Case test={label != null}>
-              <Collapsible trigger={left.label} open ={this.props.collapsible} onOpening={this.swap.bind(this)} onClosing = {this.swap.bind(this)} >
+              <Collapsible className = {s.collapsible} trigger={left.label} open ={this.props.collapsible} onOpening={this.swap.bind(this)} onClosing = {this.swap.bind(this)} >
                 <div className={s.info}>
                   <div className={s.leftColumn}>
                     {left.abstract}
