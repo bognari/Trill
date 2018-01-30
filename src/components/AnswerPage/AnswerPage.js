@@ -53,22 +53,23 @@ class AnswerPage extends Component {
     // noinspection JSAnnotator
     this.state = {
       exampleItems: exampleItems,
-      pageOfItems: [],
+      start: 0,
+      end: 0,
       loaded : false,
     };
     this.onChangePage = this.onChangePage.bind(this);
 
   }
 
-  onChangePage(pageOfItems, start, end) {
-    // update state with new page of items
-    //console.log("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+  onChangePage(start, end) {
+    console.log(start+"---"+end);
     console.log("before the call");
-    console.log(this.state.pageOfItems);
+    //console.log(this.state.pageOfItems);
 
-    this.setState({ pageOfItems: pageOfItems });
+    this.setState({ start: start , end: end});
+
     console.log("after the call");
-    console.log(pageOfItems);
+    //console.log(pageOfItems);
   }
 
 
@@ -79,7 +80,9 @@ class AnswerPage extends Component {
     this.state.exampleItems = this.props.information;
 
     console.log("this.state.exampleItems");
-    let g = Array.apply(null, {length: k}).map(Number.call, Number)
+    console.log(k);
+    console.log(this.state.start+"----"+this.state.end);
+    let g = Array.apply(null, {length: k}).map(Number.call, Number);
     console.log(this.state.exampleItems);
 
     return (
@@ -99,22 +102,19 @@ class AnswerPage extends Component {
                   {this.props.information[0].kb=="openstreetmap" ? <MapBoxBig mapid={"map"} information={this.props.information}></MapBoxBig> : null}
 
 
-                  {this.state.pageOfItems.map(function (info, index) {
-                    console.log("im inside");
-                    console.log(info);
-                    return(
-                    <div key={index}>
-                        {(index < 20) ?
-                          <AnswerListElements id={index} index={info} information={this.props.information[info]} collapsible={k <= 1} loaded={true} >
-                          </AnswerListElements>
-                          : null}
-
-                    </div>
-                  )
+                  {this.props.information.map(function (info, index) {
+                    if (index >= this.state.start && index < this.state.end) {
+                      return (
+                        <div key={index}>
+                            <AnswerListElements id={index} index={index} information={this.props.information[index]} collapsible={k <= 1} loaded={true}>
+                            </AnswerListElements>
+                        </div>
+                      )
+                    }
                   }.bind(this))
                   }
                   <div className={s.center}>
-                  <Pagination items={g} onChangePage={this.onChangePage} />
+                  <Pagination items={k} onChangePage={this.onChangePage} />
                   </div>
 
                 </div>

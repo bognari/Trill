@@ -5,7 +5,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Pagination.scss'
 
 const propTypes = {
-  items: PropTypes.array.isRequired,
+  items: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
   initialPage: PropTypes.number
 }
@@ -21,19 +21,19 @@ class Pagination extends React.Component {
   }
 
   componentWillMount() {
-    // set page if items array isn't empty
-    if (this.props.items && this.props.items.length) {
+    // set page if item not zero
+    if (this.props.items!=0) {
       this.setPage(this.props.initialPage);
     }
 
   }
 
-  /*componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     // reset page if items array has changed
-    if (this.props.items !== prevProps.items) {
-      this.setPage(this.props.initialPage);
+    if (this.props.items != prevProps.items) {
+      //this.setPage(this.props.initialPage);
     }
-  }*/
+  }
 
   setPage(page) {
     var items = this.props.items;
@@ -44,16 +44,16 @@ class Pagination extends React.Component {
     }
 
     // get new pager object for specified page
-    pager = this.getPager(items.length, page);
+    pager = this.getPager(items, page);
 
     // get new page of items from items array
-    var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+    //var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
 
     // update state
     this.setState({ pager: pager });
 
     // call change page function in parent component
-    this.props.onChangePage(pageOfItems, pager.startIndex, pager.endIndex + 1);
+    this.props.onChangePage(pager.startIndex, pager.endIndex + 1);
   }
 
   getPager(totalItems, currentPage, pageSize) {
@@ -108,9 +108,6 @@ class Pagination extends React.Component {
 
   render() {
     var pager = this.state.pager;
-    console.log("PAAAAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGGIIIIIIIINNNNNNNNNNNAAAAAAAAAATTTTTTTTTTTIIIIIIIIIIOOOOOOONNNNNNN");
-    console.log(this.props.items);
-    console.log(this.props.initialPage);
     if (!pager.pages || pager.pages.length <= 1) {
       // don't display pager if there is only 1 page
       return null;
