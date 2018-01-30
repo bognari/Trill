@@ -113,7 +113,9 @@ class AnswerPage extends Component {
                   )
                   }.bind(this))
                   }
+                  <div className={s.center}>
                   <Pagination items={g} onChangePage={this.onChangePage} />
+                  </div>
 
                 </div>
                 : <div>No Answer</div> }
