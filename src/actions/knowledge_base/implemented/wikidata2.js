@@ -95,7 +95,11 @@ export default class ResultSetWikidata extends ResultSetKnowledgeBase{
             this.literal(result,i,variable,lang,informationItem)
           } else {
             informationItem.uri = actualKey;
-            informationItem.pageRank = result.results.bindings[i].pageRank.value;
+            if (result.results.bindings[i].pageRank != undefined) {
+              informationItem.pageRank = result.results.bindings[i].pageRank.value;
+            } else {
+              informationItem.pageRank = 0;
+            }
             informationItem.links = {};
             informationItem.links.wikidata = actualKey;
             if (result.results.bindings[i].label != undefined) {
