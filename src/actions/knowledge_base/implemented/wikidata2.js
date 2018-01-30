@@ -73,7 +73,7 @@ export default class ResultSetWikidata extends ResultSetKnowledgeBase{
         "OPTIONAL{ " +
         "?wikilink schema:about ?"+variable+" ; schema:inLanguage \""+ lang +"\" ; schema:isPartOf <https://"+lang+".wikipedia.org/> ." +
         "} " +
-        "} ";
+        "} limit 1000";
       console.log(sparqlQuery);
       var url = wikidata_endpoint +"?query=" + encodeURIComponent(sparqlQuery) + "&format=json";
       $.get(url).success(function (result) {
@@ -82,6 +82,7 @@ export default class ResultSetWikidata extends ResultSetKnowledgeBase{
         console.log("HERE KB "+this.kb);
         var previewsKey = result.results.bindings[0][variable].value;
         for (var i=0; i< result.results.bindings.length; i++) {
+          console.log(i);
           informationItem.kb = this.kb;
           var actualKey = result.results.bindings[i][variable].value;
           if (!(actualKey == previewsKey)) {
@@ -147,7 +148,7 @@ export default class ResultSetWikidata extends ResultSetKnowledgeBase{
             }
 
             if (result.results.bindings[i].wikilink != undefined) {
-              console.log(informationItem.links);
+              //console.log(informationItem.links);
               informationItem.links.wikipedia = result.results.bindings[i].wikilink.value;
             }
           }
