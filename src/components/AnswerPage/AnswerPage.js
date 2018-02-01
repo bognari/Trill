@@ -23,6 +23,7 @@ import AnswerListElements from '../AnswerListElements/AnswerListElements';
 //import AnswerListElement from '../AnswerListElement/AnswerListElement';
 import Pagination from '../Pagination/Pagination';
 import MapBoxBig from "../MapBoxBig/MapBoxBig";
+import Confidence from "../Confidence/Confidence";
 
 @connect((store) => {
   return {
@@ -88,6 +89,7 @@ class AnswerPage extends Component {
     return (
       <div className={s.container}>
         <Loader loaded={this.props.loaded} color="#333">
+          {this.props.SPARQLquery[0] != undefined ? <Confidence confidence={this.props.SPARQLquery[0].confidence.replace("\"","").replace("^^http://www.w3.org/2001/XMLSchema#decimal","").replace("^^http://www.w3.org/2001/XMLSchema#double","")} /> : null}
           {(this.props.error) ? <Error>Error</Error> : //check if an error occured
             <div>
               {this.props.information.length > 0 ?  //check if there is an answer

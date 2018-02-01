@@ -17,9 +17,12 @@ import {qanary_services} from '../../config';
 
 class Confidence extends Component {
 
+  //other options https://www.bram.us/projects/js_bramus/jsprogressbarhandler/#license_usage
+  // http://kimmobrunfeldt.github.io/progressbar.js/
+
   render() {
-    var confidence= this.props.query.confidence.replace("\"","").replace("^^http://www.w3.org/2001/XMLSchema#double","")
-    var color = this.perc2color(confidence);
+    var confidence= this.props.confidence;
+    var color = this.perc2color(confidence*100);
     return (
       <div className={s.container}>
         <div className="color-box" style={{backgroundColor: color, width: "50px", height: "50px"}}></div>
