@@ -39,9 +39,7 @@ class DidYouMean extends Component {
     owner: PropTypes.element,
   }
 
-  handleClick() {
-    this.setState({query: !this.state.query}); //on click switch from query to answer
-  }
+
 
   handleClick3(spqno, e){
     //reorder queries
@@ -68,7 +66,7 @@ class DidYouMean extends Component {
 
   }
 
-  componentWillMount(){
+  handleClick(){
     console.log("THIS"+this);
     var entities = []; //Array that holds the list of entities extracted from the SPARQL list.
     //Properties of each entity: value (name), entity (uri) and sparqlno (the indexes of the queries that hold this entity)
@@ -158,6 +156,7 @@ class DidYouMean extends Component {
           this.setState({entities: newState});
         }.bind(this));
     }
+    this.setState({query: !this.state.query}); //on click switch from query to answer
   }
 
   render() {

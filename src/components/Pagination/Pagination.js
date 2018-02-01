@@ -1,7 +1,11 @@
 import React, { PropTypes } from 'react';
 
+
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './Pagination.scss'
+
 const propTypes = {
-  items: PropTypes.array.isRequired,
+  items: PropTypes.number.isRequired,
   onChangePage: PropTypes.func.isRequired,
   initialPage: PropTypes.number
 }
@@ -17,16 +21,17 @@ class Pagination extends React.Component {
   }
 
   componentWillMount() {
-    // set page if items array isn't empty
-    if (this.props.items && this.props.items.length) {
+    // set page if item not zero
+    if (this.props.items!=0) {
       this.setPage(this.props.initialPage);
     }
+
   }
 
   componentDidUpdate(prevProps, prevState) {
     // reset page if items array has changed
-    if (this.props.items !== prevProps.items) {
-      this.setPage(this.props.initialPage);
+    if (this.props.items != prevProps.items) {
+      //this.setPage(this.props.initialPage);
     }
   }
 
@@ -39,16 +44,16 @@ class Pagination extends React.Component {
     }
 
     // get new pager object for specified page
-    pager = this.getPager(items.length, page);
+    pager = this.getPager(items, page);
 
     // get new page of items from items array
-    var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
+    //var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
 
     // update state
     this.setState({ pager: pager });
 
     // call change page function in parent component
-    this.props.onChangePage(pageOfItems);
+    this.props.onChangePage(pager.startIndex, pager.endIndex + 1);
   }
 
   getPager(totalItems, currentPage, pageSize) {
@@ -103,36 +108,35 @@ class Pagination extends React.Component {
 
   render() {
     var pager = this.state.pager;
-
     if (!pager.pages || pager.pages.length <= 1) {
       // don't display pager if there is only 1 page
       return null;
     }
 
     return (
-      <ul className="pagination">
-        <li className={pager.currentPage === 1 ? 'disabled' : ''}>
+      <ul className={s.pagination}>
+        <li className={pager.currentPage === 1 ? s.disabled : ''}>
           <a onClick={() => this.setPage(1)}>First</a>
         </li>
-        <li className={pager.currentPage === 1 ? 'disabled' : ''}>
+        <li className={pager.currentPage === 1 ? s.disabled : ''}>
           <a onClick={() => this.setPage(pager.currentPage - 1)}>Previous</a>
         </li>
         {pager.pages.map((page, index) =>
-          <li key={index} className={pager.currentPage === page ? 'active' : ''}>
+          <li key={index} className={pager.currentPage === page ? s.active : ''}>
             <a onClick={() => this.setPage(page)}>{page}</a>
           </li>
         )}
-        <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
+        <li className={pager.currentPage === pager.totalPages ? s.disabled : ''}>
           <a onClick={() => this.setPage(pager.currentPage + 1)}>Next</a>
         </li>
-        <li className={pager.currentPage === pager.totalPages ? 'disabled' : ''}>
+        <li className={pager.currentPage === pager.totalPages ? s.disabled : ''}>
           <a onClick={() => this.setPage(pager.totalPages)}>Last</a>
         </li>
       </ul>
     );
   }
 }
-
 Pagination.propTypes = propTypes;
 Pagination.defaultProps = defaultProps;
-export default Pagination;
+
+export default withStyles(Pagination, s);

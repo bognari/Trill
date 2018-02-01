@@ -17,7 +17,7 @@ const initialState = {
   information: [],
   SPARQLquery: [], //containes the generated sparql query
   json: "",
-  informationLoaded : [],
+  informationLoaded : false,
   informationError: [],
   sparqlInterpretationError: [],
   sparqlInterpretationloading: [],
@@ -79,7 +79,7 @@ export default function qaReducer(state = initialState, action){
       return {
         ...state,
         error: action.sparqlInterpretationError,
-        loaded: true,
+        loaded: false,
       }
       break;
     }
@@ -93,7 +93,6 @@ export default function qaReducer(state = initialState, action){
     case ITEM_KNOWLEDGEBASE_REQUEST: {
       return {
         ...state,
-        informationLoaded: false,
       }
       break;
     }
@@ -102,7 +101,7 @@ export default function qaReducer(state = initialState, action){
         ...state,
         information: action.information,
         informationLoaded: true,
-        loaded: true,
+        loaded:true,
       }
       break;
     }
