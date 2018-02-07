@@ -2,7 +2,7 @@
  * Created by Dennis on 11/11/16.
  */
 
-import {qanary_services, audio_pipeline} from '../config';
+import {qanary_services, audio_pipeline, text_pipeline} from '../config';
 import {info2} from "./knowledge_base/info2";
 
 export const QANARY_REQUEST = 'QANARY_REQUEST';
@@ -27,7 +27,7 @@ export function questionansweringfull(question, lang, knowledgebase, namedGraph)
       form.append("graph", namedGraph);
     }
     else {
-      components = "wdaqua-core1, QueryExecuter";
+      components = text_pipeline;
     }
 
     //check whether the question input is a string or mp3file
@@ -124,5 +124,4 @@ export function json_to_list(jresult, kb){
   }
   return results;
 }
-
 
